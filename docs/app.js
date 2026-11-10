@@ -5,8 +5,10 @@ const repoUrl = `https://github.com/${REPO}`;
 
 function wireLinks() {
   for (const a of document.querySelectorAll('[data-repo-link]')) a.href = repoUrl;
-  for (const a of document.querySelectorAll('[data-repo-path]'))
-    a.href = `${repoUrl}/tree/main/${a.getAttribute('data-repo-path')}`;
+  for (const a of document.querySelectorAll('[data-repo-path]')) {
+    const kind = a.getAttribute('data-repo-kind') ?? 'tree';
+    a.href = `${repoUrl}/${kind}/main/${a.getAttribute('data-repo-path')}`;
+  }
   for (const el of document.querySelectorAll('[data-repo-url]')) el.textContent = repoUrl;
 }
 
@@ -23,30 +25,104 @@ function wireTabs() {
   tabs.forEach((tab, i) => {
     tab.addEventListener('click', () => select(tab));
     tab.addEventListener('keydown', (e) => {
-      if (e.key !== 'ArrowRight' && e.key !== 'ArrowLeft') return;
-      const next = tabs[(i + (e.key === 'ArrowRight' ? 1 : tabs.length - 1)) % tabs.length];
-      select(next);
-      next.focus();
+      const target = {
+        ArrowRight: tabs[(i + 1) % tabs.length],
+        ArrowLeft: tabs[(i + tabs.length - 1) % tabs.length],
+        Home: tabs[0],
+        End: tabs[tabs.length - 1],
+      }[e.key];
+      if (!target) return;
+      e.preventDefault();
+      select(target);
+      target.focus();
     });
   });
 }
 
+// ---------- the path field: every command follows the folder the visitor typed ----------
+
+const DEFAULT_DIR = 'C:\\Tools\\devtools-cli';
+
+function cleanDir(raw) {
+  let dir = raw.trim().replace(/^["']+|["']+$/g, '').trim();
+  dir = dir.replace(/[\\/]+devtools\.mjs$/i, '');
+  if (!/^[\\/]+$/.test(dir) && !/^[A-Za-z]:[\\/]$/.test(dir)) dir = dir.replace(/[\\/]+$/, '');
+  return dir || DEFAULT_DIR;
+}
+
+function scriptPath(dir) {
+  const sep = dir.includes('\\') || /^[A-Za-z]:/.test(dir) || !dir.includes('/') ? '\\' : '/';
+  return dir.endsWith(sep) ? `${dir}devtools.mjs` : `${dir}${sep}devtools.mjs`;
+}
+
+// Quote for a terminal only when the path needs it.
+const shellArg = (s) => (/[\s"'&|<>^%;()`$]/.test(s) ? `"${s.replace(/"/g, '\\"')}"` : s);
+
+const COMMANDS = {
+  'claude-code': (p) => `claude mcp add --scope user devtools -- node ${shellArg(p)} mcp`,
+  'claude-desktop': (p) =>
+    [
+      '{',
+      '  "mcpServers": {',
+      '    "devtools": {',
+      '      "command": "node",',
+      `      "args": [${JSON.stringify(p)}, "mcp"]`,
+      '    }',
+      '  }',
+      '}',
+    ].join('\n'),
+  other: (p) => `node ${shellArg(p)} mcp`,
+};
+
+function wirePathField() {
+  const input = document.getElementById('cli-path');
+  if (!input) return;
+  const update = () => {
+    const p = scriptPath(cleanDir(input.value));
+    for (const code of document.querySelectorAll('[data-cmd]')) {
+      const make = COMMANDS[code.getAttribute('data-cmd')];
+      if (make) code.textContent = make(p);
+    }
+  };
+  input.addEventListener('input', update);
+  update();
+}
+
+// ---------- copy controls: one per code block ----------
+
 function wireCopy() {
-  for (const button of document.querySelectorAll('[data-copy-from]')) {
+  const status = document.getElementById('copy-status');
+  const say = (text) => {
+    if (!status) return;
+    status.textContent = '';
+    setTimeout(() => (status.textContent = text), 50);
+  };
+  for (const button of document.querySelectorAll('.code .copy')) {
+    const code = button.closest('.code').querySelector('pre');
+    const label = button.textContent;
+    let timer;
     button.addEventListener('click', async () => {
-      const step = button.closest('.step');
-      const pre = step?.querySelector(button.getAttribute('data-copy-from'));
-      if (!pre) return;
+      clearTimeout(timer);
       try {
-        await navigator.clipboard.writeText(pre.textContent);
+        await navigator.clipboard.writeText(code.textContent);
         button.textContent = 'Copied';
+        say('Copied to the clipboard.');
       } catch {
-        button.textContent = 'Select and copy';
+        // No clipboard access: select the text so the visitor can copy it, and say so.
+        const range = document.createRange();
+        range.selectNodeContents(code);
+        const sel = window.getSelection();
+        sel.removeAllRanges();
+        sel.addRange(range);
+        button.textContent = 'Selected';
+        say('Copying is blocked here. The text is selected, ready for you to copy.');
       }
-      setTimeout(() => (button.textContent = 'Copy'), 1600);
+      timer = setTimeout(() => (button.textContent = label), 2000);
     });
   }
 }
+
+// ---------- the catalog ----------
 
 const el = (tag, attrs = {}, ...children) => {
   const node = document.createElement(tag);
@@ -61,26 +137,46 @@ function describeType(p) {
   return p.type ?? '';
 }
 
+const toolId = (name) => `tool-${name}`;
+
 function renderTool(tool) {
   const [group] = tool.name.split('__');
   const [title, ...rest] = tool.description.split(': ');
+  const detail = rest.join(': ');
   const schema = tool.inputSchema ?? {};
   const required = new Set(schema.required ?? []);
-  const rows = Object.entries(schema.properties ?? {}).map(([name, p]) =>
-    el(
-      'tr',
-      {},
-      el('td', {}, name, ...(required.has(name) ? [el('span', { class: 'req', title: 'required' }, ' *')] : [])),
-      el('td', {}, describeType(p) + (p.default !== undefined && p.default !== '' ? ` (default ${JSON.stringify(p.default)})` : '')),
-    ),
-  );
+  const args = Object.entries(schema.properties ?? {}).map(([name, p]) => {
+    const type = describeType(p);
+    const dflt = p.default !== undefined && p.default !== '' ? `default ${JSON.stringify(p.default)}` : '';
+    const about = p.description ?? p.title ?? '';
+    return el(
+      'div',
+      { class: 'arg' },
+      el(
+        'dt',
+        {},
+        el('code', {}, name),
+        ...(required.has(name) ? [' ', el('span', { class: 'req' }, 'required')] : []),
+        ...(type || dflt ? [' ', el('span', { class: 'arg-type' }, [type, dflt].filter(Boolean).join(', '))] : []),
+      ),
+      ...(about ? [el('dd', {}, about)] : []),
+    );
+  });
+  const id = toolId(tool.name);
   return el(
     'article',
-    { class: 'tool', 'data-group': group },
+    { class: 'tool', id, 'data-group': group, 'aria-labelledby': `${id}-h` },
     el('span', { class: 'group' }, group),
-    el('h3', {}, tool.name),
-    el('p', {}, el('strong', {}, title), rest.length ? `: ${rest.join(': ')}` : ''),
-    el('details', {}, el('summary', {}, `${rows.length} arguments`), el('table', {}, el('tbody', {}, ...rows))),
+    el('h3', { id: `${id}-h` }, el('a', { href: `#${id}`, class: 'tool-link' }, tool.name)),
+    el('p', { class: 'tool-title' }, el('strong', {}, title)),
+    ...(detail ? [el('p', { class: 'tool-desc' }, detail)] : []),
+    el(
+      'details',
+      {},
+      el('summary', {}, args.length === 1 ? '1 argument' : `${args.length} arguments`),
+      ...(detail ? [el('p', { class: 'tool-desc-sm' }, detail)] : []),
+      el('dl', { class: 'args' }, ...args),
+    ),
   );
 }
 
@@ -88,6 +184,7 @@ async function renderCatalog() {
   const list = document.getElementById('tool-list');
   const chips = document.getElementById('tool-groups');
   const search = document.getElementById('tool-search');
+  const status = document.getElementById('tool-status');
   let tools;
   try {
     tools = await (await fetch('data/tools.json')).json();
@@ -95,7 +192,8 @@ async function renderCatalog() {
     list.append(el('p', { class: 'empty' }, 'The catalog could not be loaded.'));
     return;
   }
-  for (const n of document.querySelectorAll('[data-tool-count]')) n.textContent = String(tools.length);
+  const total = tools.length;
+  for (const n of document.querySelectorAll('[data-tool-count]')) n.textContent = String(total);
 
   const cards = tools.map((t) => ({ tool: t, node: renderTool(t), hay: `${t.name} ${t.description}`.toLowerCase() }));
   list.append(...cards.map((c) => c.node));
@@ -106,18 +204,24 @@ async function renderCatalog() {
   let active = 'all';
   const buttons = groups.map((g) => {
     const b = el('button', { type: 'button', 'aria-pressed': String(g === 'all') }, g);
-    b.addEventListener('click', () => {
-      active = g;
-      for (const x of buttons) x.setAttribute('aria-pressed', String(x === b));
-      apply();
-    });
+    b.addEventListener('click', () => setGroup(g));
     return b;
   });
   chips.append(...buttons);
 
+  function setGroup(g) {
+    active = g;
+    for (const x of buttons) x.setAttribute('aria-pressed', String(x.textContent === g));
+    apply();
+    announce();
+  }
+
+  let shown = total;
+  const statusText = () => (shown === total ? `Showing all ${total}` : `Showing ${shown} of ${total}`) + '.';
+
   function apply() {
     const words = search.value.toLowerCase().split(/\s+/).filter(Boolean);
-    let shown = 0;
+    shown = 0;
     for (const c of cards) {
       const visible =
         (active === 'all' || c.tool.name.startsWith(`${active}__`)) && words.every((w) => c.hay.includes(w));
@@ -126,10 +230,44 @@ async function renderCatalog() {
     }
     empty.hidden = shown > 0;
   }
-  search.addEventListener('input', apply);
+
+  // One announcement per filter change: the status line is the only live region, and typing
+  // updates it once the visitor pauses.
+  let pending;
+  function announce() {
+    clearTimeout(pending);
+    pending = undefined;
+    status.textContent = statusText();
+  }
+  search.addEventListener('input', () => {
+    apply();
+    clearTimeout(pending);
+    pending = setTimeout(announce, 600);
+  });
+
+  status.textContent = statusText();
+  status.setAttribute('role', 'status');
+
+  // Links to a single tool: #tool-<name>. Clear a filter that hides it, open it and bring it into view.
+  function reveal() {
+    const id = decodeURIComponent(location.hash.slice(1));
+    if (!id.startsWith('tool-')) return;
+    const card = cards.find((c) => toolId(c.tool.name) === id);
+    if (!card) return;
+    if (card.node.hidden) {
+      search.value = '';
+      setGroup('all');
+    }
+    card.node.querySelector('details').open = true;
+    card.node.scrollIntoView({ block: 'start', behavior: 'instant' });
+    card.node.querySelector('.tool-link').focus({ preventScroll: true });
+  }
+  window.addEventListener('hashchange', reveal);
+  reveal();
 }
 
 wireLinks();
 wireTabs();
+wirePathField();
 wireCopy();
 renderCatalog();

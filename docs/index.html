@@ -3,15 +3,37 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <title>DevTools MCP</title>
+    <title>DevTools MCP: 50 exact, offline developer tools for your AI client</title>
     <meta
       name="description"
       content="50 exact, offline developer tools your AI can call over MCP: JSON, XML, CSV, YAML, code generation, compare, search, encoding, dates, units and anonymization. With a Claude skill that picks the right tool."
     />
+    <link rel="canonical" href="https://mahdiabdnabi.github.io/devtools-mcp/" />
+    <meta property="og:type" content="website" />
+    <meta property="og:site_name" content="DevTools MCP" />
+    <meta property="og:title" content="DevTools MCP: 50 exact, offline developer tools for your AI client" />
+    <meta
+      property="og:description"
+      content="Formatting, conversion, code generation, comparison, search, encoding, dates, units and anonymization, served to Claude over MCP. The server runs on your machine and makes no network calls."
+    />
+    <meta property="og:url" content="https://mahdiabdnabi.github.io/devtools-mcp/" />
+    <meta property="og:image" content="https://mahdiabdnabi.github.io/devtools-mcp/assets/share.png" />
+    <meta property="og:image:width" content="1200" />
+    <meta property="og:image:height" content="630" />
+    <meta property="og:image:alt" content="DevTools MCP: 50 exact, offline developer tools for your AI client" />
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content="DevTools MCP: 50 exact, offline developer tools for your AI client" />
+    <meta
+      name="twitter:description"
+      content="Formatting, conversion, code generation, comparison, search, encoding, dates, units and anonymization, served to Claude over MCP."
+    />
+    <meta name="twitter:image" content="https://mahdiabdnabi.github.io/devtools-mcp/assets/share.png" />
+    <meta name="twitter:image:alt" content="DevTools MCP: 50 exact, offline developer tools for your AI client" />
     <link rel="icon" href="assets/icon.svg" type="image/svg+xml" />
     <link rel="stylesheet" href="styles.css" />
   </head>
   <body>
+    <a class="skip" href="#top">Skip to content</a>
     <header class="topbar">
       <div class="wrap topbar-inner">
         <a class="brand" href="#top" aria-label="DevTools MCP home">
@@ -28,7 +50,7 @@
       </div>
     </header>
 
-    <main id="top">
+    <main id="top" tabindex="-1">
       <section class="hero">
         <div class="wrap hero-grid">
           <div>
@@ -45,7 +67,7 @@
             </div>
             <ul class="facts">
               <li><strong data-tool-count>50</strong> tools</li>
-              <li><strong>0</strong> network calls</li>
+              <li><strong>0</strong> network calls from the server</li>
               <li><strong>MIT</strong> licence</li>
             </ul>
           </div>
@@ -96,32 +118,67 @@
               <span class="step-n">1</span>
               <h3>Download the server</h3>
               <p>
-                Download <a href="download/devtools-cli.zip" download><code>devtools-cli.zip</code></a> (640 KB) and
-                unzip it anywhere, for example <code>C:\Tools\devtools-cli</code>. You need
+                Download <a href="download/devtools-cli.zip" download><code>devtools-cli.zip</code></a> and unzip it
+                anywhere. It holds one folder, <code>devtools-cli</code>. You need
                 <a href="https://nodejs.org/">Node.js</a> 22.18 or later (or 24.11+). Nothing else needs installing: the
                 protocol library is bundled.
               </p>
-              <p class="sum">SHA-256 <code>8526ea067035f23a2bf390f75de36cc6e7db069c4a9b2aba746b3a713000aac7</code></p>
+              <p class="platform">Built and tested on Windows. The server is plain Node.js, but macOS and Linux are not tested.</p>
+              <div class="path-field">
+                <label for="cli-path">Where is the <code>devtools-cli</code> folder?</label>
+                <input
+                  id="cli-path"
+                  type="text"
+                  value="C:\Tools\devtools-cli"
+                  spellcheck="false"
+                  autocomplete="off"
+                  aria-describedby="cli-path-hint"
+                />
+                <p id="cli-path-hint" class="hint">The commands in step 2 use this folder.</p>
+              </div>
+              <p class="sum">
+                Version <span data-release="cli.version">not stamped</span> ·
+                <time data-release="date" datetime="2026-11-10">2026-11-10</time> ·
+                <span data-release="cli.size">639 KB</span>
+              </p>
+              <p class="sum">
+                SHA-256 <code data-release="cli.sha256">8526ea067035f23a2bf390f75de36cc6e7db069c4a9b2aba746b3a713000aac7</code>
+              </p>
+              <p class="sum">
+                To check a download in PowerShell, run <code>Get-FileHash .\devtools-cli.zip</code>: its Hash should
+                equal the SHA-256 shown here (case does not matter).
+              </p>
             </article>
             <article class="step">
               <span class="step-n">2</span>
               <h3>Connect your AI client</h3>
               <div class="tabs" role="tablist" aria-label="AI client">
-                <button role="tab" aria-selected="true" aria-controls="tab-code" id="t-code">Claude Code</button>
-                <button role="tab" aria-selected="false" aria-controls="tab-desktop" id="t-desktop" tabindex="-1">
+                <button type="button" role="tab" aria-selected="true" aria-controls="tab-code" id="t-code">Claude Code</button>
+                <button type="button" role="tab" aria-selected="false" aria-controls="tab-desktop" id="t-desktop" tabindex="-1">
                   Claude Desktop
                 </button>
-                <button role="tab" aria-selected="false" aria-controls="tab-other" id="t-other" tabindex="-1">
+                <button type="button" role="tab" aria-selected="false" aria-controls="tab-other" id="t-other" tabindex="-1">
                   Other clients
                 </button>
               </div>
               <div class="tabpanel" role="tabpanel" id="tab-code" aria-labelledby="t-code">
-                <pre><code>claude mcp add --scope user devtools -- node C:\Tools\devtools-cli\devtools.mjs mcp</code></pre>
+                <p>Run this in a terminal:</p>
+                <div class="code">
+                  <div class="code-head"><span>Terminal</span><button type="button" class="copy">Copy</button></div>
+                  <pre><code data-cmd="claude-code">claude mcp add --scope user devtools -- node C:\Tools\devtools-cli\devtools.mjs mcp</code></pre>
+                </div>
                 <p>Check it with <code>claude mcp list</code>. It should report <code>devtools … Connected</code>.</p>
               </div>
               <div class="tabpanel" role="tabpanel" id="tab-desktop" aria-labelledby="t-desktop" hidden>
-                <p>Add this to <code>claude_desktop_config.json</code> and restart Claude Desktop:</p>
-                <pre><code>{
+                <p>
+                  In Claude Desktop, open Settings, then Developer, and choose Edit Config. That opens
+                  <code>claude_desktop_config.json</code>, which is in <code>%APPDATA%\Claude</code> on Windows (on macOS,
+                  <code>~/Library/Application Support/Claude</code>). Add the <code>devtools</code> entry under
+                  <code>mcpServers</code>, save, then quit Claude Desktop completely and start it again.
+                </p>
+                <div class="code">
+                  <div class="code-head"><span>claude_desktop_config.json</span><button type="button" class="copy">Copy</button></div>
+                  <pre><code data-cmd="claude-desktop">{
   "mcpServers": {
     "devtools": {
       "command": "node",
@@ -129,29 +186,62 @@
     }
   }
 }</code></pre>
+                </div>
               </div>
               <div class="tabpanel" role="tabpanel" id="tab-other" aria-labelledby="t-other" hidden>
                 <p>
                   Any MCP client that can start a stdio server works. The command is <code>node</code>, and its
-                  arguments are the path of <code>devtools.mjs</code> followed by <code>mcp</code>. Options:
-                  <code>--timeout &lt;ms&gt;</code>, <code>--max-input &lt;size&gt;</code>,
+                  arguments are the path of <code>devtools.mjs</code> followed by <code>mcp</code>:
+                </p>
+                <div class="code">
+                  <div class="code-head"><span>Command</span><button type="button" class="copy">Copy</button></div>
+                  <pre><code data-cmd="other">node C:\Tools\devtools-cli\devtools.mjs mcp</code></pre>
+                </div>
+                <p>
+                  Options: <code>--timeout &lt;ms&gt;</code>, <code>--max-input &lt;size&gt;</code>,
                   <code>--max-output &lt;size&gt;</code>, <code>--plugins &lt;dir&gt;</code>.
                 </p>
               </div>
-              <button class="copy" data-copy-from=".tabpanel:not([hidden]) pre">Copy</button>
             </article>
             <article class="step">
               <span class="step-n">3</span>
-              <h3>Add the skill (recommended)</h3>
+              <h3>Add the skill to Claude Code (recommended)</h3>
               <p>
-                Download <a href="download/devtools-skill.zip" download><code>devtools-skill.zip</code></a> and unzip it
-                into <code>%USERPROFILE%\.claude\skills</code> (Claude Code), so that you get
-                <code>skills\devtools\SKILL.md</code>. With it, Claude reaches for DevTools whenever a task fits and
-                chooses the right tool and options. The source is in
+                Download <a href="download/devtools-skill.zip" download><code>devtools-skill.zip</code></a>. In
+                PowerShell, in the folder you downloaded it to, unzip it into your Claude Code skills folder:
+              </p>
+              <div class="code">
+                <div class="code-head"><span>PowerShell</span><button type="button" class="copy">Copy</button></div>
+                <pre><code>Expand-Archive .\devtools-skill.zip -DestinationPath $HOME\.claude\skills -Force</code></pre>
+              </div>
+              <p>
+                You get <code>.claude\skills\devtools\SKILL.md</code>. Claude Code picks it up without a restart; if the
+                skills folder is new, run <code>/reload-skills</code>. With it, Claude reaches for DevTools whenever a
+                task fits and chooses the right tool and options. The source is in
                 <a data-repo-path="skill/devtools" href="#"><code>skill/devtools</code></a>.
               </p>
-              <p class="sum">SHA-256 <code>0db66b9c3ef1c34fa668010b4f267f121906d0b2f3808a42e79057438a063116</code></p>
+              <p class="sum">
+                Version <span data-release="skill.version">not stamped</span> ·
+                <time data-release="date" datetime="2026-11-10">2026-11-10</time> ·
+                <span data-release="skill.size">15 KB</span>
+              </p>
+              <p class="sum">
+                SHA-256 <code data-release="skill.sha256">0db66b9c3ef1c34fa668010b4f267f121906d0b2f3808a42e79057438a063116</code>
+              </p>
             </article>
+          </div>
+
+          <div class="try" aria-labelledby="try-h">
+            <h3 id="try-h">Try this first</h3>
+            <div class="code">
+              <div class="code-head"><span>Prompt</span><button type="button" class="copy">Copy</button></div>
+              <pre><code>Use DevTools to get the SHA-256 of the text hello.</code></pre>
+            </div>
+            <p>
+              Claude calls <code>encoding__hash</code> (Claude Code asks you to allow it the first time) and answers
+              with <code>2cf24dba5fb0a30e26e83b2ac5b9e29e1b161e5c1fa7425e73043362938b9824</code>. If it answers without
+              calling a tool, the server is not connected: go back to step 2.
+            </p>
           </div>
         </div>
       </section>
@@ -172,6 +262,11 @@
               <li>Passes data exactly and reads results faithfully, with errors given their line and column</li>
               <li>Says so when a task is outside DevTools instead of forcing a tool</li>
             </ul>
+            <p class="note">
+              Anonymization protects what you share next. It does not hide anything from your AI client: whatever
+              passes through the conversation, including text you paste to be anonymized, is seen by the client and
+              its provider.
+            </p>
           </div>
           <div class="examples">
             <h3>Try asking</h3>
@@ -190,15 +285,18 @@
       <section id="tools" aria-labelledby="tools-h">
         <div class="wrap">
           <div class="tools-head">
-            <h2 id="tools-h">All <span data-tool-count>50</span> tools</h2>
+            <h2 id="tools-h">The <span data-tool-count>50</span> tools</h2>
             <label class="search">
               <span class="visually-hidden">Search tools</span>
               <input id="tool-search" type="search" placeholder="Search, e.g. csv, sha, jwt, records…" autocomplete="off" />
             </label>
           </div>
           <div class="chips" id="tool-groups" role="group" aria-label="Filter by group"></div>
-          <p class="hint">Tool names as the AI sees them. Claude Code adds the prefix <code>mcp__devtools__</code>.</p>
-          <div id="tool-list" class="tool-list" aria-live="polite"></div>
+          <p class="hint">
+            <span id="tool-status" class="status"></span>
+            Tool names as the AI sees them. Claude Code adds the prefix <code>mcp__devtools__</code>.
+          </p>
+          <div id="tool-list" class="tool-list"></div>
           <noscript><p>Enable JavaScript to browse the catalog, or read <code>skill/devtools/references/tools.md</code> in the repository.</p></noscript>
         </div>
       </section>
@@ -206,11 +304,17 @@
       <section class="band gallery" aria-label="Screenshots">
         <div class="wrap gallery-grid">
           <figure>
-            <img src="assets/compare-dark.png" alt="Comparing documents in the DevTools app" loading="lazy" width="1280" height="800" />
+            <picture>
+              <source srcset="assets/compare-light.png" media="(prefers-color-scheme: light)" />
+              <img src="assets/compare-dark.png" alt="Comparing documents in the DevTools app" loading="lazy" width="1280" height="800" />
+            </picture>
             <figcaption>Compare 2 to 20 JSON, XML or CSV documents, matched by key.</figcaption>
           </figure>
           <figure>
-            <img src="assets/palette-dark.png" alt="The DevTools command palette" loading="lazy" width="1280" height="800" />
+            <picture>
+              <source srcset="assets/palette-light.png" media="(prefers-color-scheme: light)" />
+              <img src="assets/palette-dark.png" alt="The DevTools command palette" loading="lazy" width="1280" height="800" />
+            </picture>
             <figcaption>The same catalog, in the desktop app's command palette.</figcaption>
           </figure>
         </div>
@@ -219,6 +323,11 @@
       <section id="safety" aria-labelledby="safety-h">
         <div class="wrap">
           <h2 id="safety-h">Safe by design</h2>
+          <p class="note note-lead">
+            <strong>Offline means the server.</strong> DevTools sends nothing anywhere. Your AI client is separate:
+            whatever passes through the conversation, from what you paste to the results it reads back, is seen by
+            that client and its provider, under their terms.
+          </p>
           <div class="cards">
             <article class="card">
               <h3>Offline</h3>
@@ -257,6 +366,23 @@
         <div class="wrap faq">
           <h2 id="faq-h">Questions</h2>
           <details>
+            <summary>Does my data leave my machine?</summary>
+            <p>
+              Not through DevTools: the server makes no network calls. But you use it through an AI client, and
+              whatever passes through the conversation (what you paste, what you ask it to process, the results it
+              reads back) is seen by that client and its provider, under their terms. Anonymizing in the
+              conversation helps with what you share next; it does not hide text you have already pasted.
+            </p>
+          </details>
+          <details>
+            <summary>Can I read the server's source?</summary>
+            <p>
+              No. This repository holds the source of this site and of the skill. The server is published as a
+              build: <code>devtools-cli.zip</code> contains the bundled JavaScript, which you can read, but not the
+              source it was built from.
+            </p>
+          </details>
+          <details>
             <summary>Do I need the DevTools desktop app?</summary>
             <p>No. The MCP server is the command line build (<code>devtools-cli</code>) plus Node.js.</p>
           </details>
@@ -287,11 +413,12 @@
 
     <footer class="footer">
       <div class="wrap footer-inner">
-        <span>DevTools MCP · MIT licence</span>
-        <a data-repo-link href="#">Source and releases</a>
+        <span>DevTools MCP · Site and skill: source in the repository, MIT licence · Server: published as a build</span>
+        <span><a data-repo-link href="#">Repository</a> · <a data-repo-path="CHANGELOG.md" data-repo-kind="blob" href="#">Changelog</a></span>
       </div>
     </footer>
 
+    <p id="copy-status" class="visually-hidden" role="status"></p>
     <script src="app.js" defer></script>
   </body>
 </html>
