@@ -1,0 +1,10 @@
+{
+  "service": "orders-api",
+  "port": 8080,
+  "database": {
+    "host": "db.internal",
+    "pool": 20,
+    "timeoutSeconds": 30,
+  },
+  "features": ["audit", "export"]
+}

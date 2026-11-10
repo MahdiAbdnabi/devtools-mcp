@@ -1,0 +1,6 @@
+schema_version: "1.1"
+name: json-schema-check-outside-devtools
+expected_outcome: |
+  DevTools has no JSON Schema validation, so the answer comes from the model's own reading (or a local validator), not from a DevTools tool. It says the sample does not conform: lines[0].qty is the string "2" where the schema requires an integer, and the required property currency is missing. It does not claim that a DevTools tool validated the sample.
+context:
+  scaffold_script: place-files.sh

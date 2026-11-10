@@ -1,0 +1,25 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "Order",
+  "type": "object",
+  "required": ["orderId", "currency", "lines"],
+  "properties": {
+    "orderId": { "type": "string", "pattern": "^A-[0-9]+$" },
+    "currency": { "type": "string", "enum": ["ILS", "EUR", "USD"] },
+    "lines": {
+      "type": "array",
+      "minItems": 1,
+      "items": {
+        "type": "object",
+        "required": ["sku", "qty", "price"],
+        "properties": {
+          "sku": { "type": "string" },
+          "qty": { "type": "integer", "minimum": 1 },
+          "price": { "type": "number", "minimum": 0 }
+        },
+        "additionalProperties": false
+      }
+    }
+  },
+  "additionalProperties": false
+}

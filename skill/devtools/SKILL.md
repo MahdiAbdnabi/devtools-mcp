@@ -1,6 +1,9 @@
 ---
 name: devtools
-description: Use the DevTools MCP server (tools named devtools / `*__*`, e.g. `json-xml__format-json`) to do exact, deterministic developer data work instead of hand-editing - format or minify JSON/XML/CSV, convert between JSON, XML, CSV and YAML, generate C# or Java classes from JSON/XML samples, compare 2-20 JSON/XML/CSV documents, query with JSONPath/XPath or find properties and values, Base64/URL/HTML encode-decode, hash text or files, decode JWTs, generate or inspect UUIDs, convert Unix timestamps, render or translate C#/Java date format patterns, convert units exactly, anonymize JSON/XML/CSV/text with rule sets, and text utilities (case, diff, regex test/replace, sort, dedupe, trim lines). Use this skill whenever the user asks for any of these transformations or checks on data they paste or a file they name, even if they don't mention DevTools or MCP - pick the matching tool and call it rather than doing the transformation by hand.
+description: Exact, offline developer data tools from the DevTools MCP server (tool names like `json-xml__format-json`, often with a client prefix). Use it when the user has the data in hand, pasted or in a file they name, and wants an exact result about that data - format, minify or check JSON/XML/CSV; convert between JSON, XML, CSV and YAML; generate C# or Java classes from a sample; compare JSON/XML/CSV documents; JSONPath/XPath queries or finding a key or value; Base64, URL and HTML encoding; hashes of text or files; decoding a JWT; making or inspecting UUIDs; reading Unix timestamps; C#/Java date format patterns; exact unit conversion; anonymizing data with rules; case, diff, regex test, sort or dedupe on given text. Use it even if DevTools is not named. It is not for writing or editing code that does these things (a regex for a validator, hashing in a login handler, sorting imports), for git diffs between branches or commits, or for running the project's own formatter or linter.
+license: MIT
+metadata:
+  version: "1.1.0"
 ---
 
 # DevTools
@@ -9,12 +12,19 @@ DevTools is a local, offline toolbox exposed through MCP. Each tool is a pure, t
 
 ## Find the tools
 
-The tools come from the `devtools` MCP server. Their names depend on the client:
+The tools come from the DevTools MCP server. Every tool is named `<plugin>__<tool>`, for example `json-xml__format-json`, and the client puts its own prefix in front, built from the name the user gave the server when they registered it. That name is often `devtools`, but it can be anything, so recognise the tools by the `<plugin>__<tool>` part:
 
-- Claude Code: `mcp__devtools__<plugin>__<tool>`, e.g. `mcp__devtools__json-xml__format-json`. If the tools are deferred, load them first, for example with a tool search for `devtools` or the exact name.
+- Claude Code: `mcp__<server name>__<plugin>__<tool>`, e.g. `mcp__devtools__json-xml__format-json`. If the tools are deferred, load them first with a tool search for the part you need, such as `json-xml__format-json` or `format-json`.
 - Claude Desktop and other clients: `<plugin>__<tool>`, sometimes with the server name in front.
 
-If no DevTools tool is available, the server is not connected. Tell the user so and point them to the setup (`claude mcp add devtools -- node <path>/devtools.mjs mcp`, or the `mcpServers` entry for Claude Desktop). Then do the task by hand only if they want that, saying the result was not produced by DevTools.
+In this file, tools are named by the `<plugin>__<tool>` part alone.
+
+If no such tool is available, the server is not connected. Tell the user so and point them to the setup, with the folder where they unzipped `devtools-cli`:
+
+- Claude Code: `claude mcp add --scope user devtools -- node C:\Tools\devtools-cli\devtools.mjs mcp`
+- Claude Desktop, in `claude_desktop_config.json`: `"mcpServers": { "devtools": { "command": "node", "args": ["C:\\Tools\\devtools-cli\\devtools.mjs", "mcp"] } }`
+
+Then do the task by hand only if they want that, and say the result was not produced by DevTools.
 
 ## Choose the tool
 
@@ -105,4 +115,6 @@ The reply is one or more text items:
 
 ## When not to use it
 
-DevTools handles the transformations above. Code review, writing new logic, explaining a format, or prose editing are outside it: do those directly. If a request only partly fits, for example "convert this JSON to C# and add validation attributes", use the tool for the part it covers (the classes), then do the rest yourself and say which part came from which.
+DevTools works on data the user has in hand: text they paste or a file they name. When the request is to write or change code that does one of these things (a validation regex in a class, password hashing in a login handler, a serializer setting, a date helper with tests), to edit the project's source (sorting imports), or to run the project's own formatter or linter, do the coding directly. Diffs between git branches, commits or the working tree belong to git. Code review, explaining a format, and prose editing are outside DevTools too.
+
+If a request only partly fits, for example "convert this JSON to C# and add validation attributes", use the tool for the part it covers (the classes), then do the rest yourself and say which part came from which.

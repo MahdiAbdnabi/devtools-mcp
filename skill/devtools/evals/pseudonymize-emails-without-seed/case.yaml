@@ -1,0 +1,6 @@
+schema_version: "1.1"
+name: pseudonymize-emails-without-seed
+expected_outcome: |
+  The user wants pseudonyms that stay the same across exports, which needs a secret seed they keep, and they did not give one. A good answer either asks for a seed before anonymizing, or anonymizes with anonymize__json and says plainly which seed was used (empty, or one it chose) and that the user must supply and keep their own secret seed for repeatable, hard-to-guess pseudonyms. It never presents a made-up seed as the user's. If signups-anon.json exists, it has no original emails and rows with the same email get the same pseudonym.
+context:
+  scaffold_script: place-files.sh

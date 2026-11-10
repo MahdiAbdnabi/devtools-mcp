@@ -1,0 +1,6 @@
+schema_version: "1.1"
+name: invalid-json-config-position
+expected_outcome: |
+  The file is not valid JSON: it has a trailing comma after "timeoutSeconds": 30 inside "database". The answer reports this with a line and column (DevTools reports line 8, column 3, where the closing brace follows the comma) instead of presenting a formatted file as a success. If the file was rewritten, the answer says the trailing comma was removed, and the rewritten file is valid JSON with 4-space indentation and the same values.
+context:
+  scaffold_script: place-files.sh

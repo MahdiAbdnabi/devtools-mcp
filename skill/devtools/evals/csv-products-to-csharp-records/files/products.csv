@@ -1,0 +1,5 @@
+sku,name,unit_price,in_stock,reorder_level
+KB-01,Mechanical keyboard,49.90,true,5
+MS-07,Wireless mouse,17.50,false,10
+HD-22,USB-C hub,32.00,true,3
+CB-03,USB-C cable 2m,9.90,true,25

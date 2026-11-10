@@ -1,0 +1,7 @@
+{
+  "orderId": "A-1182",
+  "lines": [
+    { "sku": "KB-01", "qty": "2", "price": 49.9 },
+    { "sku": "MS-07", "qty": 1, "price": 17.5 }
+  ]
+}

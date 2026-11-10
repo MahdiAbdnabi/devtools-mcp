@@ -1,0 +1,15 @@
+# Helm-style values for the orders service
+replicaCount: 2
+image:
+  repository: registry.example.test/orders-api
+  tag: "2.4.1"
+region: eu-north
+country: NO
+featureFlags:
+  audit: on
+  export: yes
+  betaCheckout: false
+resources:
+  limits:
+    cpu: 500m
+    memory: 512Mi

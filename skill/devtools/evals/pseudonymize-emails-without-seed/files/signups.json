@@ -1,0 +1,6 @@
+[
+  { "id": 1, "email": "dana.levi@example.com", "plan": "pro", "signedUp": "2026-10-02" },
+  { "id": 2, "email": "omar.haddad@example.org", "plan": "free", "signedUp": "2026-10-03" },
+  { "id": 3, "email": "noa.katz@example.net", "plan": "free", "signedUp": "2026-10-03" },
+  { "id": 4, "email": "dana.levi@example.com", "plan": "team", "signedUp": "2026-10-09" }
+]
