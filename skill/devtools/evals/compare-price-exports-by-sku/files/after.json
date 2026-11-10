@@ -1,0 +1,20 @@
+{
+  "lastUpdated": "2026-11-09T08:00:00Z",
+  "products": [
+    {
+      "sku": "MS-07",
+      "name": "Mouse",
+      "price": 17.5
+    },
+    {
+      "sku": "KB-01",
+      "name": "Keyboard",
+      "price": 49.9
+    },
+    {
+      "sku": "CB-03",
+      "name": "USB-C cable",
+      "price": 9.99
+    }
+  ]
+}

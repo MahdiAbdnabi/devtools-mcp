@@ -1,0 +1,6 @@
+schema_version: "1.1"
+name: anonymize-customer-csv
+expected_outcome: |
+  customers-anon.csv was produced by the DevTools anonymize__csv tool with a rule set: the full_name values are gone or replaced, emails are replaced by pseudonyms (no original email remains), phones are masked except their last 2 digits, and id and city are unchanged.
+context:
+  scaffold_script: place-files.sh

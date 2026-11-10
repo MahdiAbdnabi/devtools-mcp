@@ -1,0 +1,2754 @@
+[
+  {
+    "name": "anonymize__csv",
+    "title": "Anonymize CSV",
+    "description": "Anonymize CSV: Replace cells and headers in CSV, selected by column name or number, driven by a rule set. Rules that match nothing and literals that survive are reported; the tool does not find sensitive data by itself.",
+    "inputSchema": {
+      "type": "object",
+      "properties": {
+        "text": {
+          "type": "string",
+          "title": "CSV"
+        },
+        "rules": {
+          "type": "string",
+          "title": "Rule set (JSON)",
+          "description": "Rules that say what to find (literal, property, path, regex, column) and what to do with it (mask, fixed, pseudonym, hash, remove)."
+        },
+        "seed": {
+          "type": "string",
+          "title": "Seed",
+          "description": "Secret that keys pseudonyms and hashes. The same seed gives the same output; keep it private, it is not saved in rule sets. An empty or short seed makes guessing easy.",
+          "maxLength": 256,
+          "default": ""
+        },
+        "delimiter": {
+          "type": "string",
+          "title": "Delimiter",
+          "description": "Field separator of the input; the output keeps it.",
+          "enum": [
+            "auto",
+            "comma",
+            "semicolon",
+            "tab",
+            "pipe",
+            "custom"
+          ],
+          "default": "comma"
+        },
+        "customDelimiter": {
+          "type": "string",
+          "title": "Custom delimiter",
+          "description": "The separator when delimiter is custom: one character that is not a quote or a line break.",
+          "maxLength": 1,
+          "default": ""
+        },
+        "header": {
+          "type": "boolean",
+          "title": "First record is a header",
+          "description": "Column names can be used in rules only when this is on.",
+          "default": true
+        },
+        "escapeFormulas": {
+          "type": "boolean",
+          "title": "Escape formulas",
+          "description": "Prefix ' to values written by a rule that start with =, +, -, @, tab or CR so a spreadsheet does not run them. Cells the rules did not change are never altered.",
+          "default": true
+        },
+        "lineEnding": {
+          "type": "string",
+          "title": "Line ending",
+          "description": "Record separator (RFC 4180 uses CRLF).",
+          "enum": [
+            "crlf",
+            "lf"
+          ],
+          "default": "crlf"
+        },
+        "trailingNewline": {
+          "type": "boolean",
+          "title": "Trailing newline",
+          "description": "End the last record with a line break.",
+          "default": false
+        },
+        "bom": {
+          "type": "boolean",
+          "title": "Byte order mark",
+          "description": "Write a UTF-8 byte order mark first.",
+          "default": false
+        },
+        "quoteAll": {
+          "type": "boolean",
+          "title": "Quote all fields",
+          "description": "Put every field in quotes.",
+          "default": false
+        }
+      },
+      "required": [
+        "text",
+        "rules"
+      ],
+      "additionalProperties": false
+    }
+  },
+  {
+    "name": "anonymize__json",
+    "title": "Anonymize JSON",
+    "description": "Anonymize JSON: Replace values and keys in JSON with masks, fixed text, consistent pseudonyms, keyed hashes or nothing, driven by a rule set. Rules that match nothing and literals that survive are reported; the tool does not find sensitive data by itself.",
+    "inputSchema": {
+      "type": "object",
+      "properties": {
+        "text": {
+          "type": "string",
+          "title": "JSON"
+        },
+        "rules": {
+          "type": "string",
+          "title": "Rule set (JSON)",
+          "description": "Rules that say what to find (literal, property, path, regex, column) and what to do with it (mask, fixed, pseudonym, hash, remove)."
+        },
+        "seed": {
+          "type": "string",
+          "title": "Seed",
+          "description": "Secret that keys pseudonyms and hashes. The same seed gives the same output; keep it private, it is not saved in rule sets. An empty or short seed makes guessing easy.",
+          "maxLength": 256,
+          "default": ""
+        },
+        "indent": {
+          "type": "string",
+          "title": "Indent",
+          "description": "Indentation of the printed result.",
+          "enum": [
+            "2",
+            "4",
+            "tab",
+            "none"
+          ],
+          "default": "2"
+        }
+      },
+      "required": [
+        "text",
+        "rules"
+      ],
+      "additionalProperties": false
+    }
+  },
+  {
+    "name": "anonymize__rules",
+    "title": "Check and format a rule set",
+    "description": "Check and format a rule set: Validate a rule set and print it in canonical form: defaults filled in, shorthand expanded. Errors name the field and the position.",
+    "inputSchema": {
+      "type": "object",
+      "properties": {
+        "rules": {
+          "type": "string",
+          "title": "Rule set (JSON)",
+          "description": "Rules that say what to find (literal, property, path, regex, column) and what to do with it (mask, fixed, pseudonym, hash, remove)."
+        },
+        "indent": {
+          "type": "string",
+          "title": "Indent",
+          "description": "Indentation of the printed result.",
+          "enum": [
+            "2",
+            "4",
+            "tab",
+            "none"
+          ],
+          "default": "2"
+        }
+      },
+      "required": [
+        "rules"
+      ],
+      "additionalProperties": false
+    }
+  },
+  {
+    "name": "anonymize__text",
+    "title": "Anonymize text",
+    "description": "Anonymize text: Replace literals and regular-expression matches in plain text, driven by a rule set; line endings and everything outside matches stay as they are. Rules that match nothing and literals that survive are reported; the tool does not find sensitive data by itself.",
+    "inputSchema": {
+      "type": "object",
+      "properties": {
+        "text": {
+          "type": "string",
+          "title": "Text"
+        },
+        "rules": {
+          "type": "string",
+          "title": "Rule set (JSON)",
+          "description": "Rules that say what to find (literal, property, path, regex, column) and what to do with it (mask, fixed, pseudonym, hash, remove)."
+        },
+        "seed": {
+          "type": "string",
+          "title": "Seed",
+          "description": "Secret that keys pseudonyms and hashes. The same seed gives the same output; keep it private, it is not saved in rule sets. An empty or short seed makes guessing easy.",
+          "maxLength": 256,
+          "default": ""
+        }
+      },
+      "required": [
+        "text",
+        "rules"
+      ],
+      "additionalProperties": false
+    }
+  },
+  {
+    "name": "anonymize__xml",
+    "title": "Anonymize XML",
+    "description": "Anonymize XML: Replace attribute values, text and names in XML, driven by a rule set. Paths start below the root element. Rules that match nothing and literals that survive are reported; the tool does not find sensitive data by itself.",
+    "inputSchema": {
+      "type": "object",
+      "properties": {
+        "text": {
+          "type": "string",
+          "title": "XML"
+        },
+        "rules": {
+          "type": "string",
+          "title": "Rule set (JSON)",
+          "description": "Rules that say what to find (literal, property, path, regex, column) and what to do with it (mask, fixed, pseudonym, hash, remove)."
+        },
+        "seed": {
+          "type": "string",
+          "title": "Seed",
+          "description": "Secret that keys pseudonyms and hashes. The same seed gives the same output; keep it private, it is not saved in rule sets. An empty or short seed makes guessing easy.",
+          "maxLength": 256,
+          "default": ""
+        },
+        "indent": {
+          "type": "string",
+          "title": "Indent",
+          "description": "Indentation of the printed result.",
+          "enum": [
+            "2",
+            "4",
+            "tab",
+            "none"
+          ],
+          "default": "2"
+        },
+        "removeComments": {
+          "type": "boolean",
+          "title": "Remove comments",
+          "description": "Remove XML comments (they often hold the data you are hiding).",
+          "default": true
+        }
+      },
+      "required": [
+        "text",
+        "rules"
+      ],
+      "additionalProperties": false
+    }
+  },
+  {
+    "name": "codegen__json-to-csharp",
+    "title": "JSON to C# classes",
+    "description": "JSON to C# classes: Generate C# classes or records from a JSON sample; a root array merges its elements as samples.",
+    "inputSchema": {
+      "type": "object",
+      "properties": {
+        "text": {
+          "type": "string",
+          "title": "JSON"
+        },
+        "annotations": {
+          "type": "string",
+          "title": "Annotations",
+          "description": "Serializer attributes to write (default system-text-json): System.Text.Json attributes (default), Newtonsoft.Json attributes, No annotations.",
+          "enum": [
+            "system-text-json",
+            "newtonsoft",
+            "none"
+          ],
+          "default": "system-text-json"
+        },
+        "style": {
+          "type": "string",
+          "title": "Style",
+          "description": "Classes with properties (default) or positional records.",
+          "enum": [
+            "class",
+            "record"
+          ],
+          "default": "class"
+        },
+        "namespace": {
+          "type": "string",
+          "title": "Namespace",
+          "description": "C# namespace of the generated code (default Generated); empty writes none.",
+          "default": "Generated"
+        },
+        "rootName": {
+          "type": "string",
+          "title": "Root class name",
+          "description": "Name of the root class (default Root).",
+          "default": "Root"
+        },
+        "nullableReferenceTypes": {
+          "type": "boolean",
+          "title": "Nullable reference types",
+          "description": "Write #nullable enable and string? for optional members (default on).",
+          "default": true
+        },
+        "dates": {
+          "type": "boolean",
+          "title": "Dates",
+          "description": "ISO-8601 strings become date types (default off).",
+          "default": false
+        },
+        "naming": {
+          "type": "string",
+          "title": "Naming",
+          "description": "convention recases names (default); preserve: keep key text where it is a valid identifier.",
+          "enum": [
+            "convention",
+            "preserve"
+          ],
+          "default": "convention"
+        },
+        "dedupe": {
+          "type": "boolean",
+          "title": "Share identical classes",
+          "description": "Objects with the same members share one class (default on).",
+          "default": true
+        }
+      },
+      "required": [
+        "text"
+      ],
+      "additionalProperties": false
+    }
+  },
+  {
+    "name": "codegen__json-to-java",
+    "title": "JSON to Java classes",
+    "description": "JSON to Java classes: Generate Java POJOs or records from a JSON sample; every class is nested in the root class.",
+    "inputSchema": {
+      "type": "object",
+      "properties": {
+        "text": {
+          "type": "string",
+          "title": "JSON"
+        },
+        "annotations": {
+          "type": "string",
+          "title": "Annotations",
+          "description": "Serializer attributes to write (default jackson): Jackson annotations (default), No annotations.",
+          "enum": [
+            "jackson",
+            "none"
+          ],
+          "default": "jackson"
+        },
+        "style": {
+          "type": "string",
+          "title": "Style",
+          "description": "POJO classes (default) or records (Java 16 or newer).",
+          "enum": [
+            "class",
+            "record"
+          ],
+          "default": "class"
+        },
+        "lombok": {
+          "type": "boolean",
+          "title": "Lombok",
+          "description": "Write @Data instead of getters and setters (default off); ignored for records.",
+          "default": false
+        },
+        "package": {
+          "type": "string",
+          "title": "Package",
+          "description": "Java package of the generated code (default generated); empty writes none.",
+          "default": "generated"
+        },
+        "rootName": {
+          "type": "string",
+          "title": "Root class name",
+          "description": "Name of the root class (default Root).",
+          "default": "Root"
+        },
+        "dates": {
+          "type": "boolean",
+          "title": "Dates",
+          "description": "ISO-8601 strings become date types (default off).",
+          "default": false
+        },
+        "naming": {
+          "type": "string",
+          "title": "Naming",
+          "description": "convention recases names (default); preserve: keep key text where it is a valid identifier.",
+          "enum": [
+            "convention",
+            "preserve"
+          ],
+          "default": "convention"
+        },
+        "dedupe": {
+          "type": "boolean",
+          "title": "Share identical classes",
+          "description": "Objects with the same members share one class (default on).",
+          "default": true
+        }
+      },
+      "required": [
+        "text"
+      ],
+      "additionalProperties": false
+    }
+  },
+  {
+    "name": "codegen__xml-to-csharp",
+    "title": "XML to C# classes",
+    "description": "XML to C# classes: Generate C# classes or records from an XML sample: attributes and text become properties, repeated elements become lists.",
+    "inputSchema": {
+      "type": "object",
+      "properties": {
+        "text": {
+          "type": "string",
+          "title": "XML"
+        },
+        "annotations": {
+          "type": "string",
+          "title": "Annotations",
+          "description": "Serializer attributes to write (default xml-serializer): XmlSerializer attributes (default), No annotations.",
+          "enum": [
+            "xml-serializer",
+            "none"
+          ],
+          "default": "xml-serializer"
+        },
+        "style": {
+          "type": "string",
+          "title": "Style",
+          "description": "Classes with properties (default) or positional records.",
+          "enum": [
+            "class",
+            "record"
+          ],
+          "default": "class"
+        },
+        "namespace": {
+          "type": "string",
+          "title": "Namespace",
+          "description": "C# namespace of the generated code (default Generated); empty writes none.",
+          "default": "Generated"
+        },
+        "rootName": {
+          "type": "string",
+          "title": "Root class name",
+          "description": "Name of the root class (default empty: the root element name).",
+          "default": ""
+        },
+        "inferTypes": {
+          "type": "boolean",
+          "title": "Infer types",
+          "description": "Type text values as numbers and booleans (default on); off makes them strings.",
+          "default": true
+        },
+        "nullableReferenceTypes": {
+          "type": "boolean",
+          "title": "Nullable reference types",
+          "description": "Write #nullable enable and string? for optional members (default on).",
+          "default": true
+        },
+        "dates": {
+          "type": "boolean",
+          "title": "Dates",
+          "description": "ISO-8601 strings become date types (default off).",
+          "default": false
+        },
+        "naming": {
+          "type": "string",
+          "title": "Naming",
+          "description": "convention recases names (default); preserve: keep key text where it is a valid identifier.",
+          "enum": [
+            "convention",
+            "preserve"
+          ],
+          "default": "convention"
+        },
+        "dedupe": {
+          "type": "boolean",
+          "title": "Share identical classes",
+          "description": "Objects with the same members share one class (default on).",
+          "default": true
+        }
+      },
+      "required": [
+        "text"
+      ],
+      "additionalProperties": false
+    }
+  },
+  {
+    "name": "codegen__xml-to-java",
+    "title": "XML to Java classes",
+    "description": "XML to Java classes: Generate Java POJOs or records from an XML sample: attributes and text become fields, repeated elements become lists.",
+    "inputSchema": {
+      "type": "object",
+      "properties": {
+        "text": {
+          "type": "string",
+          "title": "XML"
+        },
+        "annotations": {
+          "type": "string",
+          "title": "Annotations",
+          "description": "Serializer attributes to write (default jackson-xml): Jackson XML annotations (default), No annotations.",
+          "enum": [
+            "jackson-xml",
+            "none"
+          ],
+          "default": "jackson-xml"
+        },
+        "style": {
+          "type": "string",
+          "title": "Style",
+          "description": "POJO classes (default) or records (Java 16 or newer).",
+          "enum": [
+            "class",
+            "record"
+          ],
+          "default": "class"
+        },
+        "lombok": {
+          "type": "boolean",
+          "title": "Lombok",
+          "description": "Write @Data instead of getters and setters (default off); ignored for records.",
+          "default": false
+        },
+        "package": {
+          "type": "string",
+          "title": "Package",
+          "description": "Java package of the generated code (default generated); empty writes none.",
+          "default": "generated"
+        },
+        "rootName": {
+          "type": "string",
+          "title": "Root class name",
+          "description": "Name of the root class (default empty: the root element name).",
+          "default": ""
+        },
+        "inferTypes": {
+          "type": "boolean",
+          "title": "Infer types",
+          "description": "Type text values as numbers and booleans (default on); off makes them strings.",
+          "default": true
+        },
+        "dates": {
+          "type": "boolean",
+          "title": "Dates",
+          "description": "ISO-8601 strings become date types (default off).",
+          "default": false
+        },
+        "naming": {
+          "type": "string",
+          "title": "Naming",
+          "description": "convention recases names (default); preserve: keep key text where it is a valid identifier.",
+          "enum": [
+            "convention",
+            "preserve"
+          ],
+          "default": "convention"
+        },
+        "dedupe": {
+          "type": "boolean",
+          "title": "Share identical classes",
+          "description": "Objects with the same members share one class (default on).",
+          "default": true
+        }
+      },
+      "required": [
+        "text"
+      ],
+      "additionalProperties": false
+    }
+  },
+  {
+    "name": "compare__csv",
+    "title": "Compare CSV",
+    "description": "Compare CSV: Compare 2 to 20 CSV documents with a base. The first record is the header; rows can be matched by key columns.",
+    "inputSchema": {
+      "type": "object",
+      "properties": {
+        "documents": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          },
+          "title": "Documents",
+          "description": "Two to twenty documents; every one is compared with the base."
+        },
+        "names": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          },
+          "title": "Names",
+          "description": "Optional labels, one per document."
+        },
+        "mode": {
+          "type": "string",
+          "title": "Mode",
+          "description": "Compare the values, or only the keys and the value types.",
+          "enum": [
+            "values",
+            "structure"
+          ],
+          "default": "values"
+        },
+        "base": {
+          "type": "integer",
+          "title": "Base document",
+          "description": "Which document is the reference; every other document is compared with it.",
+          "minimum": 1,
+          "maximum": 20,
+          "default": 1
+        },
+        "key": {
+          "type": "string",
+          "title": "Match by key",
+          "description": "Match array items (and CSV rows) by these fields instead of by position: id or id, sku. Items must carry every field as a plain value.",
+          "maxLength": 1000,
+          "default": ""
+        },
+        "ignoreOrder": {
+          "type": "boolean",
+          "title": "Ignore order",
+          "description": "Treat arrays without a key as sets: the same items in another order are equal.",
+          "default": false
+        },
+        "ignorePaths": {
+          "type": "string",
+          "title": "Ignore paths",
+          "description": "Dot paths to leave out, one per line (or separated by ;): items.price, catalog.book.@id. Array positions are skipped.",
+          "maxLength": 100000,
+          "default": ""
+        },
+        "maxDiffs": {
+          "type": "integer",
+          "title": "Most differences",
+          "description": "Most differences listed per document; all are still counted.",
+          "minimum": 1,
+          "maximum": 100000,
+          "default": 1000
+        },
+        "delimiter": {
+          "type": "string",
+          "title": "Delimiter",
+          "description": "Field separator; auto detects it for each document.",
+          "enum": [
+            "comma",
+            "semicolon",
+            "tab",
+            "pipe",
+            "custom",
+            "auto"
+          ],
+          "default": "comma"
+        },
+        "customDelimiter": {
+          "type": "string",
+          "title": "Custom delimiter",
+          "description": "The separator when delimiter is custom: one character that is not a quote or a line break.",
+          "maxLength": 1,
+          "default": ""
+        },
+        "inferTypes": {
+          "type": "boolean",
+          "title": "Infer types",
+          "description": "Read true, false and number text as booleans and numbers instead of strings.",
+          "default": false
+        }
+      },
+      "required": [
+        "documents"
+      ],
+      "additionalProperties": false
+    }
+  },
+  {
+    "name": "compare__json",
+    "title": "Compare JSON",
+    "description": "Compare JSON: Compare 2 to 20 JSON documents with a base by values or by structure, with arrays matched by key or in any order.",
+    "inputSchema": {
+      "type": "object",
+      "properties": {
+        "documents": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          },
+          "title": "Documents",
+          "description": "Two to twenty documents; every one is compared with the base."
+        },
+        "names": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          },
+          "title": "Names",
+          "description": "Optional labels, one per document."
+        },
+        "mode": {
+          "type": "string",
+          "title": "Mode",
+          "description": "Compare the values, or only the keys and the value types.",
+          "enum": [
+            "values",
+            "structure"
+          ],
+          "default": "values"
+        },
+        "base": {
+          "type": "integer",
+          "title": "Base document",
+          "description": "Which document is the reference; every other document is compared with it.",
+          "minimum": 1,
+          "maximum": 20,
+          "default": 1
+        },
+        "key": {
+          "type": "string",
+          "title": "Match by key",
+          "description": "Match array items (and CSV rows) by these fields instead of by position: id or id, sku. Items must carry every field as a plain value.",
+          "maxLength": 1000,
+          "default": ""
+        },
+        "ignoreOrder": {
+          "type": "boolean",
+          "title": "Ignore order",
+          "description": "Treat arrays without a key as sets: the same items in another order are equal.",
+          "default": false
+        },
+        "ignorePaths": {
+          "type": "string",
+          "title": "Ignore paths",
+          "description": "Dot paths to leave out, one per line (or separated by ;): items.price, catalog.book.@id. Array positions are skipped.",
+          "maxLength": 100000,
+          "default": ""
+        },
+        "maxDiffs": {
+          "type": "integer",
+          "title": "Most differences",
+          "description": "Most differences listed per document; all are still counted.",
+          "minimum": 1,
+          "maximum": 100000,
+          "default": 1000
+        }
+      },
+      "required": [
+        "documents"
+      ],
+      "additionalProperties": false
+    }
+  },
+  {
+    "name": "compare__xml",
+    "title": "Compare XML",
+    "description": "Compare XML: Compare 2 to 20 XML documents with a base by values or by structure. Repeated elements can be matched by @attribute or by a child element holding only text.",
+    "inputSchema": {
+      "type": "object",
+      "properties": {
+        "documents": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          },
+          "title": "Documents",
+          "description": "Two to twenty documents; every one is compared with the base."
+        },
+        "names": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          },
+          "title": "Names",
+          "description": "Optional labels, one per document."
+        },
+        "mode": {
+          "type": "string",
+          "title": "Mode",
+          "description": "Compare the values, or only the keys and the value types.",
+          "enum": [
+            "values",
+            "structure"
+          ],
+          "default": "values"
+        },
+        "base": {
+          "type": "integer",
+          "title": "Base document",
+          "description": "Which document is the reference; every other document is compared with it.",
+          "minimum": 1,
+          "maximum": 20,
+          "default": 1
+        },
+        "key": {
+          "type": "string",
+          "title": "Match by key",
+          "description": "Match array items (and CSV rows) by these fields instead of by position: id or id, sku. Items must carry every field as a plain value.",
+          "maxLength": 1000,
+          "default": ""
+        },
+        "ignoreOrder": {
+          "type": "boolean",
+          "title": "Ignore order",
+          "description": "Treat arrays without a key as sets: the same items in another order are equal.",
+          "default": false
+        },
+        "ignorePaths": {
+          "type": "string",
+          "title": "Ignore paths",
+          "description": "Dot paths to leave out, one per line (or separated by ;): items.price, catalog.book.@id. Array positions are skipped.",
+          "maxLength": 100000,
+          "default": ""
+        },
+        "maxDiffs": {
+          "type": "integer",
+          "title": "Most differences",
+          "description": "Most differences listed per document; all are still counted.",
+          "minimum": 1,
+          "maximum": 100000,
+          "default": 1000
+        },
+        "inferTypes": {
+          "type": "boolean",
+          "title": "Infer types",
+          "description": "Read true, false and number text as booleans and numbers instead of strings.",
+          "default": false
+        }
+      },
+      "required": [
+        "documents"
+      ],
+      "additionalProperties": false
+    }
+  },
+  {
+    "name": "datetime__convert",
+    "title": "Convert date patterns",
+    "description": "Convert date patterns: Convert patterns between C# and Java; every token that does not render identically is flagged with the reason.",
+    "inputSchema": {
+      "type": "object",
+      "properties": {
+        "patterns": {
+          "type": "string",
+          "title": "Patterns",
+          "description": "Patterns in the source language, one per line. Blank lines are skipped; at most 200 patterns of 1000 characters."
+        },
+        "instant": {
+          "type": "string",
+          "title": "Instant",
+          "description": "Optional: render both patterns at this instant to see the difference. ISO 8601 with an offset."
+        },
+        "direction": {
+          "type": "string",
+          "title": "Direction",
+          "description": "Which language the patterns are written in.",
+          "enum": [
+            "csharp-to-java",
+            "java-to-csharp"
+          ],
+          "default": "csharp-to-java"
+        }
+      },
+      "required": [
+        "patterns"
+      ],
+      "additionalProperties": false
+    }
+  },
+  {
+    "name": "datetime__csharp",
+    "title": "C# date format",
+    "description": "C# date format: Render an instant with C# standard and custom format strings under InvariantCulture, as .NET does.",
+    "inputSchema": {
+      "type": "object",
+      "properties": {
+        "instant": {
+          "type": "string",
+          "title": "Instant",
+          "description": "ISO 8601 with an offset, for example 2024-03-05T14:07:09.1203456+05:30 or ...Z. Named time zones are not supported."
+        },
+        "patterns": {
+          "type": "string",
+          "title": "Patterns",
+          "description": "C# format strings (an empty text renders the default ToString() format), one per line. Blank lines are skipped; at most 200 patterns of 1000 characters."
+        },
+        "valueKind": {
+          "type": "string",
+          "title": "Value kind",
+          "description": "offset is a DateTimeOffset (the format U throws); utc is a UTC DateTime (K prints Z, U works).",
+          "enum": [
+            "offset",
+            "utc"
+          ],
+          "default": "offset"
+        }
+      },
+      "required": [
+        "instant",
+        "patterns"
+      ],
+      "additionalProperties": false
+    }
+  },
+  {
+    "name": "datetime__java",
+    "title": "Java date format",
+    "description": "Java date format: Render an instant with Java DateTimeFormatter patterns for Locale.US, with JDK 8 behaviour.",
+    "inputSchema": {
+      "type": "object",
+      "properties": {
+        "instant": {
+          "type": "string",
+          "title": "Instant",
+          "description": "ISO 8601 with an offset, for example 2024-03-05T14:07:09.1203456+05:30 or ...Z. Named time zones are not supported."
+        },
+        "patterns": {
+          "type": "string",
+          "title": "Patterns",
+          "description": "Java DateTimeFormatter patterns, one per line. Blank lines are skipped; at most 200 patterns of 1000 characters."
+        },
+        "zone": {
+          "type": "string",
+          "title": "Zone",
+          "description": "offset keeps the offset of the instant (a ZoneOffset); UTC converts it to the UTC region.",
+          "enum": [
+            "offset",
+            "UTC"
+          ],
+          "default": "offset"
+        }
+      },
+      "required": [
+        "instant",
+        "patterns"
+      ],
+      "additionalProperties": false
+    }
+  },
+  {
+    "name": "datetime__reference",
+    "title": "Date format reference",
+    "description": "Date format reference: Search every C# and Java date-time specifier; the example column is rendered by the real formatter at a fixed instant.",
+    "inputSchema": {
+      "type": "object",
+      "properties": {
+        "filter": {
+          "type": "string",
+          "title": "Filter",
+          "description": "Text to find in any column, ignoring case. It is matched literally, not as a pattern."
+        },
+        "platform": {
+          "type": "string",
+          "title": "Platform",
+          "description": "Only the specifiers of one language.",
+          "enum": [
+            "all",
+            "csharp",
+            "java"
+          ],
+          "default": "all"
+        },
+        "kind": {
+          "type": "string",
+          "title": "Kind",
+          "description": "standard and custom are C#; letter is Java; syntax covers quotes, escapes, optional sections and padding.",
+          "enum": [
+            "all",
+            "standard",
+            "custom",
+            "letter",
+            "syntax"
+          ],
+          "default": "all"
+        }
+      },
+      "additionalProperties": false
+    }
+  },
+  {
+    "name": "encoding__base64",
+    "title": "Base64 (text and objects)",
+    "description": "Base64 (text and objects): Encode text, JSON or XML to Base64, or decode Base64 back (strict, standard or URL-safe alphabet).",
+    "inputSchema": {
+      "type": "object",
+      "properties": {
+        "text": {
+          "type": "string",
+          "title": "Text"
+        },
+        "mode": {
+          "type": "string",
+          "title": "Mode",
+          "enum": [
+            "encode",
+            "decode"
+          ],
+          "default": "encode"
+        },
+        "source": {
+          "type": "string",
+          "title": "Source",
+          "description": "json and xml are parsed first: encode writes them minified, decode formats them.",
+          "enum": [
+            "text",
+            "json",
+            "xml"
+          ],
+          "default": "text"
+        },
+        "variant": {
+          "type": "string",
+          "title": "Alphabet",
+          "description": "standard uses + and /, url uses - and _ (RFC 4648 section 5).",
+          "enum": [
+            "standard",
+            "url"
+          ],
+          "default": "standard"
+        },
+        "padding": {
+          "type": "boolean",
+          "title": "Padding",
+          "description": "Write the = padding on encode.",
+          "default": true
+        },
+        "lineLength": {
+          "type": "string",
+          "title": "Line length",
+          "description": "Wrap the encoded text at this width (0 = one line, 76 = MIME).",
+          "enum": [
+            "0",
+            "64",
+            "76"
+          ],
+          "default": "0"
+        },
+        "indent": {
+          "type": "string",
+          "title": "Indent",
+          "description": "Decode of json and xml.",
+          "enum": [
+            "2",
+            "4",
+            "tab",
+            "none"
+          ],
+          "default": "2"
+        },
+        "binary": {
+          "type": "string",
+          "title": "Binary result",
+          "description": "What decode does when the bytes are not UTF-8 text: report an error or show a hex view.",
+          "enum": [
+            "error",
+            "hex"
+          ],
+          "default": "error"
+        }
+      },
+      "required": [
+        "text"
+      ],
+      "additionalProperties": false
+    }
+  },
+  {
+    "name": "encoding__base64-file",
+    "title": "Base64 (file)",
+    "description": "Base64 (file): Encode a file to Base64 text, or decode a Base64 file to text or to a new file (binary safe).",
+    "inputSchema": {
+      "type": "object",
+      "properties": {
+        "file": {
+          "type": "string",
+          "title": "File",
+          "description": "Path of a file to read (read-only)."
+        },
+        "mode": {
+          "type": "string",
+          "title": "Mode",
+          "enum": [
+            "encode",
+            "decode"
+          ],
+          "default": "encode"
+        },
+        "variant": {
+          "type": "string",
+          "title": "Alphabet",
+          "description": "standard uses + and /, url uses - and _ (RFC 4648 section 5).",
+          "enum": [
+            "standard",
+            "url"
+          ],
+          "default": "standard"
+        },
+        "padding": {
+          "type": "boolean",
+          "title": "Padding",
+          "description": "Write the = padding on encode.",
+          "default": true
+        },
+        "lineLength": {
+          "type": "string",
+          "title": "Line length",
+          "description": "Wrap the encoded text at this width (0 = one line, 76 = MIME).",
+          "enum": [
+            "0",
+            "64",
+            "76"
+          ],
+          "default": "0"
+        },
+        "overwrite": {
+          "type": "boolean",
+          "title": "Overwrite",
+          "description": "Replace the output file when it already exists.",
+          "default": false
+        },
+        "binary": {
+          "type": "string",
+          "title": "Binary result",
+          "enum": [
+            "error",
+            "hex"
+          ],
+          "default": "hex"
+        }
+      },
+      "required": [
+        "file"
+      ],
+      "additionalProperties": false
+    }
+  },
+  {
+    "name": "encoding__hash",
+    "title": "Hash (text)",
+    "description": "Hash (text): MD5, SHA-1, SHA-256 and SHA-512 of text (UTF-8).",
+    "inputSchema": {
+      "type": "object",
+      "properties": {
+        "text": {
+          "type": "string",
+          "title": "Text"
+        },
+        "algorithm": {
+          "type": "string",
+          "title": "Algorithm",
+          "enum": [
+            "all",
+            "md5",
+            "sha1",
+            "sha256",
+            "sha512"
+          ],
+          "default": "all"
+        },
+        "format": {
+          "type": "string",
+          "title": "Format",
+          "enum": [
+            "hex",
+            "base64"
+          ],
+          "default": "hex"
+        },
+        "uppercase": {
+          "type": "boolean",
+          "title": "Upper-case hex",
+          "default": false
+        }
+      },
+      "required": [
+        "text"
+      ],
+      "additionalProperties": false
+    }
+  },
+  {
+    "name": "encoding__hash-file",
+    "title": "Hash (file)",
+    "description": "Hash (file): MD5, SHA-1, SHA-256 and SHA-512 of a file, streamed.",
+    "inputSchema": {
+      "type": "object",
+      "properties": {
+        "file": {
+          "type": "string",
+          "title": "File",
+          "description": "Path of a file to read (read-only)."
+        },
+        "algorithm": {
+          "type": "string",
+          "title": "Algorithm",
+          "enum": [
+            "all",
+            "md5",
+            "sha1",
+            "sha256",
+            "sha512"
+          ],
+          "default": "all"
+        },
+        "format": {
+          "type": "string",
+          "title": "Format",
+          "enum": [
+            "hex",
+            "base64"
+          ],
+          "default": "hex"
+        },
+        "uppercase": {
+          "type": "boolean",
+          "title": "Upper-case hex",
+          "default": false
+        }
+      },
+      "required": [
+        "file"
+      ],
+      "additionalProperties": false
+    }
+  },
+  {
+    "name": "encoding__html",
+    "title": "HTML entities",
+    "description": "HTML entities: Encode text to HTML entities or decode named (HTML 4.01) and numeric references.",
+    "inputSchema": {
+      "type": "object",
+      "properties": {
+        "text": {
+          "type": "string",
+          "title": "Text"
+        },
+        "mode": {
+          "type": "string",
+          "title": "Mode",
+          "enum": [
+            "encode",
+            "decode"
+          ],
+          "default": "encode"
+        },
+        "scope": {
+          "type": "string",
+          "title": "Encode scope",
+          "enum": [
+            "minimal",
+            "non-ascii"
+          ],
+          "default": "minimal"
+        },
+        "numeric": {
+          "type": "string",
+          "title": "Numeric references",
+          "description": "Notation for characters without a name (non-ascii scope).",
+          "enum": [
+            "hex",
+            "decimal"
+          ],
+          "default": "hex"
+        }
+      },
+      "required": [
+        "text"
+      ],
+      "additionalProperties": false
+    }
+  },
+  {
+    "name": "encoding__jwt",
+    "title": "JWT decoder (no verification)",
+    "description": "JWT decoder (no verification): Decode the header and payload of a JWT and show its dates. The signature is never verified.",
+    "inputSchema": {
+      "type": "object",
+      "properties": {
+        "text": {
+          "type": "string",
+          "title": "Token"
+        },
+        "timezone": {
+          "type": "string",
+          "title": "Time zone",
+          "description": "UTC, local or an IANA name such as Europe/Berlin.",
+          "default": "UTC"
+        },
+        "indent": {
+          "type": "string",
+          "title": "Indent",
+          "enum": [
+            "2",
+            "4",
+            "tab",
+            "none"
+          ],
+          "default": "2"
+        }
+      },
+      "required": [
+        "text"
+      ],
+      "additionalProperties": false
+    }
+  },
+  {
+    "name": "encoding__timestamp",
+    "title": "Unix timestamp",
+    "description": "Unix timestamp: Convert epoch seconds or milliseconds to dates, ISO 8601 text to epoch values, or print the current time.",
+    "inputSchema": {
+      "type": "object",
+      "properties": {
+        "text": {
+          "type": "string",
+          "title": "Values (one per line)"
+        },
+        "mode": {
+          "type": "string",
+          "title": "Mode",
+          "enum": [
+            "to-date",
+            "to-epoch",
+            "now"
+          ],
+          "default": "to-date"
+        },
+        "unit": {
+          "type": "string",
+          "title": "Unit",
+          "description": "to-date: auto reads values below 1e11 as seconds.",
+          "enum": [
+            "auto",
+            "seconds",
+            "milliseconds"
+          ],
+          "default": "auto"
+        },
+        "timezone": {
+          "type": "string",
+          "title": "Time zone",
+          "description": "UTC, local (the zone of this computer) or an IANA name.",
+          "default": "UTC"
+        }
+      },
+      "additionalProperties": false
+    }
+  },
+  {
+    "name": "encoding__url",
+    "title": "URL encode / decode",
+    "description": "URL encode / decode: Percent-encode or strictly decode text as a URL component, a whole URI or a form value.",
+    "inputSchema": {
+      "type": "object",
+      "properties": {
+        "text": {
+          "type": "string",
+          "title": "Text"
+        },
+        "mode": {
+          "type": "string",
+          "title": "Mode",
+          "enum": [
+            "encode",
+            "decode"
+          ],
+          "default": "encode"
+        },
+        "scope": {
+          "type": "string",
+          "title": "Scope",
+          "enum": [
+            "component",
+            "uri",
+            "form"
+          ],
+          "default": "component"
+        }
+      },
+      "required": [
+        "text"
+      ],
+      "additionalProperties": false
+    }
+  },
+  {
+    "name": "encoding__uuid",
+    "title": "UUID / GUID generator",
+    "description": "UUID / GUID generator: Generate version 4 or version 7 UUIDs (also nil and max) in GUID formats.",
+    "inputSchema": {
+      "type": "object",
+      "properties": {
+        "version": {
+          "type": "string",
+          "title": "Version",
+          "enum": [
+            "v4",
+            "v7",
+            "nil",
+            "max"
+          ],
+          "default": "v4"
+        },
+        "count": {
+          "type": "integer",
+          "title": "Count",
+          "minimum": 1,
+          "maximum": 1000,
+          "default": 1
+        },
+        "format": {
+          "type": "string",
+          "title": "Format",
+          "enum": [
+            "standard",
+            "compact",
+            "braces",
+            "parentheses",
+            "hex-struct",
+            "urn"
+          ],
+          "default": "standard"
+        },
+        "case": {
+          "type": "string",
+          "title": "Letter case",
+          "enum": [
+            "lower",
+            "upper"
+          ],
+          "default": "lower"
+        }
+      },
+      "additionalProperties": false
+    }
+  },
+  {
+    "name": "encoding__uuid-inspect",
+    "title": "UUID inspector",
+    "description": "UUID inspector: Parse UUIDs and GUIDs (one per line) and show version, variant, timestamp and .NET byte order.",
+    "inputSchema": {
+      "type": "object",
+      "properties": {
+        "text": {
+          "type": "string",
+          "title": "UUIDs"
+        }
+      },
+      "required": [
+        "text"
+      ],
+      "additionalProperties": false
+    }
+  },
+  {
+    "name": "json-xml__format-json",
+    "title": "JSON formatter / minifier",
+    "description": "JSON formatter / minifier: Reformat JSON or minify it (indent none). Number and string source text is kept exactly; duplicate keys are kept and reported.",
+    "inputSchema": {
+      "type": "object",
+      "properties": {
+        "text": {
+          "type": "string",
+          "title": "JSON"
+        },
+        "indent": {
+          "type": "string",
+          "title": "Indent",
+          "description": "Indentation: 2 spaces (default), 4 spaces, tab, or none (minified).",
+          "enum": [
+            "2",
+            "4",
+            "tab",
+            "none"
+          ],
+          "default": "2"
+        }
+      },
+      "required": [
+        "text"
+      ],
+      "additionalProperties": false
+    }
+  },
+  {
+    "name": "json-xml__format-xml",
+    "title": "XML formatter / minifier",
+    "description": "XML formatter / minifier: Reformat XML or minify it (indent none). Declaration, comments, processing instructions, CDATA and DOCTYPE are kept; mixed content is never altered; entities are never expanded.",
+    "inputSchema": {
+      "type": "object",
+      "properties": {
+        "text": {
+          "type": "string",
+          "title": "XML"
+        },
+        "indent": {
+          "type": "string",
+          "title": "Indent",
+          "description": "Indentation: 2 spaces (default), 4 spaces, tab, or none (minified).",
+          "enum": [
+            "2",
+            "4",
+            "tab",
+            "none"
+          ],
+          "default": "2"
+        }
+      },
+      "required": [
+        "text"
+      ],
+      "additionalProperties": false
+    }
+  },
+  {
+    "name": "json-xml__json-to-xml",
+    "title": "JSON to XML",
+    "description": "JSON to XML: Convert JSON to XML: @name keys become attributes, #text becomes text, arrays repeat the element; a single top-level key is the root, anything else is wrapped in the root name.",
+    "inputSchema": {
+      "type": "object",
+      "properties": {
+        "text": {
+          "type": "string",
+          "title": "JSON"
+        },
+        "indent": {
+          "type": "string",
+          "title": "Indent",
+          "description": "Indentation: 2 spaces (default), 4 spaces, tab, or none (minified).",
+          "enum": [
+            "2",
+            "4",
+            "tab",
+            "none"
+          ],
+          "default": "2"
+        },
+        "rootName": {
+          "type": "string",
+          "title": "Root element name",
+          "description": "Wrapper element used when the JSON has no single top-level key (default root).",
+          "minLength": 1,
+          "default": "root"
+        },
+        "declaration": {
+          "type": "boolean",
+          "title": "XML declaration",
+          "description": "Write the XML declaration (default on).",
+          "default": true
+        },
+        "sanitizeNames": {
+          "type": "boolean",
+          "title": "Sanitize names",
+          "description": "Rename keys that are not valid XML names instead of failing (default off).",
+          "default": false
+        }
+      },
+      "required": [
+        "text"
+      ],
+      "additionalProperties": false
+    }
+  },
+  {
+    "name": "json-xml__xml-to-json",
+    "title": "XML to JSON",
+    "description": "XML to JSON: Convert XML to JSON: attributes become @name, text becomes #text, repeated elements become arrays, the root name is the single top-level key.",
+    "inputSchema": {
+      "type": "object",
+      "properties": {
+        "text": {
+          "type": "string",
+          "title": "XML"
+        },
+        "indent": {
+          "type": "string",
+          "title": "Indent",
+          "description": "Indentation: 2 spaces (default), 4 spaces, tab, or none (minified).",
+          "enum": [
+            "2",
+            "4",
+            "tab",
+            "none"
+          ],
+          "default": "2"
+        },
+        "inferTypes": {
+          "type": "boolean",
+          "title": "Infer types",
+          "description": "Turn true, false and numbers into JSON values (default off: all values are strings).",
+          "default": false
+        }
+      },
+      "required": [
+        "text"
+      ],
+      "additionalProperties": false
+    }
+  },
+  {
+    "name": "search__find-property",
+    "title": "Property search",
+    "description": "Property search: Finds every occurrence of a property name in a JSON or XML document and lists its path, kind, line, column and value. JSON names are object keys; XML names are element and attribute names as written (a prefix is part of the name).",
+    "inputSchema": {
+      "type": "object",
+      "properties": {
+        "text": {
+          "type": "string",
+          "title": "Document"
+        },
+        "query": {
+          "type": "string",
+          "title": "Query",
+          "description": "The property name to find; in regex mode a JavaScript regular expression of at most 1000 characters.",
+          "minLength": 1,
+          "maxLength": 1000
+        },
+        "mode": {
+          "type": "string",
+          "title": "Match mode",
+          "description": "exact: the whole text equals the query (default). contains: the query is a substring. regex: the unanchored regular expression finds a match.",
+          "enum": [
+            "exact",
+            "contains",
+            "regex"
+          ],
+          "default": "exact"
+        },
+        "caseSensitive": {
+          "type": "boolean",
+          "title": "Case sensitive",
+          "description": "Default on. Off folds both sides with toLowerCase; in regex mode it adds the i flag.",
+          "default": true
+        },
+        "regexFlags": {
+          "type": "string",
+          "title": "Regex flags",
+          "description": "Regex mode only: any of i m s u, each at most once. Other flags are refused.",
+          "maxLength": 4,
+          "default": ""
+        },
+        "format": {
+          "type": "string",
+          "title": "Document format",
+          "description": "auto reads the document as XML when its first non-blank character is <, else as JSON.",
+          "enum": [
+            "auto",
+            "json",
+            "xml"
+          ],
+          "default": "auto"
+        },
+        "xmlTargets": {
+          "type": "string",
+          "title": "XML targets",
+          "description": "XML only: search element names or text, attribute names or values, or both (default).",
+          "enum": [
+            "both",
+            "elements",
+            "attributes"
+          ],
+          "default": "both"
+        },
+        "maxResults": {
+          "type": "integer",
+          "title": "Maximum rows",
+          "description": "At most this many rows are listed (default 1000, up to 100000); the total number of matches is always reported.",
+          "minimum": 1,
+          "maximum": 100000,
+          "default": 1000
+        },
+        "previewLength": {
+          "type": "integer",
+          "title": "Value length",
+          "description": "A value longer than this many UTF-16 units is shortened and ends with … (default 200, 10 to 2000). Line breaks show as escapes.",
+          "minimum": 10,
+          "maximum": 2000,
+          "default": 200
+        }
+      },
+      "required": [
+        "text"
+      ],
+      "additionalProperties": false
+    }
+  },
+  {
+    "name": "search__find-value",
+    "title": "Value search",
+    "description": "Value search: Finds every JSON scalar value, XML attribute value or XML element text that matches, and lists its path, kind, line, column and value. Containers are never matched; formatting whitespace between XML child elements is ignored.",
+    "inputSchema": {
+      "type": "object",
+      "properties": {
+        "text": {
+          "type": "string",
+          "title": "Document"
+        },
+        "query": {
+          "type": "string",
+          "title": "Query",
+          "description": "The value to find; in regex mode a JavaScript regular expression of at most 1000 characters.",
+          "minLength": 1,
+          "maxLength": 1000
+        },
+        "mode": {
+          "type": "string",
+          "title": "Match mode",
+          "description": "exact: the whole text equals the query (default). contains: the query is a substring. regex: the unanchored regular expression finds a match.",
+          "enum": [
+            "exact",
+            "contains",
+            "regex"
+          ],
+          "default": "exact"
+        },
+        "caseSensitive": {
+          "type": "boolean",
+          "title": "Case sensitive",
+          "description": "Default on. Off folds both sides with toLowerCase; in regex mode it adds the i flag.",
+          "default": true
+        },
+        "regexFlags": {
+          "type": "string",
+          "title": "Regex flags",
+          "description": "Regex mode only: any of i m s u, each at most once. Other flags are refused.",
+          "maxLength": 4,
+          "default": ""
+        },
+        "format": {
+          "type": "string",
+          "title": "Document format",
+          "description": "auto reads the document as XML when its first non-blank character is <, else as JSON.",
+          "enum": [
+            "auto",
+            "json",
+            "xml"
+          ],
+          "default": "auto"
+        },
+        "xmlTargets": {
+          "type": "string",
+          "title": "XML targets",
+          "description": "XML only: search element names or text, attribute names or values, or both (default).",
+          "enum": [
+            "both",
+            "elements",
+            "attributes"
+          ],
+          "default": "both"
+        },
+        "maxResults": {
+          "type": "integer",
+          "title": "Maximum rows",
+          "description": "At most this many rows are listed (default 1000, up to 100000); the total number of matches is always reported.",
+          "minimum": 1,
+          "maximum": 100000,
+          "default": 1000
+        },
+        "previewLength": {
+          "type": "integer",
+          "title": "Value length",
+          "description": "A value longer than this many UTF-16 units is shortened and ends with … (default 200, 10 to 2000). Line breaks show as escapes.",
+          "minimum": 10,
+          "maximum": 2000,
+          "default": 200
+        }
+      },
+      "required": [
+        "text"
+      ],
+      "additionalProperties": false
+    }
+  },
+  {
+    "name": "search__jsonpath",
+    "title": "JSONPath query",
+    "description": "JSONPath query: Evaluates a JSONPath query (RFC 9535 without the function extensions length, count, match, search and value) on a JSON document; one row per selected node, in query order.",
+    "inputSchema": {
+      "type": "object",
+      "properties": {
+        "text": {
+          "type": "string",
+          "title": "JSON"
+        },
+        "query": {
+          "type": "string",
+          "title": "JSONPath",
+          "description": "For example $.orders[?@.paid == true].id",
+          "minLength": 1,
+          "maxLength": 2000,
+          "default": "$..*"
+        },
+        "maxResults": {
+          "type": "integer",
+          "title": "Maximum rows",
+          "description": "At most this many rows are listed (default 1000, up to 100000); the total number of matches is always reported.",
+          "minimum": 1,
+          "maximum": 100000,
+          "default": 1000
+        },
+        "previewLength": {
+          "type": "integer",
+          "title": "Value length",
+          "description": "A value longer than this many UTF-16 units is shortened and ends with … (default 200, 10 to 2000). Line breaks show as escapes.",
+          "minimum": 10,
+          "maximum": 2000,
+          "default": 200
+        }
+      },
+      "required": [
+        "text"
+      ],
+      "additionalProperties": false
+    }
+  },
+  {
+    "name": "search__xpath",
+    "title": "XPath 1.0 query",
+    "description": "XPath 1.0 query: Evaluates an XPath 1.0 expression on an XML document. A node-set gives one row per node in document order; a number, string or boolean gives one row with an empty path. Names match by namespace URI and local name: an unprefixed name matches only elements without a namespace.",
+    "inputSchema": {
+      "type": "object",
+      "properties": {
+        "text": {
+          "type": "string",
+          "title": "XML"
+        },
+        "query": {
+          "type": "string",
+          "title": "XPath",
+          "description": "For example //book[@id = \"b1\"]/title",
+          "minLength": 1,
+          "maxLength": 2000,
+          "default": "/*"
+        },
+        "namespaces": {
+          "type": "string",
+          "title": "Namespace prefixes",
+          "description": "One prefix=uri per line (at most 100). Prefixes declared on the document element are available without this option; a line here overrides them.",
+          "maxLength": 4000,
+          "default": ""
+        },
+        "maxResults": {
+          "type": "integer",
+          "title": "Maximum rows",
+          "description": "At most this many rows are listed (default 1000, up to 100000); the total number of matches is always reported.",
+          "minimum": 1,
+          "maximum": 100000,
+          "default": 1000
+        },
+        "previewLength": {
+          "type": "integer",
+          "title": "Value length",
+          "description": "A value longer than this many UTF-16 units is shortened and ends with … (default 200, 10 to 2000). Line breaks show as escapes.",
+          "minimum": 10,
+          "maximum": 2000,
+          "default": 200
+        }
+      },
+      "required": [
+        "text"
+      ],
+      "additionalProperties": false
+    }
+  },
+  {
+    "name": "tabular__csv-to-json",
+    "title": "CSV to JSON",
+    "description": "CSV to JSON: Parse CSV (quotes, embedded line breaks, BOM) into JSON: an array of objects keyed by the header, or an array of arrays. Errors carry line and column.",
+    "inputSchema": {
+      "type": "object",
+      "properties": {
+        "text": {
+          "type": "string",
+          "title": "CSV"
+        },
+        "delimiter": {
+          "type": "string",
+          "title": "Delimiter",
+          "description": "Field separator.",
+          "enum": [
+            "auto",
+            "comma",
+            "semicolon",
+            "tab",
+            "pipe",
+            "custom"
+          ],
+          "default": "comma"
+        },
+        "customDelimiter": {
+          "type": "string",
+          "title": "Custom delimiter",
+          "description": "The separator when delimiter is custom: one character that is not a quote or a line break.",
+          "maxLength": 1,
+          "default": ""
+        },
+        "header": {
+          "type": "boolean",
+          "title": "First record is a header",
+          "description": "On: an array of objects. Off: an array of arrays.",
+          "default": true
+        },
+        "inferTypes": {
+          "type": "boolean",
+          "title": "Infer types",
+          "description": "Turn true, false, numbers and empty cells into JSON values (default off: all values are strings).",
+          "default": false
+        },
+        "ragged": {
+          "type": "string",
+          "title": "Ragged records",
+          "description": "A record with a different number of fields than the first: pad with a warning, or stop with an error.",
+          "enum": [
+            "pad",
+            "error"
+          ],
+          "default": "pad"
+        },
+        "indent": {
+          "type": "string",
+          "title": "Indent",
+          "description": "Indentation: 2 spaces (default), 4 spaces, tab, or none (minified).",
+          "enum": [
+            "2",
+            "4",
+            "tab",
+            "none"
+          ],
+          "default": "2"
+        }
+      },
+      "required": [
+        "text"
+      ],
+      "additionalProperties": false
+    }
+  },
+  {
+    "name": "tabular__format-csv",
+    "title": "CSV formatter / converter",
+    "description": "CSV formatter / converter: Read CSV and write it again in another dialect: delimiter, quoting, line ending, byte order mark. Field values are never changed.",
+    "inputSchema": {
+      "type": "object",
+      "properties": {
+        "text": {
+          "type": "string",
+          "title": "CSV"
+        },
+        "delimiter": {
+          "type": "string",
+          "title": "Delimiter",
+          "description": "Field separator.",
+          "enum": [
+            "auto",
+            "comma",
+            "semicolon",
+            "tab",
+            "pipe",
+            "custom"
+          ],
+          "default": "comma"
+        },
+        "customDelimiter": {
+          "type": "string",
+          "title": "Custom delimiter",
+          "description": "The separator when delimiter is custom: one character that is not a quote or a line break.",
+          "maxLength": 1,
+          "default": ""
+        },
+        "outputDelimiter": {
+          "type": "string",
+          "title": "Output delimiter",
+          "description": "Field separator of the output (same as the input by default).",
+          "enum": [
+            "same",
+            "comma",
+            "semicolon",
+            "tab",
+            "pipe",
+            "custom"
+          ],
+          "default": "same"
+        },
+        "outputCustomDelimiter": {
+          "type": "string",
+          "title": "Custom output delimiter",
+          "description": "The output separator when the output delimiter is custom.",
+          "maxLength": 1,
+          "default": ""
+        },
+        "quoteAll": {
+          "type": "boolean",
+          "title": "Quote all fields",
+          "description": "Quote every field, not only those that need it.",
+          "default": false
+        },
+        "lineEnding": {
+          "type": "string",
+          "title": "Line ending",
+          "description": "Record separator (RFC 4180 uses CRLF). Line breaks inside quoted fields are never changed.",
+          "enum": [
+            "crlf",
+            "lf"
+          ],
+          "default": "crlf"
+        },
+        "trailingNewline": {
+          "type": "boolean",
+          "title": "Trailing newline",
+          "description": "End the last record with a line break.",
+          "default": false
+        },
+        "bom": {
+          "type": "boolean",
+          "title": "Byte order mark",
+          "description": "Write a UTF-8 byte order mark first (some spreadsheets need it).",
+          "default": false
+        },
+        "escapeFormulas": {
+          "type": "boolean",
+          "title": "Escape formulas",
+          "description": "Prefix ' to text cells that start with =, +, -, @, tab or CR so a spreadsheet does not run them. Changes the data and is not undone by csv-to-json; plain numbers are left alone. A notice reports how many cells qualify either way.",
+          "default": false
+        }
+      },
+      "required": [
+        "text"
+      ],
+      "additionalProperties": false
+    }
+  },
+  {
+    "name": "tabular__json-to-csv",
+    "title": "JSON to CSV",
+    "description": "JSON to CSV: Turn an array of JSON objects into CSV: nested objects become dotted column names, arrays are spread, joined or kept as JSON, number text is written exactly.",
+    "inputSchema": {
+      "type": "object",
+      "properties": {
+        "text": {
+          "type": "string",
+          "title": "JSON"
+        },
+        "rowsPath": {
+          "type": "string",
+          "title": "Rows path",
+          "description": "Dot path to the rows, for example data.items; \\. is a literal dot. Empty: the top-level array, else the first array of objects, else one row. For XML it starts below the root element.",
+          "default": ""
+        },
+        "arrayMode": {
+          "type": "string",
+          "title": "Arrays",
+          "description": "Arrays inside a row: one column per item (tags.0), items joined in one cell, or the array as JSON text in one cell.",
+          "enum": [
+            "index",
+            "join",
+            "json"
+          ],
+          "default": "index"
+        },
+        "joinSeparator": {
+          "type": "string",
+          "title": "Join separator",
+          "description": "Separator used when arrays are joined.",
+          "minLength": 1,
+          "maxLength": 8,
+          "default": "|"
+        },
+        "nullText": {
+          "type": "string",
+          "title": "Null text",
+          "description": "Cell text for JSON null (missing values are always empty).",
+          "default": ""
+        },
+        "header": {
+          "type": "boolean",
+          "title": "Header row",
+          "description": "Write the header row.",
+          "default": true
+        },
+        "delimiter": {
+          "type": "string",
+          "title": "Delimiter",
+          "description": "Field separator.",
+          "enum": [
+            "comma",
+            "semicolon",
+            "tab",
+            "pipe",
+            "custom"
+          ],
+          "default": "comma"
+        },
+        "customDelimiter": {
+          "type": "string",
+          "title": "Custom delimiter",
+          "description": "The separator when delimiter is custom: one character that is not a quote or a line break.",
+          "maxLength": 1,
+          "default": ""
+        },
+        "lineEnding": {
+          "type": "string",
+          "title": "Line ending",
+          "description": "Record separator (RFC 4180 uses CRLF). Line breaks inside quoted fields are never changed.",
+          "enum": [
+            "crlf",
+            "lf"
+          ],
+          "default": "crlf"
+        },
+        "trailingNewline": {
+          "type": "boolean",
+          "title": "Trailing newline",
+          "description": "End the last record with a line break.",
+          "default": false
+        },
+        "bom": {
+          "type": "boolean",
+          "title": "Byte order mark",
+          "description": "Write a UTF-8 byte order mark first (some spreadsheets need it).",
+          "default": false
+        },
+        "escapeFormulas": {
+          "type": "boolean",
+          "title": "Escape formulas",
+          "description": "Prefix ' to text cells that start with =, +, -, @, tab or CR so a spreadsheet does not run them. Changes the data and is not undone by csv-to-json; plain numbers are left alone. A notice reports how many cells qualify either way.",
+          "default": false
+        }
+      },
+      "required": [
+        "text"
+      ],
+      "additionalProperties": false
+    }
+  },
+  {
+    "name": "tabular__xml-to-csv",
+    "title": "XML to CSV",
+    "description": "XML to CSV: Turn the repeated elements of an XML document into CSV rows: attributes become @name columns, text becomes #text, nested elements are flattened.",
+    "inputSchema": {
+      "type": "object",
+      "properties": {
+        "text": {
+          "type": "string",
+          "title": "XML"
+        },
+        "rowsPath": {
+          "type": "string",
+          "title": "Rows path",
+          "description": "Dot path to the rows, for example data.items; \\. is a literal dot. Empty: the top-level array, else the first array of objects, else one row. For XML it starts below the root element.",
+          "default": ""
+        },
+        "arrayMode": {
+          "type": "string",
+          "title": "Arrays",
+          "description": "Arrays inside a row: one column per item (tags.0), items joined in one cell, or the array as JSON text in one cell.",
+          "enum": [
+            "index",
+            "join",
+            "json"
+          ],
+          "default": "index"
+        },
+        "joinSeparator": {
+          "type": "string",
+          "title": "Join separator",
+          "description": "Separator used when arrays are joined.",
+          "minLength": 1,
+          "maxLength": 8,
+          "default": "|"
+        },
+        "nullText": {
+          "type": "string",
+          "title": "Null text",
+          "description": "Cell text for JSON null (missing values are always empty).",
+          "default": ""
+        },
+        "header": {
+          "type": "boolean",
+          "title": "Header row",
+          "description": "Write the header row.",
+          "default": true
+        },
+        "delimiter": {
+          "type": "string",
+          "title": "Delimiter",
+          "description": "Field separator.",
+          "enum": [
+            "comma",
+            "semicolon",
+            "tab",
+            "pipe",
+            "custom"
+          ],
+          "default": "comma"
+        },
+        "customDelimiter": {
+          "type": "string",
+          "title": "Custom delimiter",
+          "description": "The separator when delimiter is custom: one character that is not a quote or a line break.",
+          "maxLength": 1,
+          "default": ""
+        },
+        "lineEnding": {
+          "type": "string",
+          "title": "Line ending",
+          "description": "Record separator (RFC 4180 uses CRLF). Line breaks inside quoted fields are never changed.",
+          "enum": [
+            "crlf",
+            "lf"
+          ],
+          "default": "crlf"
+        },
+        "trailingNewline": {
+          "type": "boolean",
+          "title": "Trailing newline",
+          "description": "End the last record with a line break.",
+          "default": false
+        },
+        "bom": {
+          "type": "boolean",
+          "title": "Byte order mark",
+          "description": "Write a UTF-8 byte order mark first (some spreadsheets need it).",
+          "default": false
+        },
+        "escapeFormulas": {
+          "type": "boolean",
+          "title": "Escape formulas",
+          "description": "Prefix ' to text cells that start with =, +, -, @, tab or CR so a spreadsheet does not run them. Changes the data and is not undone by csv-to-json; plain numbers are left alone. A notice reports how many cells qualify either way.",
+          "default": false
+        }
+      },
+      "required": [
+        "text"
+      ],
+      "additionalProperties": false
+    }
+  },
+  {
+    "name": "text__case",
+    "title": "Case converter",
+    "description": "Case converter: Converts text to camelCase, PascalCase, snake_case, kebab-case, UPPER, lower or Title Case. Words split at separators, at lower-to-upper changes and after acronyms (HTTPServer becomes http_server). Locale-free; Title Case uses an English small-word list.",
+    "inputSchema": {
+      "type": "object",
+      "properties": {
+        "text": {
+          "type": "string",
+          "title": "Text"
+        },
+        "style": {
+          "type": "string",
+          "title": "Style",
+          "description": "The target style.",
+          "enum": [
+            "camel",
+            "pascal",
+            "snake",
+            "kebab",
+            "upper",
+            "lower",
+            "title"
+          ],
+          "default": "camel"
+        },
+        "perLine": {
+          "type": "boolean",
+          "title": "Convert each line",
+          "description": "Convert every line on its own and keep the line endings; off converts the whole text as one identifier.",
+          "default": true
+        },
+        "smallWords": {
+          "type": "boolean",
+          "title": "Keep small words lower case",
+          "description": "Title Case only: keep words such as of, the and to in lower case unless first or last.",
+          "default": true
+        }
+      },
+      "required": [
+        "text"
+      ],
+      "additionalProperties": false
+    }
+  },
+  {
+    "name": "text__diff",
+    "title": "Text diff",
+    "description": "Text diff: Compares two texts line by line or word by word and returns the shortest edit script as a unified diff (or inline word markers), a side-by-side view and a table of changes.",
+    "inputSchema": {
+      "type": "object",
+      "properties": {
+        "original": {
+          "type": "string",
+          "title": "Original"
+        },
+        "modified": {
+          "type": "string",
+          "title": "Modified"
+        },
+        "granularity": {
+          "type": "string",
+          "title": "Compare by",
+          "description": "Whole lines or words.",
+          "enum": [
+            "line",
+            "word"
+          ],
+          "default": "line"
+        },
+        "ignoreWhitespace": {
+          "type": "boolean",
+          "title": "Ignore whitespace",
+          "description": "Treat runs of whitespace as equal.",
+          "default": false
+        },
+        "ignoreCase": {
+          "type": "boolean",
+          "title": "Ignore case",
+          "description": "Treat upper and lower case as equal.",
+          "default": false
+        },
+        "ignoreLineEndings": {
+          "type": "boolean",
+          "title": "Ignore line endings",
+          "description": "Treat CRLF, LF and CR as equal, so a file converted between systems is not one big change.",
+          "default": true
+        },
+        "context": {
+          "type": "integer",
+          "title": "Context lines",
+          "description": "Unchanged lines shown around a change in the unified diff.",
+          "minimum": 0,
+          "maximum": 50,
+          "default": 3
+        }
+      },
+      "required": [
+        "original",
+        "modified"
+      ],
+      "additionalProperties": false
+    }
+  },
+  {
+    "name": "text__json-to-yaml",
+    "title": "JSON to YAML",
+    "description": "JSON to YAML: Converts JSON to block-style YAML. Numbers keep their exact text, strings are quoted whenever a YAML 1.1 or 1.2 reader could read them as another type, and duplicate keys keep the last value.",
+    "inputSchema": {
+      "type": "object",
+      "properties": {
+        "text": {
+          "type": "string",
+          "title": "JSON"
+        },
+        "indent": {
+          "type": "string",
+          "title": "Indent",
+          "description": "Spaces per level.",
+          "enum": [
+            "2",
+            "4"
+          ],
+          "default": "2"
+        },
+        "documents": {
+          "type": "string",
+          "title": "Documents",
+          "description": "single writes one document; split turns a top-level array into --- separated documents.",
+          "enum": [
+            "single",
+            "split"
+          ],
+          "default": "single"
+        }
+      },
+      "required": [
+        "text"
+      ],
+      "additionalProperties": false
+    }
+  },
+  {
+    "name": "text__regex",
+    "title": "Regex tester",
+    "description": "Regex tester: Tests a regular expression with JavaScript regular-expression semantics (the engine of this app, not .NET, Java, PCRE or Python) and lists every match with its group captures, or replaces matches with a JavaScript-style replacement ($1, $<name>, $&, $$).",
+    "inputSchema": {
+      "type": "object",
+      "properties": {
+        "text": {
+          "type": "string",
+          "title": "Text"
+        },
+        "pattern": {
+          "type": "string",
+          "title": "Pattern",
+          "description": "The regular expression, without slashes or flags.",
+          "minLength": 1,
+          "maxLength": 1000
+        },
+        "flags": {
+          "type": "string",
+          "title": "Flags",
+          "description": "Any of g (all matches), i (ignore case), m (multi-line), s (dot matches newline), u (Unicode); each at most once.",
+          "maxLength": 5,
+          "default": "g"
+        },
+        "mode": {
+          "type": "string",
+          "title": "Mode",
+          "description": "List the matches, or also build the replaced text.",
+          "enum": [
+            "match",
+            "replace"
+          ],
+          "default": "match"
+        },
+        "replacement": {
+          "type": "string",
+          "title": "Replacement",
+          "description": "Used in replace mode: $1 or $<name> insert groups, $& the match, $$ a dollar sign.",
+          "default": ""
+        },
+        "maxMatches": {
+          "type": "integer",
+          "title": "Maximum matches listed",
+          "description": "Rows kept in the tables; the total is always counted.",
+          "minimum": 1,
+          "maximum": 100000,
+          "default": 1000
+        }
+      },
+      "required": [
+        "text"
+      ],
+      "additionalProperties": false
+    }
+  },
+  {
+    "name": "text__reverse-lines",
+    "title": "Reverse lines",
+    "description": "Reverse lines: Reverses the order of the lines of a text.",
+    "inputSchema": {
+      "type": "object",
+      "properties": {
+        "text": {
+          "type": "string",
+          "title": "Text"
+        }
+      },
+      "required": [
+        "text"
+      ],
+      "additionalProperties": false
+    }
+  },
+  {
+    "name": "text__sort-lines",
+    "title": "Sort lines",
+    "description": "Sort lines: Sorts the lines of a text. The sort is stable in both directions; the result uses the most frequent line ending of the input.",
+    "inputSchema": {
+      "type": "object",
+      "properties": {
+        "text": {
+          "type": "string",
+          "title": "Text"
+        },
+        "order": {
+          "type": "string",
+          "title": "Order",
+          "description": "Ascending or descending.",
+          "enum": [
+            "asc",
+            "desc"
+          ],
+          "default": "asc"
+        },
+        "compare": {
+          "type": "string",
+          "title": "Compare by",
+          "description": "Unicode code point order, or the collation of a locale.",
+          "enum": [
+            "codepoint",
+            "locale"
+          ],
+          "default": "codepoint"
+        },
+        "locale": {
+          "type": "string",
+          "title": "Locale",
+          "description": "BCP 47 tag used by locale compare, for example de or sv.",
+          "default": "en"
+        },
+        "natural": {
+          "type": "boolean",
+          "title": "Natural order",
+          "description": "Compare digit runs as numbers: a2 before a10.",
+          "default": false
+        },
+        "ignoreCase": {
+          "type": "boolean",
+          "title": "Ignore case",
+          "description": "Treat upper and lower case as equal.",
+          "default": false
+        }
+      },
+      "required": [
+        "text"
+      ],
+      "additionalProperties": false
+    }
+  },
+  {
+    "name": "text__trim-lines",
+    "title": "Trim lines",
+    "description": "Trim lines: Removes leading and trailing whitespace from every line.",
+    "inputSchema": {
+      "type": "object",
+      "properties": {
+        "text": {
+          "type": "string",
+          "title": "Text"
+        },
+        "side": {
+          "type": "string",
+          "title": "Side",
+          "description": "Which end of each line to trim.",
+          "enum": [
+            "both",
+            "left",
+            "right"
+          ],
+          "default": "both"
+        },
+        "removeEmptyLines": {
+          "type": "boolean",
+          "title": "Remove empty lines",
+          "description": "Drop lines that are empty after trimming.",
+          "default": false
+        }
+      },
+      "required": [
+        "text"
+      ],
+      "additionalProperties": false
+    }
+  },
+  {
+    "name": "text__unique-lines",
+    "title": "Remove duplicate lines",
+    "description": "Remove duplicate lines: Removes repeated lines and keeps the first occurrence, either everywhere or only next to each other.",
+    "inputSchema": {
+      "type": "object",
+      "properties": {
+        "text": {
+          "type": "string",
+          "title": "Text"
+        },
+        "scope": {
+          "type": "string",
+          "title": "Scope",
+          "description": "all removes every repeat; adjacent only removes a line equal to the one before.",
+          "enum": [
+            "all",
+            "adjacent"
+          ],
+          "default": "all"
+        },
+        "ignoreCase": {
+          "type": "boolean",
+          "title": "Ignore case",
+          "description": "Treat upper and lower case as equal.",
+          "default": false
+        },
+        "ignoreSurroundingSpace": {
+          "type": "boolean",
+          "title": "Ignore surrounding space",
+          "description": "Compare lines without leading and trailing whitespace; the output keeps the original line.",
+          "default": false
+        }
+      },
+      "required": [
+        "text"
+      ],
+      "additionalProperties": false
+    }
+  },
+  {
+    "name": "text__yaml-to-json",
+    "title": "YAML to JSON",
+    "description": "YAML to JSON: Converts YAML to JSON using the YAML 1.2 core schema: yes, no, on and off are strings, only true and false are booleans. Anchors, aliases and merge keys are expanded; comments, tags and styles are dropped.",
+    "inputSchema": {
+      "type": "object",
+      "properties": {
+        "text": {
+          "type": "string",
+          "title": "YAML"
+        },
+        "indent": {
+          "type": "string",
+          "title": "Indent",
+          "description": "JSON indentation; none writes one line.",
+          "enum": [
+            "2",
+            "4",
+            "tab",
+            "none"
+          ],
+          "default": "2"
+        },
+        "documents": {
+          "type": "string",
+          "title": "Documents",
+          "description": "auto: one document gives its value, several give an array; array: always an array.",
+          "enum": [
+            "auto",
+            "array"
+          ],
+          "default": "auto"
+        },
+        "mergeKeys": {
+          "type": "boolean",
+          "title": "Expand merge keys",
+          "description": "Apply << merge keys; off keeps << as an ordinary key.",
+          "default": true
+        }
+      },
+      "required": [
+        "text"
+      ],
+      "additionalProperties": false
+    }
+  },
+  {
+    "name": "units__catalog",
+    "title": "Unit catalog",
+    "description": "Unit catalog: List every unit with its id, symbol, name, aliases, exact factor, offset and source document.",
+    "inputSchema": {
+      "type": "object",
+      "properties": {
+        "category": {
+          "type": "string",
+          "title": "Category",
+          "description": "Only the units of one category.",
+          "enum": [
+            "all",
+            "length",
+            "mass",
+            "temperature",
+            "volume",
+            "area",
+            "speed",
+            "time",
+            "data",
+            "pressure",
+            "energy",
+            "angle"
+          ],
+          "default": "all"
+        }
+      },
+      "additionalProperties": false
+    }
+  },
+  {
+    "name": "units__convert",
+    "title": "Convert units",
+    "description": "Convert units: Convert a quantity between units of the same category with exact arithmetic (no floating point); temperature uses exact affine factors.",
+    "inputSchema": {
+      "type": "object",
+      "properties": {
+        "text": {
+          "type": "string",
+          "title": "Quantity",
+          "description": "A number and a unit, for example 5 km to mi, 98.6 F in C or 1 GiB = MiB."
+        },
+        "from": {
+          "type": "string",
+          "title": "From unit",
+          "description": "Unit of the number when the text has none, for example km. The text wins when both are given.",
+          "default": ""
+        },
+        "to": {
+          "type": "string",
+          "title": "To unit",
+          "description": "Unit to convert to when the text has none. The text wins when both are given.",
+          "default": ""
+        },
+        "significantDigits": {
+          "type": "integer",
+          "title": "Significant digits",
+          "description": "Digits shown in the result (1 to 40), rounded half away from zero; trailing zeros are dropped.",
+          "minimum": 1,
+          "maximum": 40,
+          "default": 15
+        },
+        "notation": {
+          "type": "string",
+          "title": "Notation",
+          "description": "auto writes plain digits for 0.000001 up to below 1e15 and scientific notation outside that range.",
+          "enum": [
+            "auto",
+            "plain",
+            "scientific"
+          ],
+          "default": "auto"
+        }
+      },
+      "required": [
+        "text"
+      ],
+      "additionalProperties": false
+    }
+  },
+  {
+    "name": "units__convert-all",
+    "title": "Convert to every unit",
+    "description": "Convert to every unit: Show a quantity in every unit of its category, with a column that says whether each value is exact.",
+    "inputSchema": {
+      "type": "object",
+      "properties": {
+        "text": {
+          "type": "string",
+          "title": "Quantity",
+          "description": "A number and a unit, for example 5 km to mi, 98.6 F in C or 1 GiB = MiB."
+        },
+        "from": {
+          "type": "string",
+          "title": "From unit",
+          "description": "Unit of the number when the text has none, for example km. The text wins when both are given.",
+          "default": ""
+        },
+        "significantDigits": {
+          "type": "integer",
+          "title": "Significant digits",
+          "description": "Digits shown in the result (1 to 40), rounded half away from zero; trailing zeros are dropped.",
+          "minimum": 1,
+          "maximum": 40,
+          "default": 15
+        },
+        "notation": {
+          "type": "string",
+          "title": "Notation",
+          "description": "auto writes plain digits for 0.000001 up to below 1e15 and scientific notation outside that range.",
+          "enum": [
+            "auto",
+            "plain",
+            "scientific"
+          ],
+          "default": "auto"
+        }
+      },
+      "required": [
+        "text"
+      ],
+      "additionalProperties": false
+    }
+  }
+]

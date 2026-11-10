@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<order id="A-1042" placed="2026-10-30T14:05:00Z">
+  <customer>
+    <name>Dana Levi</name>
+    <email>dana@example.com</email>
+  </customer>
+  <lines>
+    <line sku="KB-01" qty="2" price="49.90"/>
+    <line sku="MS-07" qty="1" price="19.00"/>
+  </lines>
+  <express>true</express>
+</order>

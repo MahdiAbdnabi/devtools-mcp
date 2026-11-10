@@ -1,0 +1,297 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>DevTools MCP</title>
+    <meta
+      name="description"
+      content="50 exact, offline developer tools your AI can call over MCP: JSON, XML, CSV, YAML, code generation, compare, search, encoding, dates, units and anonymization. With a Claude skill that picks the right tool."
+    />
+    <link rel="icon" href="assets/icon.svg" type="image/svg+xml" />
+    <link rel="stylesheet" href="styles.css" />
+  </head>
+  <body>
+    <header class="topbar">
+      <div class="wrap topbar-inner">
+        <a class="brand" href="#top" aria-label="DevTools MCP home">
+          <img src="assets/icon.svg" alt="" width="24" height="24" />
+          <span>DevTools MCP</span>
+        </a>
+        <nav class="nav" aria-label="Sections">
+          <a href="#start">Get started</a>
+          <a href="#skill">Skill</a>
+          <a href="#tools">Tools</a>
+          <a href="#safety">Safety</a>
+          <a data-repo-link href="#" class="nav-gh">GitHub</a>
+        </nav>
+      </div>
+    </header>
+
+    <main id="top">
+      <section class="hero">
+        <div class="wrap hero-grid">
+          <div>
+            <p class="eyebrow">Model Context Protocol · offline · read-only files</p>
+            <h1>Give your AI 50 exact developer tools.</h1>
+            <p class="lede">
+              DevTools is a local toolbox: formatting, conversion, code generation, comparison, search,
+              encoding, date formats, unit conversion and anonymization. Run it as an MCP server and
+              Claude can call it instead of guessing. Add the skill and it picks the right tool for the job.
+            </p>
+            <div class="cta">
+              <a class="btn btn-primary" href="download/devtools-cli.zip" download>Download the server</a>
+              <a class="btn" href="#start">Set it up in 2 minutes</a>
+            </div>
+            <ul class="facts">
+              <li><strong data-tool-count>50</strong> tools</li>
+              <li><strong>0</strong> network calls</li>
+              <li><strong>MIT</strong> licence</li>
+            </ul>
+          </div>
+          <figure class="shot">
+            <picture>
+              <source srcset="assets/tool-result-light.png" media="(prefers-color-scheme: light)" />
+              <img
+                src="assets/tool-result-dark.png"
+                alt="The DevTools desktop app showing a tool result"
+                width="1280"
+                height="800"
+              />
+            </picture>
+            <figcaption>The same tools power the DevTools desktop app.</figcaption>
+          </figure>
+        </div>
+      </section>
+
+      <section class="band" aria-labelledby="how">
+        <div class="wrap">
+          <h2 id="how">How it works</h2>
+          <ol class="flow">
+            <li>
+              <span class="flow-k">You ask</span>
+              <span>"Turn this XML into C# records in namespace Acme.Orders."</span>
+            </li>
+            <li>
+              <span class="flow-k">The skill routes</span>
+              <span>It recognises the job and picks <code>codegen__xml-to-csharp</code> with the right options.</span>
+            </li>
+            <li>
+              <span class="flow-k">The server runs it</span>
+              <span><code>devtools mcp</code> runs the tool in a sandboxed worker, on your machine, over stdio.</span>
+            </li>
+            <li>
+              <span class="flow-k">You get exact output</span>
+              <span>Tested, deterministic results, with errors given a line and column.</span>
+            </li>
+          </ol>
+        </div>
+      </section>
+
+      <section id="start" aria-labelledby="start-h">
+        <div class="wrap">
+          <h2 id="start-h">Get started</h2>
+          <div class="steps">
+            <article class="step">
+              <span class="step-n">1</span>
+              <h3>Download the server</h3>
+              <p>
+                Download <a href="download/devtools-cli.zip" download><code>devtools-cli.zip</code></a> (640 KB) and
+                unzip it anywhere, for example <code>C:\Tools\devtools-cli</code>. You need
+                <a href="https://nodejs.org/">Node.js</a> 22.18 or later (or 24.11+). Nothing else needs installing: the
+                protocol library is bundled.
+              </p>
+              <p class="sum">SHA-256 <code>8526ea067035f23a2bf390f75de36cc6e7db069c4a9b2aba746b3a713000aac7</code></p>
+            </article>
+            <article class="step">
+              <span class="step-n">2</span>
+              <h3>Connect your AI client</h3>
+              <div class="tabs" role="tablist" aria-label="AI client">
+                <button role="tab" aria-selected="true" aria-controls="tab-code" id="t-code">Claude Code</button>
+                <button role="tab" aria-selected="false" aria-controls="tab-desktop" id="t-desktop" tabindex="-1">
+                  Claude Desktop
+                </button>
+                <button role="tab" aria-selected="false" aria-controls="tab-other" id="t-other" tabindex="-1">
+                  Other clients
+                </button>
+              </div>
+              <div class="tabpanel" role="tabpanel" id="tab-code" aria-labelledby="t-code">
+                <pre><code>claude mcp add --scope user devtools -- node C:\Tools\devtools-cli\devtools.mjs mcp</code></pre>
+                <p>Check it with <code>claude mcp list</code>. It should report <code>devtools … Connected</code>.</p>
+              </div>
+              <div class="tabpanel" role="tabpanel" id="tab-desktop" aria-labelledby="t-desktop" hidden>
+                <p>Add this to <code>claude_desktop_config.json</code> and restart Claude Desktop:</p>
+                <pre><code>{
+  "mcpServers": {
+    "devtools": {
+      "command": "node",
+      "args": ["C:\\Tools\\devtools-cli\\devtools.mjs", "mcp"]
+    }
+  }
+}</code></pre>
+              </div>
+              <div class="tabpanel" role="tabpanel" id="tab-other" aria-labelledby="t-other" hidden>
+                <p>
+                  Any MCP client that can start a stdio server works. The command is <code>node</code>, and its
+                  arguments are the path of <code>devtools.mjs</code> followed by <code>mcp</code>. Options:
+                  <code>--timeout &lt;ms&gt;</code>, <code>--max-input &lt;size&gt;</code>,
+                  <code>--max-output &lt;size&gt;</code>, <code>--plugins &lt;dir&gt;</code>.
+                </p>
+              </div>
+              <button class="copy" data-copy-from=".tabpanel:not([hidden]) pre">Copy</button>
+            </article>
+            <article class="step">
+              <span class="step-n">3</span>
+              <h3>Add the skill (recommended)</h3>
+              <p>
+                Download <a href="download/devtools-skill.zip" download><code>devtools-skill.zip</code></a> and unzip it
+                into <code>%USERPROFILE%\.claude\skills</code> (Claude Code), so that you get
+                <code>skills\devtools\SKILL.md</code>. With it, Claude reaches for DevTools whenever a task fits and
+                chooses the right tool and options. The source is in
+                <a data-repo-path="skill/devtools" href="#"><code>skill/devtools</code></a>.
+              </p>
+              <p class="sum">SHA-256 <code>0db66b9c3ef1c34fa668010b4f267f121906d0b2f3808a42e79057438a063116</code></p>
+            </article>
+          </div>
+        </div>
+      </section>
+
+      <section id="skill" class="band" aria-labelledby="skill-h">
+        <div class="wrap skill-grid">
+          <div>
+            <h2 id="skill-h">The skill: the right tool, every time</h2>
+            <p>
+              Fifty tools are a lot to choose from. The <code>devtools</code> skill gives Claude a routing guide. It
+              decides from what the input is and what you want out of it, and settles the close calls: structured
+              compare or text diff, find a value or run JSONPath, Base64 of text or of a file. It also chains
+              tools when no single one fits, such as YAML → JSON → C#.
+            </p>
+            <ul class="checks">
+              <li>Sets the options your request implies: <code>key</code>, <code>rootName</code>, records, time zones</li>
+              <li>Writes anonymization rule sets for you and validates them first</li>
+              <li>Passes data exactly and reads results faithfully, with errors given their line and column</li>
+              <li>Says so when a task is outside DevTools instead of forcing a tool</li>
+            </ul>
+          </div>
+          <div class="examples">
+            <h3>Try asking</h3>
+            <ul id="example-prompts">
+              <li>"What changed between before.json and after.json? Match products by sku and ignore lastUpdated."</li>
+              <li>"Make Java records from this API response, package com.acme.api."</li>
+              <li>"Mask the phones in customers.csv except the last 2 digits and pseudonymize the emails."</li>
+              <li>"What's the Java pattern for C# <code>yyyy-MM-ddTHH:mm:ss.fffK</code>? Anything lossy?"</li>
+              <li>"Decode this JWT and tell me when it expires, in Asia/Jerusalem time."</li>
+              <li>"Convert 72 °F to Celsius and Kelvin, exactly."</li>
+            </ul>
+          </div>
+        </div>
+      </section>
+
+      <section id="tools" aria-labelledby="tools-h">
+        <div class="wrap">
+          <div class="tools-head">
+            <h2 id="tools-h">All <span data-tool-count>50</span> tools</h2>
+            <label class="search">
+              <span class="visually-hidden">Search tools</span>
+              <input id="tool-search" type="search" placeholder="Search, e.g. csv, sha, jwt, records…" autocomplete="off" />
+            </label>
+          </div>
+          <div class="chips" id="tool-groups" role="group" aria-label="Filter by group"></div>
+          <p class="hint">Tool names as the AI sees them. Claude Code adds the prefix <code>mcp__devtools__</code>.</p>
+          <div id="tool-list" class="tool-list" aria-live="polite"></div>
+          <noscript><p>Enable JavaScript to browse the catalog, or read <code>skill/devtools/references/tools.md</code> in the repository.</p></noscript>
+        </div>
+      </section>
+
+      <section class="band gallery" aria-label="Screenshots">
+        <div class="wrap gallery-grid">
+          <figure>
+            <img src="assets/compare-dark.png" alt="Comparing documents in the DevTools app" loading="lazy" width="1280" height="800" />
+            <figcaption>Compare 2 to 20 JSON, XML or CSV documents, matched by key.</figcaption>
+          </figure>
+          <figure>
+            <img src="assets/palette-dark.png" alt="The DevTools command palette" loading="lazy" width="1280" height="800" />
+            <figcaption>The same catalog, in the desktop app's command palette.</figcaption>
+          </figure>
+        </div>
+      </section>
+
+      <section id="safety" aria-labelledby="safety-h">
+        <div class="wrap">
+          <h2 id="safety-h">Safe by design</h2>
+          <div class="cards">
+            <article class="card">
+              <h3>Offline</h3>
+              <p>
+                The server talks only over the stdio pipe to the client that started it. It opens no port, and a
+                network guard denies TCP, UDP, DNS, TLS and HTTP to every tool.
+              </p>
+            </article>
+            <article class="card">
+              <h3>Read-only files</h3>
+              <p>
+                A tool can read only the exact file path named in the call. Network shares and device names are
+                refused, and no MCP tool can write a file. The AI client picks the path, so connect it only to a
+                client you trust with your files.
+              </p>
+            </article>
+            <article class="card">
+              <h3>Sandboxed and bounded</h3>
+              <p>
+                Each call runs in a worker with a time limit and input and output caps: 60 s, 64 MB in and 32M
+                characters out by default. Errors come back as messages, never as crashes.
+              </p>
+            </article>
+            <article class="card">
+              <h3>Plugins are code</h3>
+              <p>
+                Plugins in your user plugin folder are served too. They are trusted code: install only plugins you
+                trust.
+              </p>
+            </article>
+          </div>
+        </div>
+      </section>
+
+      <section class="band" aria-labelledby="faq-h">
+        <div class="wrap faq">
+          <h2 id="faq-h">Questions</h2>
+          <details>
+            <summary>Do I need the DevTools desktop app?</summary>
+            <p>No. The MCP server is the command line build (<code>devtools-cli</code>) plus Node.js.</p>
+          </details>
+          <details>
+            <summary>Why does a tool's name have a double underscore?</summary>
+            <p>
+              MCP tool names allow only letters, digits, <code>_</code> and <code>-</code>, so the <code>.</code> of a tool
+              id becomes <code>__</code>: <code>json-xml.format-json</code> is <code>json-xml__format-json</code>.
+            </p>
+          </details>
+          <details>
+            <summary>Does it work on macOS or Linux?</summary>
+            <p>
+              The server is plain Node.js and is built and tested on Windows. Other platforms may work, but they are
+              not tested.
+            </p>
+          </details>
+          <details>
+            <summary>How does the AI give it a large document?</summary>
+            <p>
+              Inline, in the call. Up to 64 MB of text by default. Raise it with <code>--max-input</code>. A message
+              that is too large gets a clean error, and the server keeps running.
+            </p>
+          </details>
+        </div>
+      </section>
+    </main>
+
+    <footer class="footer">
+      <div class="wrap footer-inner">
+        <span>DevTools MCP · MIT licence</span>
+        <a data-repo-link href="#">Source and releases</a>
+      </div>
+    </footer>
+
+    <script src="app.js" defer></script>
+  </body>
+</html>

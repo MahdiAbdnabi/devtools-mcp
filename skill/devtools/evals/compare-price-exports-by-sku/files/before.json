@@ -1,0 +1,20 @@
+{
+  "lastUpdated": "2026-11-01T08:00:00Z",
+  "products": [
+    {
+      "sku": "KB-01",
+      "name": "Keyboard",
+      "price": 49.9
+    },
+    {
+      "sku": "MS-07",
+      "name": "Mouse",
+      "price": 19.0
+    },
+    {
+      "sku": "HD-22",
+      "name": "Headset",
+      "price": 89.0
+    }
+  ]
+}

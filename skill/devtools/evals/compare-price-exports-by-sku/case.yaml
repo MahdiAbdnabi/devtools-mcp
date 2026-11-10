@@ -1,0 +1,6 @@
+schema_version: "1.1"
+name: compare-price-exports-by-sku
+expected_outcome: |
+  The answer comes from the DevTools compare__json tool with products matched by sku and lastUpdated ignored, and reports exactly three changes: MS-07 price 19 to 17.5, HD-22 removed, CB-03 added. It does not report the reordering or lastUpdated as changes.
+context:
+  scaffold_script: place-files.sh
