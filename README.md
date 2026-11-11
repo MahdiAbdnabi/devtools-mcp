@@ -47,11 +47,12 @@ The site and the skill are source. The server is published as a build for now. I
 
 ## Safety
 
-- **Your AI client sees your data.** The server sends nothing anywhere, but whatever passes through the conversation (what you paste, what you ask the AI to process, the results it reads back) is seen by your AI client and its provider. Anonymizing in the conversation helps with what you share next; it does not hide text you have already pasted.
+- **Your AI client sees your data.** The server sends nothing anywhere, but whatever passes through the conversation (what you paste, what you ask the AI to process, the results it reads back) is seen by your AI client and its provider. Anonymizing in the conversation helps with what you share next; it does not hide text you have already pasted. To keep a document out of the conversation, name its file instead of pasting it: the server reads the file and only the result is sent, unless the client also opens the file with its own tools.
 - **Offline.** The server talks only over stdio. It opens no port, and a network guard denies all network access to the tools.
 - **Read-only files.** Files are read only at the exact path named in a call; network shares and device names are refused. No tool can write a file.
 - **Your client chooses the paths.** The AI client decides which paths to read, so connect DevTools only to a client you trust with your files.
-- **Limits.** Each call runs in a sandboxed worker with a time limit (60 s) and size limits (64 MB in, 32M characters out, by default).
+- **Limits.** Each call runs in a sandboxed worker with a time limit (60 s) and size limits (64 MB in, 50,000 characters out, by default). A larger result is refused with its size, never cut; raise the limit with `--max-output`.
+- **Large documents.** Every text input also takes a file path (`textFile` beside `text`, `documentsFiles` beside `documents`), so a large document need not be written into the call.
 - **User plugins.** Plugins in your user plugin folder are served too. They are trusted code, so install only plugins you trust.
 
 ## Updating the tool reference

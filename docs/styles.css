@@ -195,7 +195,7 @@ main:focus {
   display: grid;
   grid-template-columns: 1fr 1.05fr;
   gap: 40px;
-  align-items: center;
+  align-items: start;
 }
 
 .eyebrow {
@@ -264,11 +264,6 @@ summary:focus-visible,
   margin-right: 4px;
 }
 
-.shot {
-  margin: 0;
-}
-
-.shot img,
 .gallery img {
   width: 100%;
   height: auto;
@@ -282,6 +277,114 @@ figcaption {
   color: var(--muted);
   font-size: 0.9rem;
   margin-top: 8px;
+}
+
+/* hero example: a neutral panel, not any client's interface */
+.example {
+  margin: 0;
+  background: var(--surface);
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+  box-shadow: var(--shadow);
+  padding: 16px 18px 14px;
+  min-width: 0;
+}
+
+.example-head {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  flex-wrap: wrap;
+  color: var(--muted);
+  font-size: 0.85rem;
+  margin-bottom: 4px;
+}
+
+.example-tag {
+  font-weight: 600;
+  font-size: 0.75rem;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+  color: var(--accent);
+  border: 1px solid var(--line);
+  border-radius: 999px;
+  padding: 1px 10px;
+}
+
+.example-row {
+  border-top: 1px solid var(--line);
+  padding: 10px 0;
+  min-width: 0;
+}
+
+.example-k {
+  display: block;
+  font-weight: 650;
+  font-size: 0.85rem;
+  margin-bottom: 4px;
+}
+
+.example-ask {
+  margin: 0;
+}
+
+.example pre {
+  margin: 4px 0 0;
+  font-size: 0.8rem;
+}
+
+.example-label {
+  margin: 0 0 6px;
+  font-size: 0.85rem;
+}
+
+.table-scroll {
+  overflow-x: auto;
+  border: 1px solid var(--line);
+  border-radius: 8px;
+}
+
+.table-scroll:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 2px;
+}
+
+.result-table {
+  border-collapse: collapse;
+  font-family: var(--mono);
+  font-size: 0.76rem;
+  width: 100%;
+  min-width: 480px;
+}
+
+.result-table th,
+.result-table td {
+  text-align: left;
+  vertical-align: top;
+  padding: 5px 7px;
+  border-top: 1px solid var(--line);
+}
+
+.result-table td:nth-child(1),
+.result-table td:nth-child(3),
+.result-table th {
+  white-space: nowrap;
+}
+
+.result-table td:nth-child(4),
+.result-table td:nth-child(5) {
+  overflow-wrap: anywhere;
+}
+
+.result-table th {
+  border-top: 0;
+  background: var(--band);
+  color: var(--muted);
+  font-weight: 600;
+}
+
+.example figcaption {
+  margin-top: 6px;
 }
 
 /* how it works */
@@ -307,6 +410,48 @@ figcaption {
 
 .flow-k {
   font-weight: 650;
+}
+
+h3.sub {
+  margin: 40px 0 14px;
+  font-size: 1.25rem;
+}
+
+h4 {
+  font-size: 1rem;
+  margin: 0 0 6px;
+}
+
+.exact {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 16px;
+  align-items: start;
+}
+
+.exact-card {
+  min-width: 0;
+}
+
+.exact-card pre {
+  font-size: 0.78rem;
+  margin: 4px 0;
+}
+
+.exact-card .exact-call {
+  margin: 8px 0 0;
+  font-size: 0.85rem;
+}
+
+.card.exact-card > p:last-child {
+  margin-top: 8px;
+  font-size: 0.9rem;
+}
+
+.gallery-note {
+  color: var(--muted);
+  margin: 0 0 18px;
+  max-width: 80ch;
 }
 
 /* steps */
@@ -742,6 +887,9 @@ figcaption {
   .cards {
     grid-template-columns: 1fr 1fr;
   }
+  .exact {
+    grid-template-columns: 1fr;
+  }
 }
 
 @media (max-width: 600px) {
@@ -791,6 +939,42 @@ figcaption {
   .tool-desc-sm {
     display: block;
   }
+  .result-table {
+    min-width: 0;
+  }
+  .result-table thead {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    overflow: hidden;
+    clip: rect(0 0 0 0);
+  }
+  .result-table tr {
+    display: block;
+    padding: 4px 0;
+    border-top: 1px solid var(--line);
+  }
+  .result-table tbody tr:first-child {
+    border-top: 0;
+  }
+  .result-table td,
+  .result-table td:nth-child(n) {
+    display: grid;
+    grid-template-columns: 6.5em minmax(0, 1fr);
+    gap: 8px;
+    border: 0;
+    padding: 2px 8px;
+    white-space: normal;
+    overflow-wrap: anywhere;
+  }
+  .result-table td::before {
+    content: attr(data-label);
+    color: var(--muted);
+    font-family: var(--sans);
+  }
+  .result-table td:empty {
+    display: none;
+  }
 }
 
 @media (prefers-reduced-motion: reduce) {
@@ -808,4 +992,8 @@ figcaption {
 .sum code {
   font-size: 0.95em;
   word-break: break-all;
+}
+
+.tool .tool-outputs {
+  font-size: 0.85rem;
 }

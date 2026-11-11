@@ -71,17 +71,44 @@
               <li><strong>MIT</strong> licence</li>
             </ul>
           </div>
-          <figure class="shot">
-            <picture>
-              <source srcset="assets/tool-result-light.png" media="(prefers-color-scheme: light)" />
-              <img
-                src="assets/tool-result-dark.png"
-                alt="The DevTools desktop app showing a tool result"
-                width="1280"
-                height="800"
-              />
-            </picture>
-            <figcaption>The same tools power the DevTools desktop app.</figcaption>
+          <figure class="example" aria-labelledby="example-cap">
+            <div class="example-head">
+              <span class="example-tag">Example</span>
+              <span>Real output of devtools-cli 0.1.0</span>
+            </div>
+            <div class="example-row">
+              <span class="example-k">You ask</span>
+              <p class="example-ask">"What changed between before.json and after.json? Match items by sku."</p>
+            </div>
+            <div class="example-row">
+              <span class="example-k">The AI calls</span>
+              <pre><code>compare__json
+{ "documentsFiles": ["before.json", "after.json"], "key": "sku" }</code></pre>
+            </div>
+            <div class="example-row">
+              <span class="example-k">DevTools returns</span>
+              <p class="example-label"><code>[output 2 of 2: changes, table as CSV]</code></p>
+              <div class="table-scroll" tabindex="0" role="region" aria-label="Changes table">
+                <table class="result-table">
+                  <thead>
+                    <tr><th>Document</th><th>Change</th><th>Path</th><th>Base</th><th>Value</th></tr>
+                  </thead>
+                  <tbody>
+                    <tr><td data-label="Document">Document 2</td><td data-label="Change">changed (same value)</td><td data-label="Path">$[sku=C-300].price</td><td data-label="Base">9.90</td><td data-label="Value">9.9</td></tr>
+                    <tr><td data-label="Document">Document 2</td><td data-label="Change">changed</td><td data-label="Path">$[sku=C-300].stock</td><td data-label="Base">0</td><td data-label="Value">25</td></tr>
+                    <tr><td data-label="Document">Document 2</td><td data-label="Change">added</td><td data-label="Path">$[sku=D-400]</td><td data-label="Base"></td><td data-label="Value">{"sku":"D-400","name":"Ruler","price":1.75,"stock":60}</td></tr>
+                    <tr><td data-label="Document">Document 2</td><td data-label="Change">removed</td><td data-label="Path">$[sku=B-200]</td><td data-label="Base">{"sku":"B-200","name":"Notebook","price":3.20,"stock":140}</td><td data-label="Value"></td></tr>
+                  </tbody>
+                </table>
+              </div>
+              <pre class="example-diag"><code>[diagnostics: 1]
+info I_CMP_NUMBER_SPELLING: Document 2: 1 change differs only in how a number is written (for example 10.50 and 10.5); set numbers to value to compare numbers by value</code></pre>
+            </div>
+            <figcaption id="example-cap">
+              Items are matched by <code>sku</code>, not by position. 9.90 and 9.9 are the same number written two
+              ways, and the result says so. The CSV is shown as a table, and the summary table that comes first is
+              left out.
+            </figcaption>
           </figure>
         </div>
       </section>
@@ -107,6 +134,48 @@
               <span>Tested, deterministic results, with errors given a line and column.</span>
             </li>
           </ol>
+
+          <h3 class="sub" id="exact-h">Why exact matters</h3>
+          <div class="exact" aria-labelledby="exact-h">
+            <article class="card exact-card">
+              <h4>Numbers keep their text</h4>
+              <p class="exact-call"><code>json-xml__format-json</code></p>
+              <pre><code>{"price":1.10,"id":12345678901234567890,"ratio":1e-7}</code></pre>
+              <p class="exact-call">returns</p>
+              <pre><code>{
+  "price": 1.10,
+  "id": 12345678901234567890,
+  "ratio": 1e-7
+}</code></pre>
+              <p>Parsing and printing it again in JavaScript gives <code>1.1</code> and <code>12345678901234567000</code>.</p>
+            </article>
+            <article class="card exact-card">
+              <h4>Lossy date tokens are flagged</h4>
+              <p class="exact-call"><code>datetime__convert</code></p>
+              <pre><code>{ "patterns": "HH:mm:ss.FFF", "instant": "2026-11-11T09:30:15.500+02:00" }</code></pre>
+              <p class="exact-call">returns</p>
+              <pre><code>Pattern,Converted,Round trip,Flags,Source result,Converted result
+HH:mm:ss.FFF,HH:mm:ss.SSS,HH:mm:ss.fff,approximate: FFF,09:30:15.5,09:30:15.500
+
+[diagnostics: 1]
+warning W_CONVERT_APPROX: FFF became SSS: F drops trailing zeros and a dot before an empty fraction; Java S keeps every digit (line 1, column 10)</code></pre>
+              <p>C#'s <code>F</code> drops trailing zeros and Java's <code>S</code> keeps every digit, so the converted pattern is marked approximate and both renderings are shown.</p>
+            </article>
+            <article class="card exact-card">
+              <h4>Rounding is said out loud</h4>
+              <p class="exact-call"><code>units__convert</code></p>
+              <pre><code>{ "text": "72 F to C" }</code></pre>
+              <p class="exact-call">returns</p>
+              <pre><code>[output 1 of 2: result, text]
+72 °F = 22.2222222222222 °C
+[output 2 of 2: value, text]
+22.2222222222222
+[diagnostics: 1]
+info I_ROUNDED: rounded to 15 significant digits (line 1, column 9)</code></pre>
+              <p>The conversion uses exact arithmetic, with no floating point. The only rounding is to the digits shown, and the result reports it.</p>
+            </article>
+          </div>
+          <p class="hint">Calls and results as the server sends them, from devtools-cli 0.1.0.</p>
         </div>
       </section>
 
@@ -198,8 +267,10 @@
                   <pre><code data-cmd="other">node C:\Tools\devtools-cli\devtools.mjs mcp</code></pre>
                 </div>
                 <p>
-                  Options: <code>--timeout &lt;ms&gt;</code>, <code>--max-input &lt;size&gt;</code>,
-                  <code>--max-output &lt;size&gt;</code>, <code>--plugins &lt;dir&gt;</code>.
+                  Options: <code>--tools &lt;list&gt;</code> to serve only some tools (for example
+                  <code>--tools compare,text__diff</code>), <code>--timeout &lt;ms&gt;</code>,
+                  <code>--max-input &lt;size&gt;</code>, <code>--max-output &lt;size&gt;</code>, and
+                  <code>--plugins &lt;dir&gt;</code> before <code>mcp</code>.
                 </p>
               </div>
             </article>
@@ -263,9 +334,10 @@
               <li>Says so when a task is outside DevTools instead of forcing a tool</li>
             </ul>
             <p class="note">
-              Anonymization protects what you share next. It does not hide anything from your AI client: whatever
-              passes through the conversation, including text you paste to be anonymized, is seen by the client and
-              its provider.
+              Anonymization protects what you share next. Text you paste to be anonymized has already been seen by
+              your AI client and its provider. Name the file instead, as in "anonymize customers.csv", and the
+              server reads it from disk: only the anonymized result enters the conversation, as long as the client
+              does not also open the file with its own tools.
             </p>
           </div>
           <div class="examples">
@@ -302,6 +374,12 @@
       </section>
 
       <section class="band gallery" aria-label="Screenshots">
+        <div class="wrap">
+          <p class="gallery-note">
+            DevTools is also a Windows desktop app with the same tools in a window of their own. This page offers the
+            MCP server and the skill; the desktop app is not part of these downloads.
+          </p>
+        </div>
         <div class="wrap gallery-grid">
           <figure>
             <picture>
@@ -326,7 +404,9 @@
           <p class="note note-lead">
             <strong>Offline means the server.</strong> DevTools sends nothing anywhere. Your AI client is separate:
             whatever passes through the conversation, from what you paste to the results it reads back, is seen by
-            that client and its provider, under their terms.
+            that client and its provider, under their terms. Give a file path instead of pasting and the server reads
+            the file itself, so the document stays on your machine and only the result is sent, unless the client
+            opens the file with its own tools.
           </p>
           <div class="cards">
             <article class="card">
@@ -339,7 +419,8 @@
             <article class="card">
               <h3>Read-only files</h3>
               <p>
-                A tool can read only the exact file path named in the call. Network shares and device names are
+                Any document can be given as a file path instead of pasted. A tool reads only the exact paths named
+                in the call. Network shares and device names are
                 refused, and no MCP tool can write a file. The AI client picks the path, so connect it only to a
                 client you trust with your files.
               </p>
@@ -347,8 +428,9 @@
             <article class="card">
               <h3>Sandboxed and bounded</h3>
               <p>
-                Each call runs in a worker with a time limit and input and output caps: 60 s, 64 MB in and 32M
-                characters out by default. Errors come back as messages, never as crashes.
+                Each call runs in a worker with a time limit and input and output caps: 60 s, 64 MB in and 50,000
+                characters out by default. A larger result is refused with its size, never cut. Errors come back as
+                messages, never as crashes.
               </p>
             </article>
             <article class="card">
@@ -371,7 +453,9 @@
               Not through DevTools: the server makes no network calls. But you use it through an AI client, and
               whatever passes through the conversation (what you paste, what you ask it to process, the results it
               reads back) is seen by that client and its provider, under their terms. Anonymizing in the
-              conversation helps with what you share next; it does not hide text you have already pasted.
+              conversation helps with what you share next; it does not hide text you have already pasted. To keep a
+              document out of the conversation, name its file instead of pasting it: the server reads the file and
+              only the result is sent, unless the client also opens the file with its own tools.
             </p>
           </details>
           <details>
@@ -402,8 +486,17 @@
           <details>
             <summary>How does the AI give it a large document?</summary>
             <p>
-              Inline, in the call. Up to 64 MB of text by default. Raise it with <code>--max-input</code>. A message
-              that is too large gets a clean error, and the server keeps running.
+              Best as a file path. Every text input also takes a path (<code>textFile</code> beside
+              <code>text</code>, <code>documentsFiles</code> beside <code>documents</code>), and the server reads the
+              file itself, read-only. Pasting works too, but the AI has to write the whole document into the call.
+              Inputs can total 64 MB per call by default (<code>--max-input</code>).
+            </p>
+            <p>
+              Results are limited to 50,000 characters by default. A larger result is refused with its size, never
+              cut, because a cut document is not exact. The AI can then ask for a smaller part (a JSONPath or XPath
+              query), a smaller form such as unindented JSON, or you can raise the limit with
+              <code>--max-output</code>. Your AI client has its own limit as well: Claude Code allows 25,000 tokens
+              per tool result by default.
             </p>
           </details>
         </div>

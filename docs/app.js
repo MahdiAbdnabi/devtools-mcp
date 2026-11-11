@@ -141,8 +141,11 @@ const toolId = (name) => `tool-${name}`;
 
 function renderTool(tool) {
   const [group] = tool.name.split('__');
-  const [title, ...rest] = tool.description.split(': ');
-  const detail = rest.join(': ');
+  // A description is "Title: what it does." and, in newer servers, a last line "Outputs: …".
+  const [body, outputs] = tool.description.split(/\n\s*Outputs:\s*/);
+  const [lead, ...rest] = body.split(': ');
+  const title = tool.title ?? lead;
+  const detail = (tool.title && lead !== tool.title ? body : rest.join(': ')).trim();
   const schema = tool.inputSchema ?? {};
   const required = new Set(schema.required ?? []);
   const args = Object.entries(schema.properties ?? {}).map(([name, p]) => {
@@ -170,11 +173,13 @@ function renderTool(tool) {
     el('h3', { id: `${id}-h` }, el('a', { href: `#${id}`, class: 'tool-link' }, tool.name)),
     el('p', { class: 'tool-title' }, el('strong', {}, title)),
     ...(detail ? [el('p', { class: 'tool-desc' }, detail)] : []),
+    ...(outputs ? [el('p', { class: 'tool-desc tool-outputs' }, `Returns: ${outputs.trim()}`)] : []),
     el(
       'details',
       {},
       el('summary', {}, args.length === 1 ? '1 argument' : `${args.length} arguments`),
       ...(detail ? [el('p', { class: 'tool-desc-sm' }, detail)] : []),
+      ...(outputs ? [el('p', { class: 'tool-desc-sm tool-outputs' }, `Returns: ${outputs.trim()}`)] : []),
       el('dl', { class: 'args' }, ...args),
     ),
   );
