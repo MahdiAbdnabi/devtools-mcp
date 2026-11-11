@@ -11,7 +11,7 @@ It runs as a [Model Context Protocol](https://modelcontextprotocol.io) server ov
 | Path | What it is |
 | --- | --- |
 | `docs/` | The website (static HTML, no build step), published with GitHub Pages |
-| `docs/download/devtools-cli.zip` | The MCP server: a build of the DevTools command line, run as `devtools.mjs mcp`. Its source is not in this repository |
+| `docs/download/devtools-cli.zip` | The MCP server: a build of the DevTools command line, run as `devtools.mjs mcp`. Its source is not in this repository yet |
 | `docs/download/devtools-skill.zip` | The skill, ready to unzip into `~/.claude/skills` |
 | `skill/devtools/` | The skill's source: `SKILL.md`, the tool reference and the test cases (`evals/`) |
 | `docs/data/tools.json` | The server's `tools/list` output, which the site and the tool reference are generated from |
@@ -19,7 +19,7 @@ It runs as a [Model Context Protocol](https://modelcontextprotocol.io) server ov
 | `scripts/release.mjs` | Builds both zips, hashes them and stamps the version, date, size and SHA-256 into the website |
 | `CHANGELOG.md` | What changed in each release |
 
-The site and the skill are source. The server is published only as a build.
+The site and the skill are source. The server is published as a build for now. Its source will be published here once its history has been cleaned up.
 
 ## Quick start
 
