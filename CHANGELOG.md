@@ -29,6 +29,7 @@ Changes to what this repository publishes: the website, the skill and the two do
 - The page says what in this repository is source (the site and the skill) and what is a build (the server), and that the server's source will follow.
 - The hero shows a real request, the tool call and its exact result, and three short examples show why exact matters.
 - The answer on large documents describes file-path inputs and the result limit.
+- Documentation: a page for each of the 50 tools (when to use it, inputs, options, outputs, diagnostics, limits and 3 to 5 worked examples with the exact call and result), a page for each plugin, 8 task guides, and search. Each catalog card, the hero and the top bar link to it.
 - Tool catalog: argument descriptions and what each tool returns are shown, opening a card no longer stretches its row, a status line gives the count for the current filter, and each tool has its own link.
 - Phones: the section links stay reachable and the catalog is compact.
 - Version, date, size and SHA-256 beside each download, written by the release script, and how to check a hash on Windows.

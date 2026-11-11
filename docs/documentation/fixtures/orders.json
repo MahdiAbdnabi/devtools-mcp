@@ -1,0 +1,18 @@
+{
+  "store": "Example Shop",
+  "currency": "EUR",
+  "orders": [
+    {"id": "A-1001", "status": "paid", "placed": "2024-03-03", "customer": {"id": "C-200", "email": "customer1@example.com", "city": "Utrecht"}, "lines": [{"sku": "P-100", "qty": 1, "price": 24.90}]},
+    {"id": "A-1002", "status": "open", "placed": "2024-03-04", "customer": {"id": "C-201", "email": "customer2@example.com", "city": "Gouda"}, "lines": [{"sku": "P-101", "qty": 2, "price": 9.50}]},
+    {"id": "A-1003", "status": "paid", "placed": "2024-03-05", "customer": {"id": "C-202", "email": "customer3@example.com", "city": "Delft"}, "lines": [{"sku": "P-102", "qty": 3, "price": 3.00}]},
+    {"id": "A-1004", "status": "refunded", "placed": "2024-03-06", "customer": {"id": "C-203", "email": "customer4@example.com", "city": "Leiden"}, "lines": [{"sku": "P-103", "qty": 1, "price": 7.20}]},
+    {"id": "A-1005", "status": "paid", "placed": "2024-03-07", "customer": {"id": "C-204", "email": "customer5@example.com", "city": "Haarlem"}, "lines": [{"sku": "P-104", "qty": 2, "price": 89.00}]},
+    {"id": "A-1006", "status": "open", "placed": "2024-03-08", "customer": {"id": "C-205", "email": "customer6@example.com", "city": "Zwolle"}, "lines": [{"sku": "P-100", "qty": 3, "price": 24.90}]},
+    {"id": "A-1007", "status": "paid", "placed": "2024-03-09", "customer": {"id": "C-206", "email": "customer7@example.com", "city": "Utrecht"}, "lines": [{"sku": "P-101", "qty": 1, "price": 9.50}]},
+    {"id": "A-1008", "status": "paid", "placed": "2024-03-10", "customer": {"id": "C-200", "email": "customer1@example.com", "city": "Gouda"}, "lines": [{"sku": "P-102", "qty": 2, "price": 3.00}]},
+    {"id": "A-1009", "status": "open", "placed": "2024-03-11", "customer": {"id": "C-201", "email": "customer2@example.com", "city": "Delft"}, "lines": [{"sku": "P-103", "qty": 3, "price": 7.20}]},
+    {"id": "A-1010", "status": "paid", "placed": "2024-03-12", "customer": {"id": "C-202", "email": "customer3@example.com", "city": "Leiden"}, "lines": [{"sku": "P-104", "qty": 1, "price": 89.00}]},
+    {"id": "A-1011", "status": "paid", "placed": "2024-03-13", "customer": {"id": "C-203", "email": "customer4@example.com", "city": "Haarlem"}, "lines": [{"sku": "P-100", "qty": 2, "price": 24.90}]},
+    {"id": "A-1012", "status": "refunded", "placed": "2024-03-14", "customer": {"id": "C-204", "email": "customer5@example.com", "city": "Zwolle"}, "lines": [{"sku": "P-101", "qty": 3, "price": 9.50}]}
+  ]
+}

@@ -1,0 +1,6 @@
+host: db.example.com
+port: 6432
+user: app
+pool: 20
+timeout: 30
+ssl: true

@@ -1,0 +1,4 @@
+Example Shop 2.4.0
+
+- Faster checkout
+- New desk lamp colours

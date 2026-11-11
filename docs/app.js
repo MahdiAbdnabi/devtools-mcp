@@ -166,6 +166,7 @@ function renderTool(tool) {
     );
   });
   const id = toolId(tool.name);
+  const docHref = `documentation/tools/${tool.name.replace('__', '.')}.html`;
   return el(
     'article',
     { class: 'tool', id, 'data-group': group, 'aria-labelledby': `${id}-h` },
@@ -174,12 +175,14 @@ function renderTool(tool) {
     el('p', { class: 'tool-title' }, el('strong', {}, title)),
     ...(detail ? [el('p', { class: 'tool-desc' }, detail)] : []),
     ...(outputs ? [el('p', { class: 'tool-desc tool-outputs' }, `Returns: ${outputs.trim()}`)] : []),
+    el('a', { class: 'tool-doc', href: docHref }, 'Documentation and examples'),
     el(
       'details',
       {},
       el('summary', {}, args.length === 1 ? '1 argument' : `${args.length} arguments`),
       ...(detail ? [el('p', { class: 'tool-desc-sm' }, detail)] : []),
       ...(outputs ? [el('p', { class: 'tool-desc-sm tool-outputs' }, `Returns: ${outputs.trim()}`)] : []),
+      el('p', { class: 'tool-desc-sm' }, el('a', { href: docHref }, 'Documentation and examples')),
       el('dl', { class: 'args' }, ...args),
     ),
   );

@@ -1,0 +1,48 @@
+{
+  "version": 1,
+  "rules": [
+    {
+      "label": "names",
+      "column": [
+        "name"
+      ],
+      "strategy": {
+        "type": "pseudonym",
+        "alphabet": "letters",
+        "length": 6,
+        "prefix": "Customer "
+      }
+    },
+    {
+      "label": "emails",
+      "column": [
+        "email"
+      ],
+      "strategy": {
+        "type": "pseudonym",
+        "length": 10,
+        "prefix": "mail-"
+      }
+    },
+    {
+      "label": "phones",
+      "column": [
+        "phone"
+      ],
+      "strategy": {
+        "type": "mask",
+        "keepLast": 2
+      }
+    },
+    {
+      "label": "emails in notes",
+      "regex": {
+        "pattern": "[\\w.+-]+@[\\w-]+\\.[\\w.]+"
+      },
+      "strategy": {
+        "type": "fixed",
+        "value": "[email]"
+      }
+    }
+  ]
+}

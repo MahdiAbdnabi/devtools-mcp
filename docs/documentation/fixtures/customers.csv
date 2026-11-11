@@ -1,0 +1,5 @@
+id,name,email,phone,city,note
+C-201,Ana Example,ana@example.com,+31 20 555 0101,Utrecht,Prefers email
+C-202,Ben Sample,ben@example.com,+31 20 555 0199,Gouda,
+C-203,Cy Placeholder,cy@example.org,+31 20 555 0142,Delft,Call ana@example.com first
+C-204,Ana Example,ana@example.com,+31 20 555 0101,Leiden,Second address
