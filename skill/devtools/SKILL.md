@@ -1,6 +1,6 @@
 ---
 name: devtools
-description: Exact, offline developer data tools from the DevTools MCP server (tool names like `json-xml__format-json`, often with a client prefix). Use it when the user has the data in hand, pasted or in a file they name, and wants an exact result about that data - format, minify or check JSON/XML/CSV; convert between JSON, XML, CSV and YAML; generate C# or Java classes from a sample; compare JSON/XML/CSV documents; JSONPath/XPath queries or finding a key or value; Base64, URL and HTML encoding; hashes of text or files; decoding a JWT; making or inspecting UUIDs; reading Unix timestamps; C#/Java date format patterns; exact unit conversion; anonymizing data with rules; case, diff, regex test, sort or dedupe on given text. Use it even if DevTools is not named. It is not for writing or editing code that does these things (a regex for a validator, hashing in a login handler, sorting imports), for git diffs between branches or commits, or for running the project's own formatter or linter.
+description: Exact, offline developer data tools from the DevTools MCP server (tools named like `json-xml__format-json`). Use this skill whenever the user has data in hand, pasted or in a file they name, and wants an exact result about it - format, minify or check JSON/XML/CSV; convert between JSON, XML, CSV and YAML; C# or Java classes or records from a JSON, XML or CSV sample; compare documents; JSONPath/XPath or find a key or value; Base64, URL and HTML encoding; hashes of text or files; decode a JWT; UUIDs; Unix timestamps; C#/Java date patterns; unit conversion; anonymize data; case, diff, regex test, sort or dedupe on given text. Read it before calling any DevTools tool, and before doing such work in your head or with a one-off script or shell command - hand results drift, and the skill says which tool fits and how to pass files and read results. Not for writing or editing code that does these things (a validator regex, password hashing, sorting imports), git diffs, or running the project's formatter.
 license: MIT
 metadata:
   version: "1.1.0"
@@ -19,12 +19,12 @@ The tools come from the DevTools MCP server. Every tool is named `<plugin>__<too
 
 In this file, tools are named by the `<plugin>__<tool>` part alone.
 
-If no such tool is available, the server is not connected. Tell the user so and point them to the setup, with the folder where they unzipped `devtools-cli`:
+If no such tool is available, the server is not connected to this session. Tell the user so in your answer, with the setup below, even when you then finish the task another way, because otherwise they won't know why the result didn't come from DevTools. Use the folder where they unzipped `devtools-cli`:
 
 - Claude Code: `claude mcp add --scope user devtools -- node C:\Tools\devtools-cli\devtools.mjs mcp`
 - Claude Desktop, in `claude_desktop_config.json`: `"mcpServers": { "devtools": { "command": "node", "args": ["C:\\Tools\\devtools-cli\\devtools.mjs", "mcp"] } }`
 
-Then do the task by hand only if they want that, and say the result was not produced by DevTools.
+Then finish the task only in a way the user would expect: by hand when it is small and they want it now, or with the DevTools command line if they have it (see "The DevTools command line"). Either way, say how the result was produced.
 
 ## Choose the tool
 

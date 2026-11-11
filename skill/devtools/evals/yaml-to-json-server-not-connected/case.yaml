@@ -1,6 +1,6 @@
 schema_version: "1.1"
 name: yaml-to-json-server-not-connected
 expected_outcome: |
-  Run this case with no DevTools MCP server connected (no devtools tools in the session). The answer tells the user that the DevTools tools are not available, says how to connect the server (for Claude Code: claude mcp add --scope user devtools -- node <folder>/devtools.mjs mcp), and does not present any converted file as DevTools output. If it converts the file by hand, it says so.
+  Run this case with no DevTools MCP server connected (no devtools tools in the session). The answer tells the user that the DevTools tools are not available, says how to connect the server (for Claude Code: claude mcp add --scope user devtools -- node <folder>/devtools.mjs mcp), and says how any converted file was produced: by hand, or with the DevTools command line if the user has it. It never presents a file as output of the DevTools MCP tools.
 context:
   scaffold_script: place-files.sh
