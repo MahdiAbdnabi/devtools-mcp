@@ -48,8 +48,10 @@ The short form is a string (`"mask"`, `"pseudonym"`, `"hash"`, `"remove"`); the 
 The tool reports what it did, for example:
 
 ```
-info: Replaced 2 value(s), removed 1, renamed 0 key(s)
-info: Rule 1 was applied 1 time(s)
+[diagnostics: 3]
+info I_ANON_SUMMARY: Replaced 2 value(s), removed 1, renamed 0 key(s)
+info I_ANON_RULE_APPLIED: Rule 1 was applied 1 time(s)
+warning W_ANON_RULE_UNUSED: Rule 2 was never applied: nothing matched
 ```
 
 It also warns about rules that matched nothing, and about literals that are still present after anonymizing. Show those warnings to the user: they usually mean a selector is wrong or sensitive data was missed. The tool does not find sensitive data by itself. It only does what the rules say.
@@ -69,4 +71,4 @@ The user says: "Hide the emails and phone numbers in this JSON and drop the SSN.
 }
 ```
 
-Pass it as a string: `rules: "{\"version\":1,...}"`, together with `text` (the document) and `seed`.
+Pass it as a string: `rules: "{\"version\":1,...}"`, together with the document (`text`, or its path in `textFile`) and `seed`. A rule set kept in a file can be given as `rulesFile`.

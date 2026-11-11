@@ -2,18 +2,19 @@
   {
     "name": "anonymize__csv",
     "title": "Anonymize CSV",
-    "description": "Anonymize CSV: Replace cells and headers in CSV, selected by column name or number, driven by a rule set. Rules that match nothing and literals that survive are reported; the tool does not find sensitive data by itself.",
+    "description": "Anonymize CSV: Replace cells and headers in CSV, selected by column name or number, driven by a rule set. Returns the anonymized document. Rules that match nothing and literals that survive are reported; the tool does not find sensitive data by itself.\nOutputs: result (text).",
     "inputSchema": {
       "type": "object",
       "properties": {
         "text": {
           "type": "string",
-          "title": "CSV"
+          "title": "CSV",
+          "description": "The CSV document to anonymize. Required: give the text here or a file path in textFile."
         },
         "rules": {
           "type": "string",
           "title": "Rule set (JSON)",
-          "description": "Rules that say what to find (literal, property, path, regex, column) and what to do with it (mask, fixed, pseudonym, hash, remove)."
+          "description": "Rules that say what to find (literal, property, path, regex, column) and what to do with it (mask, fixed, pseudonym, hash, remove). Required: give the text here or a file path in rulesFile."
         },
         "seed": {
           "type": "string",
@@ -82,30 +83,43 @@
           "title": "Quote all fields",
           "description": "Put every field in quotes.",
           "default": false
+        },
+        "textFile": {
+          "type": "string",
+          "title": "CSV (file)",
+          "description": "Path of a file to read (read-only) instead of \"text\": UTF-8, or UTF-16 with a byte order mark."
+        },
+        "rulesFile": {
+          "type": "string",
+          "title": "Rule set (JSON) (file)",
+          "description": "Path of a file to read (read-only) instead of \"rules\": UTF-8, or UTF-16 with a byte order mark."
         }
       },
-      "required": [
-        "text",
-        "rules"
-      ],
       "additionalProperties": false
+    },
+    "annotations": {
+      "readOnlyHint": true,
+      "destructiveHint": false,
+      "idempotentHint": true,
+      "openWorldHint": false
     }
   },
   {
     "name": "anonymize__json",
     "title": "Anonymize JSON",
-    "description": "Anonymize JSON: Replace values and keys in JSON with masks, fixed text, consistent pseudonyms, keyed hashes or nothing, driven by a rule set. Rules that match nothing and literals that survive are reported; the tool does not find sensitive data by itself.",
+    "description": "Anonymize JSON: Replace values and keys in JSON with masks, fixed text, consistent pseudonyms, keyed hashes or nothing, driven by a rule set. Returns the anonymized document. Rules that match nothing and literals that survive are reported; the tool does not find sensitive data by itself.\nOutputs: result (text).",
     "inputSchema": {
       "type": "object",
       "properties": {
         "text": {
           "type": "string",
-          "title": "JSON"
+          "title": "JSON",
+          "description": "The JSON document to anonymize. Required: give the text here or a file path in textFile."
         },
         "rules": {
           "type": "string",
           "title": "Rule set (JSON)",
-          "description": "Rules that say what to find (literal, property, path, regex, column) and what to do with it (mask, fixed, pseudonym, hash, remove)."
+          "description": "Rules that say what to find (literal, property, path, regex, column) and what to do with it (mask, fixed, pseudonym, hash, remove). Required: give the text here or a file path in rulesFile."
         },
         "seed": {
           "type": "string",
@@ -125,26 +139,38 @@
             "none"
           ],
           "default": "2"
+        },
+        "textFile": {
+          "type": "string",
+          "title": "JSON (file)",
+          "description": "Path of a file to read (read-only) instead of \"text\": UTF-8, or UTF-16 with a byte order mark."
+        },
+        "rulesFile": {
+          "type": "string",
+          "title": "Rule set (JSON) (file)",
+          "description": "Path of a file to read (read-only) instead of \"rules\": UTF-8, or UTF-16 with a byte order mark."
         }
       },
-      "required": [
-        "text",
-        "rules"
-      ],
       "additionalProperties": false
+    },
+    "annotations": {
+      "readOnlyHint": true,
+      "destructiveHint": false,
+      "idempotentHint": true,
+      "openWorldHint": false
     }
   },
   {
     "name": "anonymize__rules",
     "title": "Check and format a rule set",
-    "description": "Check and format a rule set: Validate a rule set and print it in canonical form: defaults filled in, shorthand expanded. Errors name the field and the position.",
+    "description": "Check and format a rule set: Validate a rule set and print it in canonical form: defaults filled in, shorthand expanded. Returns the canonical rule set as JSON; errors name the field and the position.\nOutputs: result (text).",
     "inputSchema": {
       "type": "object",
       "properties": {
         "rules": {
           "type": "string",
           "title": "Rule set (JSON)",
-          "description": "Rules that say what to find (literal, property, path, regex, column) and what to do with it (mask, fixed, pseudonym, hash, remove)."
+          "description": "Rules that say what to find (literal, property, path, regex, column) and what to do with it (mask, fixed, pseudonym, hash, remove). Required: give the text here or a file path in rulesFile."
         },
         "indent": {
           "type": "string",
@@ -157,29 +183,38 @@
             "none"
           ],
           "default": "2"
+        },
+        "rulesFile": {
+          "type": "string",
+          "title": "Rule set (JSON) (file)",
+          "description": "Path of a file to read (read-only) instead of \"rules\": UTF-8, or UTF-16 with a byte order mark."
         }
       },
-      "required": [
-        "rules"
-      ],
       "additionalProperties": false
+    },
+    "annotations": {
+      "readOnlyHint": true,
+      "destructiveHint": false,
+      "idempotentHint": true,
+      "openWorldHint": false
     }
   },
   {
     "name": "anonymize__text",
     "title": "Anonymize text",
-    "description": "Anonymize text: Replace literals and regular-expression matches in plain text, driven by a rule set; line endings and everything outside matches stay as they are. Rules that match nothing and literals that survive are reported; the tool does not find sensitive data by itself.",
+    "description": "Anonymize text: Replace literals and regular-expression matches in plain text, driven by a rule set; line endings and everything outside matches stay as they are. Returns the anonymized document. Rules that match nothing and literals that survive are reported; the tool does not find sensitive data by itself.\nOutputs: result (text).",
     "inputSchema": {
       "type": "object",
       "properties": {
         "text": {
           "type": "string",
-          "title": "Text"
+          "title": "Text",
+          "description": "The text to anonymize. Required: give the text here or a file path in textFile."
         },
         "rules": {
           "type": "string",
           "title": "Rule set (JSON)",
-          "description": "Rules that say what to find (literal, property, path, regex, column) and what to do with it (mask, fixed, pseudonym, hash, remove)."
+          "description": "Rules that say what to find (literal, property, path, regex, column) and what to do with it (mask, fixed, pseudonym, hash, remove). Required: give the text here or a file path in rulesFile."
         },
         "seed": {
           "type": "string",
@@ -187,30 +222,43 @@
           "description": "Secret that keys pseudonyms and hashes. The same seed gives the same output; keep it private, it is not saved in rule sets. An empty or short seed makes guessing easy.",
           "maxLength": 256,
           "default": ""
+        },
+        "textFile": {
+          "type": "string",
+          "title": "Text (file)",
+          "description": "Path of a file to read (read-only) instead of \"text\": UTF-8, or UTF-16 with a byte order mark."
+        },
+        "rulesFile": {
+          "type": "string",
+          "title": "Rule set (JSON) (file)",
+          "description": "Path of a file to read (read-only) instead of \"rules\": UTF-8, or UTF-16 with a byte order mark."
         }
       },
-      "required": [
-        "text",
-        "rules"
-      ],
       "additionalProperties": false
+    },
+    "annotations": {
+      "readOnlyHint": true,
+      "destructiveHint": false,
+      "idempotentHint": true,
+      "openWorldHint": false
     }
   },
   {
     "name": "anonymize__xml",
     "title": "Anonymize XML",
-    "description": "Anonymize XML: Replace attribute values, text and names in XML, driven by a rule set. Paths start below the root element. Rules that match nothing and literals that survive are reported; the tool does not find sensitive data by itself.",
+    "description": "Anonymize XML: Replace attribute values, text and names in XML, driven by a rule set. Paths start below the root element. Returns the anonymized document. Rules that match nothing and literals that survive are reported; the tool does not find sensitive data by itself.\nOutputs: result (text).",
     "inputSchema": {
       "type": "object",
       "properties": {
         "text": {
           "type": "string",
-          "title": "XML"
+          "title": "XML",
+          "description": "The XML document to anonymize. Required: give the text here or a file path in textFile."
         },
         "rules": {
           "type": "string",
           "title": "Rule set (JSON)",
-          "description": "Rules that say what to find (literal, property, path, regex, column) and what to do with it (mask, fixed, pseudonym, hash, remove)."
+          "description": "Rules that say what to find (literal, property, path, regex, column) and what to do with it (mask, fixed, pseudonym, hash, remove). Required: give the text here or a file path in rulesFile."
         },
         "seed": {
           "type": "string",
@@ -236,25 +284,38 @@
           "title": "Remove comments",
           "description": "Remove XML comments (they often hold the data you are hiding).",
           "default": true
+        },
+        "textFile": {
+          "type": "string",
+          "title": "XML (file)",
+          "description": "Path of a file to read (read-only) instead of \"text\": UTF-8, or UTF-16 with a byte order mark."
+        },
+        "rulesFile": {
+          "type": "string",
+          "title": "Rule set (JSON) (file)",
+          "description": "Path of a file to read (read-only) instead of \"rules\": UTF-8, or UTF-16 with a byte order mark."
         }
       },
-      "required": [
-        "text",
-        "rules"
-      ],
       "additionalProperties": false
+    },
+    "annotations": {
+      "readOnlyHint": true,
+      "destructiveHint": false,
+      "idempotentHint": true,
+      "openWorldHint": false
     }
   },
   {
     "name": "codegen__json-to-csharp",
     "title": "JSON to C# classes",
-    "description": "JSON to C# classes: Generate C# classes or records from a JSON sample; a root array merges its elements as samples.",
+    "description": "JSON to C# classes: Generate C# classes or records from a JSON sample; a root array merges its elements as samples. Returns the source code as one text.\nOutputs: result (text).",
     "inputSchema": {
       "type": "object",
       "properties": {
         "text": {
           "type": "string",
-          "title": "JSON"
+          "title": "JSON",
+          "description": "A sample JSON document; the types are inferred from its values. Required: give the text here or a file path in textFile."
         },
         "annotations": {
           "type": "string",
@@ -316,24 +377,33 @@
           "title": "Share identical classes",
           "description": "Objects with the same members share one class (default on).",
           "default": true
+        },
+        "textFile": {
+          "type": "string",
+          "title": "JSON (file)",
+          "description": "Path of a file to read (read-only) instead of \"text\": UTF-8, or UTF-16 with a byte order mark."
         }
       },
-      "required": [
-        "text"
-      ],
       "additionalProperties": false
+    },
+    "annotations": {
+      "readOnlyHint": true,
+      "destructiveHint": false,
+      "idempotentHint": true,
+      "openWorldHint": false
     }
   },
   {
     "name": "codegen__json-to-java",
     "title": "JSON to Java classes",
-    "description": "JSON to Java classes: Generate Java POJOs or records from a JSON sample; every class is nested in the root class.",
+    "description": "JSON to Java classes: Generate Java POJOs or records from a JSON sample; every class is nested in the root class. Returns the source code as one text.\nOutputs: result (text).",
     "inputSchema": {
       "type": "object",
       "properties": {
         "text": {
           "type": "string",
-          "title": "JSON"
+          "title": "JSON",
+          "description": "A sample JSON document; the types are inferred from its values. Required: give the text here or a file path in textFile."
         },
         "annotations": {
           "type": "string",
@@ -394,24 +464,33 @@
           "title": "Share identical classes",
           "description": "Objects with the same members share one class (default on).",
           "default": true
+        },
+        "textFile": {
+          "type": "string",
+          "title": "JSON (file)",
+          "description": "Path of a file to read (read-only) instead of \"text\": UTF-8, or UTF-16 with a byte order mark."
         }
       },
-      "required": [
-        "text"
-      ],
       "additionalProperties": false
+    },
+    "annotations": {
+      "readOnlyHint": true,
+      "destructiveHint": false,
+      "idempotentHint": true,
+      "openWorldHint": false
     }
   },
   {
     "name": "codegen__xml-to-csharp",
     "title": "XML to C# classes",
-    "description": "XML to C# classes: Generate C# classes or records from an XML sample: attributes and text become properties, repeated elements become lists.",
+    "description": "XML to C# classes: Generate C# classes or records from an XML sample: attributes and text become properties, repeated elements become lists. Returns the source code as one text.\nOutputs: result (text).",
     "inputSchema": {
       "type": "object",
       "properties": {
         "text": {
           "type": "string",
-          "title": "XML"
+          "title": "XML",
+          "description": "A sample XML document; the types are inferred from its values. Required: give the text here or a file path in textFile."
         },
         "annotations": {
           "type": "string",
@@ -478,24 +557,33 @@
           "title": "Share identical classes",
           "description": "Objects with the same members share one class (default on).",
           "default": true
+        },
+        "textFile": {
+          "type": "string",
+          "title": "XML (file)",
+          "description": "Path of a file to read (read-only) instead of \"text\": UTF-8, or UTF-16 with a byte order mark."
         }
       },
-      "required": [
-        "text"
-      ],
       "additionalProperties": false
+    },
+    "annotations": {
+      "readOnlyHint": true,
+      "destructiveHint": false,
+      "idempotentHint": true,
+      "openWorldHint": false
     }
   },
   {
     "name": "codegen__xml-to-java",
     "title": "XML to Java classes",
-    "description": "XML to Java classes: Generate Java POJOs or records from an XML sample: attributes and text become fields, repeated elements become lists.",
+    "description": "XML to Java classes: Generate Java POJOs or records from an XML sample: attributes and text become fields, repeated elements become lists. Returns the source code as one text.\nOutputs: result (text).",
     "inputSchema": {
       "type": "object",
       "properties": {
         "text": {
           "type": "string",
-          "title": "XML"
+          "title": "XML",
+          "description": "A sample XML document; the types are inferred from its values. Required: give the text here or a file path in textFile."
         },
         "annotations": {
           "type": "string",
@@ -562,18 +650,26 @@
           "title": "Share identical classes",
           "description": "Objects with the same members share one class (default on).",
           "default": true
+        },
+        "textFile": {
+          "type": "string",
+          "title": "XML (file)",
+          "description": "Path of a file to read (read-only) instead of \"text\": UTF-8, or UTF-16 with a byte order mark."
         }
       },
-      "required": [
-        "text"
-      ],
       "additionalProperties": false
+    },
+    "annotations": {
+      "readOnlyHint": true,
+      "destructiveHint": false,
+      "idempotentHint": true,
+      "openWorldHint": false
     }
   },
   {
     "name": "compare__csv",
     "title": "Compare CSV",
-    "description": "Compare CSV: Compare 2 to 20 CSV documents with a base. The first record is the header; rows can be matched by key columns.",
+    "description": "Compare CSV: Compare 2 to 20 CSV documents with a base. The first record is the header; rows can be matched by key columns. Returns a summary table (one row per compared document) and a table of the differences (document, change, path, base value, value); cells compare as text unless inferTypes is on.\nOutputs: summary (table as CSV), changes (table as CSV); sidebyside (unified diff) only with includeDiff.",
     "inputSchema": {
       "type": "object",
       "properties": {
@@ -583,7 +679,7 @@
             "type": "string"
           },
           "title": "Documents",
-          "description": "Two to twenty documents; every one is compared with the base."
+          "description": "Two to twenty documents; every one is compared with the base. Required: give the texts here or file paths in documentsFiles."
         },
         "names": {
           "type": "array",
@@ -591,7 +687,7 @@
             "type": "string"
           },
           "title": "Names",
-          "description": "Optional labels, one per document."
+          "description": "Optional labels, one per document. Give the texts here or file paths in namesFiles."
         },
         "mode": {
           "type": "string",
@@ -630,6 +726,16 @@
           "description": "Dot paths to leave out, one per line (or separated by ;): items.price, catalog.book.@id. Array positions are skipped.",
           "maxLength": 100000,
           "default": ""
+        },
+        "numbers": {
+          "type": "string",
+          "title": "Compare numbers",
+          "description": "text: 10.50 and 10.5 differ (marked as the same value); value: numbers that are equal as decimals are equal, and in XML and CSV number-like text counts as a number.",
+          "enum": [
+            "text",
+            "value"
+          ],
+          "default": "text"
         },
         "maxDiffs": {
           "type": "integer",
@@ -665,18 +771,43 @@
           "title": "Infer types",
           "description": "Read true, false and number text as booleans and numbers instead of strings.",
           "default": false
+        },
+        "documentsFiles": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          },
+          "title": "Documents (files)",
+          "description": "Paths of files to read (read-only) instead of \"documents\", one document per file."
+        },
+        "namesFiles": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          },
+          "title": "Names (files)",
+          "description": "Paths of files to read (read-only) instead of \"names\", one document per file."
+        },
+        "includeDiff": {
+          "type": "boolean",
+          "title": "Include diff",
+          "description": "Also return a unified diff of the two documents as printed.",
+          "default": false
         }
       },
-      "required": [
-        "documents"
-      ],
       "additionalProperties": false
+    },
+    "annotations": {
+      "readOnlyHint": true,
+      "destructiveHint": false,
+      "idempotentHint": true,
+      "openWorldHint": false
     }
   },
   {
     "name": "compare__json",
     "title": "Compare JSON",
-    "description": "Compare JSON: Compare 2 to 20 JSON documents with a base by values or by structure, with arrays matched by key or in any order.",
+    "description": "Compare JSON: Compare 2 to 20 JSON documents with a base by values or by structure, with arrays matched by key or in any order. Returns a summary table (one row per compared document) and a table of the differences (document, change, path, base value, value).\nOutputs: summary (table as CSV), changes (table as CSV); sidebyside (unified diff) only with includeDiff.",
     "inputSchema": {
       "type": "object",
       "properties": {
@@ -686,7 +817,7 @@
             "type": "string"
           },
           "title": "Documents",
-          "description": "Two to twenty documents; every one is compared with the base."
+          "description": "Two to twenty documents; every one is compared with the base. Required: give the texts here or file paths in documentsFiles."
         },
         "names": {
           "type": "array",
@@ -694,7 +825,7 @@
             "type": "string"
           },
           "title": "Names",
-          "description": "Optional labels, one per document."
+          "description": "Optional labels, one per document. Give the texts here or file paths in namesFiles."
         },
         "mode": {
           "type": "string",
@@ -733,6 +864,16 @@
           "description": "Dot paths to leave out, one per line (or separated by ;): items.price, catalog.book.@id. Array positions are skipped.",
           "maxLength": 100000,
           "default": ""
+        },
+        "numbers": {
+          "type": "string",
+          "title": "Compare numbers",
+          "description": "text: 10.50 and 10.5 differ (marked as the same value); value: numbers that are equal as decimals are equal, and in XML and CSV number-like text counts as a number.",
+          "enum": [
+            "text",
+            "value"
+          ],
+          "default": "text"
         },
         "maxDiffs": {
           "type": "integer",
@@ -741,18 +882,43 @@
           "minimum": 1,
           "maximum": 100000,
           "default": 1000
+        },
+        "documentsFiles": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          },
+          "title": "Documents (files)",
+          "description": "Paths of files to read (read-only) instead of \"documents\", one document per file."
+        },
+        "namesFiles": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          },
+          "title": "Names (files)",
+          "description": "Paths of files to read (read-only) instead of \"names\", one document per file."
+        },
+        "includeDiff": {
+          "type": "boolean",
+          "title": "Include diff",
+          "description": "Also return a unified diff of the two documents as printed.",
+          "default": false
         }
       },
-      "required": [
-        "documents"
-      ],
       "additionalProperties": false
+    },
+    "annotations": {
+      "readOnlyHint": true,
+      "destructiveHint": false,
+      "idempotentHint": true,
+      "openWorldHint": false
     }
   },
   {
     "name": "compare__xml",
     "title": "Compare XML",
-    "description": "Compare XML: Compare 2 to 20 XML documents with a base by values or by structure. Repeated elements can be matched by @attribute or by a child element holding only text.",
+    "description": "Compare XML: Compare 2 to 20 XML documents with a base by values or by structure. Repeated elements can be matched by @attribute or by a child element holding only text. Returns a summary table (one row per compared document) and a table of the differences (document, change, path, base value, value).\nOutputs: summary (table as CSV), changes (table as CSV); sidebyside (unified diff) only with includeDiff.",
     "inputSchema": {
       "type": "object",
       "properties": {
@@ -762,7 +928,7 @@
             "type": "string"
           },
           "title": "Documents",
-          "description": "Two to twenty documents; every one is compared with the base."
+          "description": "Two to twenty documents; every one is compared with the base. Required: give the texts here or file paths in documentsFiles."
         },
         "names": {
           "type": "array",
@@ -770,7 +936,7 @@
             "type": "string"
           },
           "title": "Names",
-          "description": "Optional labels, one per document."
+          "description": "Optional labels, one per document. Give the texts here or file paths in namesFiles."
         },
         "mode": {
           "type": "string",
@@ -809,6 +975,16 @@
           "description": "Dot paths to leave out, one per line (or separated by ;): items.price, catalog.book.@id. Array positions are skipped.",
           "maxLength": 100000,
           "default": ""
+        },
+        "numbers": {
+          "type": "string",
+          "title": "Compare numbers",
+          "description": "text: 10.50 and 10.5 differ (marked as the same value); value: numbers that are equal as decimals are equal, and in XML and CSV number-like text counts as a number.",
+          "enum": [
+            "text",
+            "value"
+          ],
+          "default": "text"
         },
         "maxDiffs": {
           "type": "integer",
@@ -823,30 +999,55 @@
           "title": "Infer types",
           "description": "Read true, false and number text as booleans and numbers instead of strings.",
           "default": false
+        },
+        "documentsFiles": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          },
+          "title": "Documents (files)",
+          "description": "Paths of files to read (read-only) instead of \"documents\", one document per file."
+        },
+        "namesFiles": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          },
+          "title": "Names (files)",
+          "description": "Paths of files to read (read-only) instead of \"names\", one document per file."
+        },
+        "includeDiff": {
+          "type": "boolean",
+          "title": "Include diff",
+          "description": "Also return a unified diff of the two documents as printed.",
+          "default": false
         }
       },
-      "required": [
-        "documents"
-      ],
       "additionalProperties": false
+    },
+    "annotations": {
+      "readOnlyHint": true,
+      "destructiveHint": false,
+      "idempotentHint": true,
+      "openWorldHint": false
     }
   },
   {
     "name": "datetime__convert",
     "title": "Convert date patterns",
-    "description": "Convert date patterns: Convert patterns between C# and Java; every token that does not render identically is flagged with the reason.",
+    "description": "Convert date patterns: Convert patterns between C# and Java; every token that does not render identically is flagged with the reason. Returns a table with one row per pattern: the converted pattern, whether it round-trips, and the flags.\nOutputs: table (table as CSV).",
     "inputSchema": {
       "type": "object",
       "properties": {
         "patterns": {
           "type": "string",
           "title": "Patterns",
-          "description": "Patterns in the source language, one per line. Blank lines are skipped; at most 200 patterns of 1000 characters."
+          "description": "Patterns in the source language, one per line. Blank lines are skipped; at most 200 patterns of 1000 characters. Required: give the text here or a file path in patternsFile."
         },
         "instant": {
           "type": "string",
           "title": "Instant",
-          "description": "Optional: render both patterns at this instant to see the difference. ISO 8601 with an offset."
+          "description": "Optional: render both patterns at this instant to see the difference. ISO 8601 with an offset. Give the text here or a file path in instantFile."
         },
         "direction": {
           "type": "string",
@@ -857,30 +1058,43 @@
             "java-to-csharp"
           ],
           "default": "csharp-to-java"
+        },
+        "patternsFile": {
+          "type": "string",
+          "title": "Patterns (file)",
+          "description": "Path of a file to read (read-only) instead of \"patterns\": UTF-8, or UTF-16 with a byte order mark."
+        },
+        "instantFile": {
+          "type": "string",
+          "title": "Instant (file)",
+          "description": "Path of a file to read (read-only) instead of \"instant\": UTF-8, or UTF-16 with a byte order mark."
         }
       },
-      "required": [
-        "patterns"
-      ],
       "additionalProperties": false
+    },
+    "annotations": {
+      "readOnlyHint": true,
+      "destructiveHint": false,
+      "idempotentHint": true,
+      "openWorldHint": false
     }
   },
   {
     "name": "datetime__csharp",
     "title": "C# date format",
-    "description": "C# date format: Render an instant with C# standard and custom format strings under InvariantCulture, as .NET does.",
+    "description": "C# date format: Render an instant with C# standard and custom format strings under InvariantCulture, as .NET does. Returns a table with one row per format string and its rendering.\nOutputs: table (table as CSV).",
     "inputSchema": {
       "type": "object",
       "properties": {
         "instant": {
           "type": "string",
           "title": "Instant",
-          "description": "ISO 8601 with an offset, for example 2024-03-05T14:07:09.1203456+05:30 or ...Z. Named time zones are not supported."
+          "description": "ISO 8601 with an offset, for example 2024-03-05T14:07:09.1203456+05:30 or ...Z. Named time zones are not supported. Required: give the text here or a file path in instantFile."
         },
         "patterns": {
           "type": "string",
           "title": "Patterns",
-          "description": "C# format strings (an empty text renders the default ToString() format), one per line. Blank lines are skipped; at most 200 patterns of 1000 characters."
+          "description": "C# format strings (an empty text renders the default ToString() format), one per line. Blank lines are skipped; at most 200 patterns of 1000 characters. Required: give the text here or a file path in patternsFile."
         },
         "valueKind": {
           "type": "string",
@@ -891,31 +1105,43 @@
             "utc"
           ],
           "default": "offset"
+        },
+        "instantFile": {
+          "type": "string",
+          "title": "Instant (file)",
+          "description": "Path of a file to read (read-only) instead of \"instant\": UTF-8, or UTF-16 with a byte order mark."
+        },
+        "patternsFile": {
+          "type": "string",
+          "title": "Patterns (file)",
+          "description": "Path of a file to read (read-only) instead of \"patterns\": UTF-8, or UTF-16 with a byte order mark."
         }
       },
-      "required": [
-        "instant",
-        "patterns"
-      ],
       "additionalProperties": false
+    },
+    "annotations": {
+      "readOnlyHint": true,
+      "destructiveHint": false,
+      "idempotentHint": true,
+      "openWorldHint": false
     }
   },
   {
     "name": "datetime__java",
     "title": "Java date format",
-    "description": "Java date format: Render an instant with Java DateTimeFormatter patterns for Locale.US, with JDK 8 behaviour.",
+    "description": "Java date format: Render an instant with Java DateTimeFormatter patterns for Locale.US, with JDK 8 behaviour. Returns a table with one row per pattern and its rendering.\nOutputs: table (table as CSV).",
     "inputSchema": {
       "type": "object",
       "properties": {
         "instant": {
           "type": "string",
           "title": "Instant",
-          "description": "ISO 8601 with an offset, for example 2024-03-05T14:07:09.1203456+05:30 or ...Z. Named time zones are not supported."
+          "description": "ISO 8601 with an offset, for example 2024-03-05T14:07:09.1203456+05:30 or ...Z. Named time zones are not supported. Required: give the text here or a file path in instantFile."
         },
         "patterns": {
           "type": "string",
           "title": "Patterns",
-          "description": "Java DateTimeFormatter patterns, one per line. Blank lines are skipped; at most 200 patterns of 1000 characters."
+          "description": "Java DateTimeFormatter patterns, one per line. Blank lines are skipped; at most 200 patterns of 1000 characters. Required: give the text here or a file path in patternsFile."
         },
         "zone": {
           "type": "string",
@@ -926,26 +1152,38 @@
             "UTC"
           ],
           "default": "offset"
+        },
+        "instantFile": {
+          "type": "string",
+          "title": "Instant (file)",
+          "description": "Path of a file to read (read-only) instead of \"instant\": UTF-8, or UTF-16 with a byte order mark."
+        },
+        "patternsFile": {
+          "type": "string",
+          "title": "Patterns (file)",
+          "description": "Path of a file to read (read-only) instead of \"patterns\": UTF-8, or UTF-16 with a byte order mark."
         }
       },
-      "required": [
-        "instant",
-        "patterns"
-      ],
       "additionalProperties": false
+    },
+    "annotations": {
+      "readOnlyHint": true,
+      "destructiveHint": false,
+      "idempotentHint": true,
+      "openWorldHint": false
     }
   },
   {
     "name": "datetime__reference",
     "title": "Date format reference",
-    "description": "Date format reference: Search every C# and Java date-time specifier; the example column is rendered by the real formatter at a fixed instant.",
+    "description": "Date format reference: Search every C# and Java date-time specifier; the example column is rendered by the real formatter at a fixed instant. Returns a table with one row per specifier.\nOutputs: table (table as CSV).",
     "inputSchema": {
       "type": "object",
       "properties": {
         "filter": {
           "type": "string",
           "title": "Filter",
-          "description": "Text to find in any column, ignoring case. It is matched literally, not as a pattern."
+          "description": "Text to find in any column, ignoring case. It is matched literally, not as a pattern. Give the text here or a file path in filterFile."
         },
         "platform": {
           "type": "string",
@@ -970,25 +1208,38 @@
             "syntax"
           ],
           "default": "all"
+        },
+        "filterFile": {
+          "type": "string",
+          "title": "Filter (file)",
+          "description": "Path of a file to read (read-only) instead of \"filter\": UTF-8, or UTF-16 with a byte order mark."
         }
       },
       "additionalProperties": false
+    },
+    "annotations": {
+      "readOnlyHint": true,
+      "destructiveHint": false,
+      "idempotentHint": true,
+      "openWorldHint": false
     }
   },
   {
     "name": "encoding__base64",
     "title": "Base64 (text and objects)",
-    "description": "Base64 (text and objects): Encode text, JSON or XML to Base64, or decode Base64 back (strict, standard or URL-safe alphabet).",
+    "description": "Base64 (text and objects): Encode text, JSON or XML to Base64, or decode Base64 back (strict, standard or URL-safe alphabet). Returns the encoded text, or the decoded text (formatted when source is json or xml); bytes that are not UTF-8 text are an error or a hex view.\nOutputs: result (text).",
     "inputSchema": {
       "type": "object",
       "properties": {
         "text": {
           "type": "string",
-          "title": "Text"
+          "title": "Text",
+          "description": "The text to encode, or the Base64 text to decode. Required: give the text here or a file path in textFile."
         },
         "mode": {
           "type": "string",
           "title": "Mode",
+          "description": "encode turns the input into the encoded form; decode turns it back.",
           "enum": [
             "encode",
             "decode"
@@ -1036,7 +1287,7 @@
         "indent": {
           "type": "string",
           "title": "Indent",
-          "description": "Decode of json and xml.",
+          "description": "Decode with source json or xml: indent of the formatted result, 2 or 4 spaces, a tab, or none for one line.",
           "enum": [
             "2",
             "4",
@@ -1054,29 +1305,38 @@
             "hex"
           ],
           "default": "error"
+        },
+        "textFile": {
+          "type": "string",
+          "title": "Text (file)",
+          "description": "Path of a file to read (read-only) instead of \"text\": UTF-8, or UTF-16 with a byte order mark."
         }
       },
-      "required": [
-        "text"
-      ],
       "additionalProperties": false
+    },
+    "annotations": {
+      "readOnlyHint": true,
+      "destructiveHint": false,
+      "idempotentHint": true,
+      "openWorldHint": false
     }
   },
   {
     "name": "encoding__base64-file",
     "title": "Base64 (file)",
-    "description": "Base64 (file): Encode a file to Base64 text, or decode a Base64 file to text or to a new file (binary safe).",
+    "description": "Base64 (file): Encode a file to Base64 text, or decode a file that holds Base64 (binary safe). Returns the Base64 text, or the decoded text; decoded bytes that are not UTF-8 text are a hex view or an error.\nOutputs: result (text).",
     "inputSchema": {
       "type": "object",
       "properties": {
         "file": {
           "type": "string",
           "title": "File",
-          "description": "Path of a file to read (read-only)."
+          "description": "The file to encode, or the file holding the Base64 text to decode. Path of a file to read (read-only)."
         },
         "mode": {
           "type": "string",
           "title": "Mode",
+          "description": "encode turns the input into the encoded form; decode turns it back.",
           "enum": [
             "encode",
             "decode"
@@ -1110,15 +1370,10 @@
           ],
           "default": "0"
         },
-        "overwrite": {
-          "type": "boolean",
-          "title": "Overwrite",
-          "description": "Replace the output file when it already exists.",
-          "default": false
-        },
         "binary": {
           "type": "string",
           "title": "Binary result",
+          "description": "What decode does when the bytes are not UTF-8 text: show a hex view or report an error.",
           "enum": [
             "error",
             "hex"
@@ -1126,26 +1381,34 @@
           "default": "hex"
         }
       },
+      "additionalProperties": false,
       "required": [
         "file"
-      ],
-      "additionalProperties": false
+      ]
+    },
+    "annotations": {
+      "readOnlyHint": true,
+      "destructiveHint": false,
+      "idempotentHint": true,
+      "openWorldHint": false
     }
   },
   {
     "name": "encoding__hash",
     "title": "Hash (text)",
-    "description": "Hash (text): MD5, SHA-1, SHA-256 and SHA-512 of text (UTF-8).",
+    "description": "Hash (text): MD5, SHA-1, SHA-256 and SHA-512 of text (UTF-8). Returns a table with one row per algorithm: its digest and bit length.\nOutputs: digests (table as CSV).",
     "inputSchema": {
       "type": "object",
       "properties": {
         "text": {
           "type": "string",
-          "title": "Text"
+          "title": "Text",
+          "description": "The text to hash, taken as UTF-8 bytes. Required: give the text here or a file path in textFile."
         },
         "algorithm": {
           "type": "string",
           "title": "Algorithm",
+          "description": "The digest to compute, or all four (one row each).",
           "enum": [
             "all",
             "md5",
@@ -1158,6 +1421,7 @@
         "format": {
           "type": "string",
           "title": "Format",
+          "description": "How each digest is written: hexadecimal or Base64.",
           "enum": [
             "hex",
             "base64"
@@ -1167,30 +1431,40 @@
         "uppercase": {
           "type": "boolean",
           "title": "Upper-case hex",
+          "description": "Write hexadecimal digests in upper case (format hex only).",
           "default": false
+        },
+        "textFile": {
+          "type": "string",
+          "title": "Text (file)",
+          "description": "Path of a file to read (read-only) instead of \"text\": UTF-8, or UTF-16 with a byte order mark."
         }
       },
-      "required": [
-        "text"
-      ],
       "additionalProperties": false
+    },
+    "annotations": {
+      "readOnlyHint": true,
+      "destructiveHint": false,
+      "idempotentHint": true,
+      "openWorldHint": false
     }
   },
   {
     "name": "encoding__hash-file",
     "title": "Hash (file)",
-    "description": "Hash (file): MD5, SHA-1, SHA-256 and SHA-512 of a file, streamed.",
+    "description": "Hash (file): MD5, SHA-1, SHA-256 and SHA-512 of a file, streamed. Returns a table with one row per algorithm and a line with the file size.\nOutputs: digests (table as CSV), info (text).",
     "inputSchema": {
       "type": "object",
       "properties": {
         "file": {
           "type": "string",
           "title": "File",
-          "description": "Path of a file to read (read-only)."
+          "description": "The file to hash. Path of a file to read (read-only)."
         },
         "algorithm": {
           "type": "string",
           "title": "Algorithm",
+          "description": "The digest to compute, or all four (one row each).",
           "enum": [
             "all",
             "md5",
@@ -1203,6 +1477,7 @@
         "format": {
           "type": "string",
           "title": "Format",
+          "description": "How each digest is written: hexadecimal or Base64.",
           "enum": [
             "hex",
             "base64"
@@ -1212,29 +1487,38 @@
         "uppercase": {
           "type": "boolean",
           "title": "Upper-case hex",
+          "description": "Write hexadecimal digests in upper case (format hex only).",
           "default": false
         }
       },
+      "additionalProperties": false,
       "required": [
         "file"
-      ],
-      "additionalProperties": false
+      ]
+    },
+    "annotations": {
+      "readOnlyHint": true,
+      "destructiveHint": false,
+      "idempotentHint": true,
+      "openWorldHint": false
     }
   },
   {
     "name": "encoding__html",
     "title": "HTML entities",
-    "description": "HTML entities: Encode text to HTML entities or decode named (HTML 4.01) and numeric references.",
+    "description": "HTML entities: Encode text to HTML entities or decode named (HTML 4.01) and numeric references. Returns the encoded or decoded text.\nOutputs: result (text).",
     "inputSchema": {
       "type": "object",
       "properties": {
         "text": {
           "type": "string",
-          "title": "Text"
+          "title": "Text",
+          "description": "The text to encode, or the text with entities to decode. Required: give the text here or a file path in textFile."
         },
         "mode": {
           "type": "string",
           "title": "Mode",
+          "description": "encode turns the input into the encoded form; decode turns it back.",
           "enum": [
             "encode",
             "decode"
@@ -1244,6 +1528,7 @@
         "scope": {
           "type": "string",
           "title": "Encode scope",
+          "description": "minimal escapes only & < > \" and '; non-ascii also escapes every character outside ASCII.",
           "enum": [
             "minimal",
             "non-ascii"
@@ -1259,24 +1544,33 @@
             "decimal"
           ],
           "default": "hex"
+        },
+        "textFile": {
+          "type": "string",
+          "title": "Text (file)",
+          "description": "Path of a file to read (read-only) instead of \"text\": UTF-8, or UTF-16 with a byte order mark."
         }
       },
-      "required": [
-        "text"
-      ],
       "additionalProperties": false
+    },
+    "annotations": {
+      "readOnlyHint": true,
+      "destructiveHint": false,
+      "idempotentHint": true,
+      "openWorldHint": false
     }
   },
   {
     "name": "encoding__jwt",
     "title": "JWT decoder (no verification)",
-    "description": "JWT decoder (no verification): Decode the header and payload of a JWT and show its dates. The signature is never verified.",
+    "description": "JWT decoder (no verification): Decode the header and payload of a JWT and show its dates. The signature is never verified. Returns the header and the payload as JSON and a table of the claims with their dates and status; the status of exp and nbf is judged against the current time, so it can change from one call to the next.\nOutputs: header (text), payload (text), claims (table as CSV).",
     "inputSchema": {
       "type": "object",
       "properties": {
         "text": {
           "type": "string",
-          "title": "Token"
+          "title": "Token",
+          "description": "The JWT: three Base64url parts separated by dots. Required: give the text here or a file path in textFile."
         },
         "timezone": {
           "type": "string",
@@ -1287,6 +1581,7 @@
         "indent": {
           "type": "string",
           "title": "Indent",
+          "description": "Indent of the JSON shown: 2 or 4 spaces, a tab, or none for one line.",
           "enum": [
             "2",
             "4",
@@ -1294,28 +1589,38 @@
             "none"
           ],
           "default": "2"
+        },
+        "textFile": {
+          "type": "string",
+          "title": "Token (file)",
+          "description": "Path of a file to read (read-only) instead of \"text\": UTF-8, or UTF-16 with a byte order mark."
         }
       },
-      "required": [
-        "text"
-      ],
       "additionalProperties": false
+    },
+    "annotations": {
+      "readOnlyHint": true,
+      "destructiveHint": false,
+      "idempotentHint": true,
+      "openWorldHint": false
     }
   },
   {
     "name": "encoding__timestamp",
     "title": "Unix timestamp",
-    "description": "Unix timestamp: Convert epoch seconds or milliseconds to dates, ISO 8601 text to epoch values, or print the current time.",
+    "description": "Unix timestamp: Convert epoch seconds or milliseconds to dates, ISO 8601 text to epoch values, or print the current time. Returns a table with one row per value; mode now gives the current time, which changes from one call to the next.\nOutputs: result (table as CSV).",
     "inputSchema": {
       "type": "object",
       "properties": {
         "text": {
           "type": "string",
-          "title": "Values (one per line)"
+          "title": "Values (one per line)",
+          "description": "Values, one per line: epoch numbers (to-date) or ISO 8601 date-times (to-epoch). Not used by mode now. Give the text here or a file path in textFile."
         },
         "mode": {
           "type": "string",
           "title": "Mode",
+          "description": "to-date reads epoch numbers, to-epoch reads ISO 8601 text, now prints the current time.",
           "enum": [
             "to-date",
             "to-epoch",
@@ -1339,25 +1644,38 @@
           "title": "Time zone",
           "description": "UTC, local (the zone of this computer) or an IANA name.",
           "default": "UTC"
+        },
+        "textFile": {
+          "type": "string",
+          "title": "Values (one per line) (file)",
+          "description": "Path of a file to read (read-only) instead of \"text\": UTF-8, or UTF-16 with a byte order mark."
         }
       },
       "additionalProperties": false
+    },
+    "annotations": {
+      "readOnlyHint": true,
+      "destructiveHint": false,
+      "idempotentHint": true,
+      "openWorldHint": false
     }
   },
   {
     "name": "encoding__url",
     "title": "URL encode / decode",
-    "description": "URL encode / decode: Percent-encode or strictly decode text as a URL component, a whole URI or a form value.",
+    "description": "URL encode / decode: Percent-encode or strictly decode text as a URL component, a whole URI or a form value. Returns the encoded or decoded text; a malformed escape is an error with its position.\nOutputs: result (text).",
     "inputSchema": {
       "type": "object",
       "properties": {
         "text": {
           "type": "string",
-          "title": "Text"
+          "title": "Text",
+          "description": "The text to encode, or the percent-encoded text to decode. Required: give the text here or a file path in textFile."
         },
         "mode": {
           "type": "string",
           "title": "Mode",
+          "description": "encode turns the input into the encoded form; decode turns it back.",
           "enum": [
             "encode",
             "decode"
@@ -1367,30 +1685,40 @@
         "scope": {
           "type": "string",
           "title": "Scope",
+          "description": "component escapes every reserved character, uri keeps the characters that structure a URI, form writes spaces as +.",
           "enum": [
             "component",
             "uri",
             "form"
           ],
           "default": "component"
+        },
+        "textFile": {
+          "type": "string",
+          "title": "Text (file)",
+          "description": "Path of a file to read (read-only) instead of \"text\": UTF-8, or UTF-16 with a byte order mark."
         }
       },
-      "required": [
-        "text"
-      ],
       "additionalProperties": false
+    },
+    "annotations": {
+      "readOnlyHint": true,
+      "destructiveHint": false,
+      "idempotentHint": true,
+      "openWorldHint": false
     }
   },
   {
     "name": "encoding__uuid",
     "title": "UUID / GUID generator",
-    "description": "UUID / GUID generator: Generate version 4 or version 7 UUIDs (also nil and max) in GUID formats.",
+    "description": "UUID / GUID generator: Generate version 4 or version 7 UUIDs (also nil and max) in GUID formats. Returns one UUID per line; v4 and v7 values are new on each call.\nOutputs: result (text).",
     "inputSchema": {
       "type": "object",
       "properties": {
         "version": {
           "type": "string",
           "title": "Version",
+          "description": "v4 is random, v7 starts with the current time, nil is all zeros, max is all ones.",
           "enum": [
             "v4",
             "v7",
@@ -1402,6 +1730,7 @@
         "count": {
           "type": "integer",
           "title": "Count",
+          "description": "How many UUIDs to generate (1 to 1000).",
           "minimum": 1,
           "maximum": 1000,
           "default": 1
@@ -1409,6 +1738,7 @@
         "format": {
           "type": "string",
           "title": "Format",
+          "description": "standard 8-4-4-4-12, compact without hyphens, braces {..}, parentheses (..), hex-struct as a C# struct initialiser, urn as urn:uuid:..",
           "enum": [
             "standard",
             "compact",
@@ -1422,6 +1752,7 @@
         "case": {
           "type": "string",
           "title": "Letter case",
+          "description": "Hexadecimal letters in lower or upper case.",
           "enum": [
             "lower",
             "upper"
@@ -1430,36 +1761,52 @@
         }
       },
       "additionalProperties": false
+    },
+    "annotations": {
+      "readOnlyHint": true,
+      "destructiveHint": false,
+      "idempotentHint": true,
+      "openWorldHint": false
     }
   },
   {
     "name": "encoding__uuid-inspect",
     "title": "UUID inspector",
-    "description": "UUID inspector: Parse UUIDs and GUIDs (one per line) and show version, variant, timestamp and .NET byte order.",
+    "description": "UUID inspector: Parse UUIDs and GUIDs (one per line) and show version, variant, timestamp and .NET byte order. Returns a table with one row per line.\nOutputs: uuids (table as CSV).",
     "inputSchema": {
       "type": "object",
       "properties": {
         "text": {
           "type": "string",
-          "title": "UUIDs"
+          "title": "UUIDs",
+          "description": "UUIDs or GUIDs, one per line, in any common format (hyphens, braces, urn:uuid:). Required: give the text here or a file path in textFile."
+        },
+        "textFile": {
+          "type": "string",
+          "title": "UUIDs (file)",
+          "description": "Path of a file to read (read-only) instead of \"text\": UTF-8, or UTF-16 with a byte order mark."
         }
       },
-      "required": [
-        "text"
-      ],
       "additionalProperties": false
+    },
+    "annotations": {
+      "readOnlyHint": true,
+      "destructiveHint": false,
+      "idempotentHint": true,
+      "openWorldHint": false
     }
   },
   {
     "name": "json-xml__format-json",
     "title": "JSON formatter / minifier",
-    "description": "JSON formatter / minifier: Reformat JSON or minify it (indent none). Number and string source text is kept exactly; duplicate keys are kept and reported.",
+    "description": "JSON formatter / minifier: Reformat JSON or minify it (indent none). Number and string source text is kept exactly; duplicate keys are kept and reported. Returns the formatted JSON.\nOutputs: result (text).",
     "inputSchema": {
       "type": "object",
       "properties": {
         "text": {
           "type": "string",
-          "title": "JSON"
+          "title": "JSON",
+          "description": "The JSON document. Required: give the text here or a file path in textFile."
         },
         "indent": {
           "type": "string",
@@ -1472,24 +1819,33 @@
             "none"
           ],
           "default": "2"
+        },
+        "textFile": {
+          "type": "string",
+          "title": "JSON (file)",
+          "description": "Path of a file to read (read-only) instead of \"text\": UTF-8, or UTF-16 with a byte order mark."
         }
       },
-      "required": [
-        "text"
-      ],
       "additionalProperties": false
+    },
+    "annotations": {
+      "readOnlyHint": true,
+      "destructiveHint": false,
+      "idempotentHint": true,
+      "openWorldHint": false
     }
   },
   {
     "name": "json-xml__format-xml",
     "title": "XML formatter / minifier",
-    "description": "XML formatter / minifier: Reformat XML or minify it (indent none). Declaration, comments, processing instructions, CDATA and DOCTYPE are kept; mixed content is never altered; entities are never expanded.",
+    "description": "XML formatter / minifier: Reformat XML or minify it (indent none). Declaration, comments, processing instructions, CDATA and DOCTYPE are kept; mixed content is never altered; entities are never expanded. Returns the formatted XML.\nOutputs: result (text).",
     "inputSchema": {
       "type": "object",
       "properties": {
         "text": {
           "type": "string",
-          "title": "XML"
+          "title": "XML",
+          "description": "The XML document. Required: give the text here or a file path in textFile."
         },
         "indent": {
           "type": "string",
@@ -1502,24 +1858,33 @@
             "none"
           ],
           "default": "2"
+        },
+        "textFile": {
+          "type": "string",
+          "title": "XML (file)",
+          "description": "Path of a file to read (read-only) instead of \"text\": UTF-8, or UTF-16 with a byte order mark."
         }
       },
-      "required": [
-        "text"
-      ],
       "additionalProperties": false
+    },
+    "annotations": {
+      "readOnlyHint": true,
+      "destructiveHint": false,
+      "idempotentHint": true,
+      "openWorldHint": false
     }
   },
   {
     "name": "json-xml__json-to-xml",
     "title": "JSON to XML",
-    "description": "JSON to XML: Convert JSON to XML: @name keys become attributes, #text becomes text, arrays repeat the element; a single top-level key is the root, anything else is wrapped in the root name.",
+    "description": "JSON to XML: Convert JSON to XML: @name keys become attributes, #text becomes text, arrays repeat the element; a single top-level key is the root, anything else is wrapped in the root name. Returns the XML document.\nOutputs: result (text).",
     "inputSchema": {
       "type": "object",
       "properties": {
         "text": {
           "type": "string",
-          "title": "JSON"
+          "title": "JSON",
+          "description": "The JSON document. Required: give the text here or a file path in textFile."
         },
         "indent": {
           "type": "string",
@@ -1551,24 +1916,33 @@
           "title": "Sanitize names",
           "description": "Rename keys that are not valid XML names instead of failing (default off).",
           "default": false
+        },
+        "textFile": {
+          "type": "string",
+          "title": "JSON (file)",
+          "description": "Path of a file to read (read-only) instead of \"text\": UTF-8, or UTF-16 with a byte order mark."
         }
       },
-      "required": [
-        "text"
-      ],
       "additionalProperties": false
+    },
+    "annotations": {
+      "readOnlyHint": true,
+      "destructiveHint": false,
+      "idempotentHint": true,
+      "openWorldHint": false
     }
   },
   {
     "name": "json-xml__xml-to-json",
     "title": "XML to JSON",
-    "description": "XML to JSON: Convert XML to JSON: attributes become @name, text becomes #text, repeated elements become arrays, the root name is the single top-level key.",
+    "description": "XML to JSON: Convert XML to JSON: attributes become @name, text becomes #text, repeated elements become arrays, the root name is the single top-level key. Returns the JSON document.\nOutputs: result (text).",
     "inputSchema": {
       "type": "object",
       "properties": {
         "text": {
           "type": "string",
-          "title": "XML"
+          "title": "XML",
+          "description": "The XML document. Required: give the text here or a file path in textFile."
         },
         "indent": {
           "type": "string",
@@ -1587,24 +1961,33 @@
           "title": "Infer types",
           "description": "Turn true, false and numbers into JSON values (default off: all values are strings).",
           "default": false
+        },
+        "textFile": {
+          "type": "string",
+          "title": "XML (file)",
+          "description": "Path of a file to read (read-only) instead of \"text\": UTF-8, or UTF-16 with a byte order mark."
         }
       },
-      "required": [
-        "text"
-      ],
       "additionalProperties": false
+    },
+    "annotations": {
+      "readOnlyHint": true,
+      "destructiveHint": false,
+      "idempotentHint": true,
+      "openWorldHint": false
     }
   },
   {
     "name": "search__find-property",
     "title": "Property search",
-    "description": "Property search: Finds every occurrence of a property name in a JSON or XML document and lists its path, kind, line, column and value. JSON names are object keys; XML names are element and attribute names as written (a prefix is part of the name).",
+    "description": "Property search: Finds every occurrence of a property name in a JSON or XML document and lists its path, kind, line, column and value. JSON names are object keys; XML names are element and attribute names as written (a prefix is part of the name). Returns a table with one row per occurrence.\nOutputs: results (table as CSV).",
     "inputSchema": {
       "type": "object",
       "properties": {
         "text": {
           "type": "string",
-          "title": "Document"
+          "title": "Document",
+          "description": "The JSON or XML document to search. Required: give the text here or a file path in textFile."
         },
         "query": {
           "type": "string",
@@ -1674,24 +2057,33 @@
           "minimum": 10,
           "maximum": 2000,
           "default": 200
+        },
+        "textFile": {
+          "type": "string",
+          "title": "Document (file)",
+          "description": "Path of a file to read (read-only) instead of \"text\": UTF-8, or UTF-16 with a byte order mark."
         }
       },
-      "required": [
-        "text"
-      ],
       "additionalProperties": false
+    },
+    "annotations": {
+      "readOnlyHint": true,
+      "destructiveHint": false,
+      "idempotentHint": true,
+      "openWorldHint": false
     }
   },
   {
     "name": "search__find-value",
     "title": "Value search",
-    "description": "Value search: Finds every JSON scalar value, XML attribute value or XML element text that matches, and lists its path, kind, line, column and value. Containers are never matched; formatting whitespace between XML child elements is ignored.",
+    "description": "Value search: Finds every JSON scalar value, XML attribute value or XML element text that matches, and lists its path, kind, line, column and value. Containers are never matched; formatting whitespace between XML child elements is ignored. Returns a table with one row per match.\nOutputs: results (table as CSV).",
     "inputSchema": {
       "type": "object",
       "properties": {
         "text": {
           "type": "string",
-          "title": "Document"
+          "title": "Document",
+          "description": "The JSON or XML document to search. Required: give the text here or a file path in textFile."
         },
         "query": {
           "type": "string",
@@ -1761,24 +2153,33 @@
           "minimum": 10,
           "maximum": 2000,
           "default": 200
+        },
+        "textFile": {
+          "type": "string",
+          "title": "Document (file)",
+          "description": "Path of a file to read (read-only) instead of \"text\": UTF-8, or UTF-16 with a byte order mark."
         }
       },
-      "required": [
-        "text"
-      ],
       "additionalProperties": false
+    },
+    "annotations": {
+      "readOnlyHint": true,
+      "destructiveHint": false,
+      "idempotentHint": true,
+      "openWorldHint": false
     }
   },
   {
     "name": "search__jsonpath",
     "title": "JSONPath query",
-    "description": "JSONPath query: Evaluates a JSONPath query (RFC 9535 without the function extensions length, count, match, search and value) on a JSON document; one row per selected node, in query order.",
+    "description": "JSONPath query: Evaluates a JSONPath query (RFC 9535 without the function extensions length, count, match, search and value) on a JSON document; one row per selected node, in query order. Returns a table with one row per selected node: path, kind, line, column and value.\nOutputs: results (table as CSV).",
     "inputSchema": {
       "type": "object",
       "properties": {
         "text": {
           "type": "string",
-          "title": "JSON"
+          "title": "JSON",
+          "description": "The JSON document. Required: give the text here or a file path in textFile."
         },
         "query": {
           "type": "string",
@@ -1803,24 +2204,33 @@
           "minimum": 10,
           "maximum": 2000,
           "default": 200
+        },
+        "textFile": {
+          "type": "string",
+          "title": "JSON (file)",
+          "description": "Path of a file to read (read-only) instead of \"text\": UTF-8, or UTF-16 with a byte order mark."
         }
       },
-      "required": [
-        "text"
-      ],
       "additionalProperties": false
+    },
+    "annotations": {
+      "readOnlyHint": true,
+      "destructiveHint": false,
+      "idempotentHint": true,
+      "openWorldHint": false
     }
   },
   {
     "name": "search__xpath",
     "title": "XPath 1.0 query",
-    "description": "XPath 1.0 query: Evaluates an XPath 1.0 expression on an XML document. A node-set gives one row per node in document order; a number, string or boolean gives one row with an empty path. Names match by namespace URI and local name: an unprefixed name matches only elements without a namespace.",
+    "description": "XPath 1.0 query: Evaluates an XPath 1.0 expression on an XML document. A node-set gives one row per node in document order; a number, string or boolean gives one row with an empty path. Names match by namespace URI and local name: an unprefixed name matches only elements without a namespace. Returns a table with one row per node, or one row for a number, string or boolean.\nOutputs: results (table as CSV).",
     "inputSchema": {
       "type": "object",
       "properties": {
         "text": {
           "type": "string",
-          "title": "XML"
+          "title": "XML",
+          "description": "The XML document. Required: give the text here or a file path in textFile."
         },
         "query": {
           "type": "string",
@@ -1852,24 +2262,33 @@
           "minimum": 10,
           "maximum": 2000,
           "default": 200
+        },
+        "textFile": {
+          "type": "string",
+          "title": "XML (file)",
+          "description": "Path of a file to read (read-only) instead of \"text\": UTF-8, or UTF-16 with a byte order mark."
         }
       },
-      "required": [
-        "text"
-      ],
       "additionalProperties": false
+    },
+    "annotations": {
+      "readOnlyHint": true,
+      "destructiveHint": false,
+      "idempotentHint": true,
+      "openWorldHint": false
     }
   },
   {
     "name": "tabular__csv-to-json",
     "title": "CSV to JSON",
-    "description": "CSV to JSON: Parse CSV (quotes, embedded line breaks, BOM) into JSON: an array of objects keyed by the header, or an array of arrays. Errors carry line and column.",
+    "description": "CSV to JSON: Parse CSV (quotes, embedded line breaks, BOM) into JSON: an array of objects keyed by the header, or an array of arrays. Errors carry line and column. Returns the JSON document.\nOutputs: result (text).",
     "inputSchema": {
       "type": "object",
       "properties": {
         "text": {
           "type": "string",
-          "title": "CSV"
+          "title": "CSV",
+          "description": "The CSV text. Required: give the text here or a file path in textFile."
         },
         "delimiter": {
           "type": "string",
@@ -1925,24 +2344,33 @@
             "none"
           ],
           "default": "2"
+        },
+        "textFile": {
+          "type": "string",
+          "title": "CSV (file)",
+          "description": "Path of a file to read (read-only) instead of \"text\": UTF-8, or UTF-16 with a byte order mark."
         }
       },
-      "required": [
-        "text"
-      ],
       "additionalProperties": false
+    },
+    "annotations": {
+      "readOnlyHint": true,
+      "destructiveHint": false,
+      "idempotentHint": true,
+      "openWorldHint": false
     }
   },
   {
     "name": "tabular__format-csv",
     "title": "CSV formatter / converter",
-    "description": "CSV formatter / converter: Read CSV and write it again in another dialect: delimiter, quoting, line ending, byte order mark. Field values are never changed.",
+    "description": "CSV formatter / converter: Read CSV and write it again in another dialect: delimiter, quoting, line ending, byte order mark. Field values are never changed. Returns the CSV text in the chosen dialect.\nOutputs: result (text).",
     "inputSchema": {
       "type": "object",
       "properties": {
         "text": {
           "type": "string",
-          "title": "CSV"
+          "title": "CSV",
+          "description": "The CSV text. Required: give the text here or a file path in textFile."
         },
         "delimiter": {
           "type": "string",
@@ -2019,24 +2447,33 @@
           "title": "Escape formulas",
           "description": "Prefix ' to text cells that start with =, +, -, @, tab or CR so a spreadsheet does not run them. Changes the data and is not undone by csv-to-json; plain numbers are left alone. A notice reports how many cells qualify either way.",
           "default": false
+        },
+        "textFile": {
+          "type": "string",
+          "title": "CSV (file)",
+          "description": "Path of a file to read (read-only) instead of \"text\": UTF-8, or UTF-16 with a byte order mark."
         }
       },
-      "required": [
-        "text"
-      ],
       "additionalProperties": false
+    },
+    "annotations": {
+      "readOnlyHint": true,
+      "destructiveHint": false,
+      "idempotentHint": true,
+      "openWorldHint": false
     }
   },
   {
     "name": "tabular__json-to-csv",
     "title": "JSON to CSV",
-    "description": "JSON to CSV: Turn an array of JSON objects into CSV: nested objects become dotted column names, arrays are spread, joined or kept as JSON, number text is written exactly.",
+    "description": "JSON to CSV: Turn an array of JSON objects into CSV: nested objects become dotted column names, arrays are spread, joined or kept as JSON, number text is written exactly. Returns the CSV text.\nOutputs: result (text).",
     "inputSchema": {
       "type": "object",
       "properties": {
         "text": {
           "type": "string",
-          "title": "JSON"
+          "title": "JSON",
+          "description": "The JSON document. Required: give the text here or a file path in textFile."
         },
         "rowsPath": {
           "type": "string",
@@ -2122,24 +2559,33 @@
           "title": "Escape formulas",
           "description": "Prefix ' to text cells that start with =, +, -, @, tab or CR so a spreadsheet does not run them. Changes the data and is not undone by csv-to-json; plain numbers are left alone. A notice reports how many cells qualify either way.",
           "default": false
+        },
+        "textFile": {
+          "type": "string",
+          "title": "JSON (file)",
+          "description": "Path of a file to read (read-only) instead of \"text\": UTF-8, or UTF-16 with a byte order mark."
         }
       },
-      "required": [
-        "text"
-      ],
       "additionalProperties": false
+    },
+    "annotations": {
+      "readOnlyHint": true,
+      "destructiveHint": false,
+      "idempotentHint": true,
+      "openWorldHint": false
     }
   },
   {
     "name": "tabular__xml-to-csv",
     "title": "XML to CSV",
-    "description": "XML to CSV: Turn the repeated elements of an XML document into CSV rows: attributes become @name columns, text becomes #text, nested elements are flattened.",
+    "description": "XML to CSV: Turn the repeated elements of an XML document into CSV rows: attributes become @name columns, text becomes #text, nested elements are flattened. Returns the CSV text.\nOutputs: result (text).",
     "inputSchema": {
       "type": "object",
       "properties": {
         "text": {
           "type": "string",
-          "title": "XML"
+          "title": "XML",
+          "description": "The XML document. Required: give the text here or a file path in textFile."
         },
         "rowsPath": {
           "type": "string",
@@ -2225,24 +2671,33 @@
           "title": "Escape formulas",
           "description": "Prefix ' to text cells that start with =, +, -, @, tab or CR so a spreadsheet does not run them. Changes the data and is not undone by csv-to-json; plain numbers are left alone. A notice reports how many cells qualify either way.",
           "default": false
+        },
+        "textFile": {
+          "type": "string",
+          "title": "XML (file)",
+          "description": "Path of a file to read (read-only) instead of \"text\": UTF-8, or UTF-16 with a byte order mark."
         }
       },
-      "required": [
-        "text"
-      ],
       "additionalProperties": false
+    },
+    "annotations": {
+      "readOnlyHint": true,
+      "destructiveHint": false,
+      "idempotentHint": true,
+      "openWorldHint": false
     }
   },
   {
     "name": "text__case",
     "title": "Case converter",
-    "description": "Case converter: Converts text to camelCase, PascalCase, snake_case, kebab-case, UPPER, lower or Title Case. Words split at separators, at lower-to-upper changes and after acronyms (HTTPServer becomes http_server). Locale-free; Title Case uses an English small-word list.",
+    "description": "Case converter: Converts text to camelCase, PascalCase, snake_case, kebab-case, UPPER, lower or Title Case. Words split at separators, at lower-to-upper changes and after acronyms (HTTPServer becomes http_server). Locale-free; Title Case uses an English small-word list. Returns the converted text.\nOutputs: result (text).",
     "inputSchema": {
       "type": "object",
       "properties": {
         "text": {
           "type": "string",
-          "title": "Text"
+          "title": "Text",
+          "description": "The text to convert. Required: give the text here or a file path in textFile."
         },
         "style": {
           "type": "string",
@@ -2270,28 +2725,38 @@
           "title": "Keep small words lower case",
           "description": "Title Case only: keep words such as of, the and to in lower case unless first or last.",
           "default": true
+        },
+        "textFile": {
+          "type": "string",
+          "title": "Text (file)",
+          "description": "Path of a file to read (read-only) instead of \"text\": UTF-8, or UTF-16 with a byte order mark."
         }
       },
-      "required": [
-        "text"
-      ],
       "additionalProperties": false
+    },
+    "annotations": {
+      "readOnlyHint": true,
+      "destructiveHint": false,
+      "idempotentHint": true,
+      "openWorldHint": false
     }
   },
   {
     "name": "text__diff",
     "title": "Text diff",
-    "description": "Text diff: Compares two texts line by line or word by word and returns the shortest edit script as a unified diff (or inline word markers), a side-by-side view and a table of changes.",
+    "description": "Text diff: Compares two texts line by line or word by word and returns the shortest edit script as a unified diff (or inline word markers), a side-by-side view and a table of changes. Returns the patch, the side-by-side view (the two texts) and the table of changes.\nOutputs: patch (text), changes (table as CSV); view (unified diff) only with includeDiff.",
     "inputSchema": {
       "type": "object",
       "properties": {
         "original": {
           "type": "string",
-          "title": "Original"
+          "title": "Original",
+          "description": "The original text: the - side of the diff. Required: give the text here or a file path in originalFile."
         },
         "modified": {
           "type": "string",
-          "title": "Modified"
+          "title": "Modified",
+          "description": "The modified text: the + side of the diff. Required: give the text here or a file path in modifiedFile."
         },
         "granularity": {
           "type": "string",
@@ -2328,25 +2793,44 @@
           "minimum": 0,
           "maximum": 50,
           "default": 3
+        },
+        "originalFile": {
+          "type": "string",
+          "title": "Original (file)",
+          "description": "Path of a file to read (read-only) instead of \"original\": UTF-8, or UTF-16 with a byte order mark."
+        },
+        "modifiedFile": {
+          "type": "string",
+          "title": "Modified (file)",
+          "description": "Path of a file to read (read-only) instead of \"modified\": UTF-8, or UTF-16 with a byte order mark."
+        },
+        "includeDiff": {
+          "type": "boolean",
+          "title": "Include diff",
+          "description": "Also return a unified diff of the two documents as printed.",
+          "default": false
         }
       },
-      "required": [
-        "original",
-        "modified"
-      ],
       "additionalProperties": false
+    },
+    "annotations": {
+      "readOnlyHint": true,
+      "destructiveHint": false,
+      "idempotentHint": true,
+      "openWorldHint": false
     }
   },
   {
     "name": "text__json-to-yaml",
     "title": "JSON to YAML",
-    "description": "JSON to YAML: Converts JSON to block-style YAML. Numbers keep their exact text, strings are quoted whenever a YAML 1.1 or 1.2 reader could read them as another type, and duplicate keys keep the last value.",
+    "description": "JSON to YAML: Converts JSON to block-style YAML. Numbers keep their exact text, strings are quoted whenever a YAML 1.1 or 1.2 reader could read them as another type, and duplicate keys keep the last value. Returns the YAML text.\nOutputs: result (text).",
     "inputSchema": {
       "type": "object",
       "properties": {
         "text": {
           "type": "string",
-          "title": "JSON"
+          "title": "JSON",
+          "description": "The JSON document. Required: give the text here or a file path in textFile."
         },
         "indent": {
           "type": "string",
@@ -2367,24 +2851,33 @@
             "split"
           ],
           "default": "single"
+        },
+        "textFile": {
+          "type": "string",
+          "title": "JSON (file)",
+          "description": "Path of a file to read (read-only) instead of \"text\": UTF-8, or UTF-16 with a byte order mark."
         }
       },
-      "required": [
-        "text"
-      ],
       "additionalProperties": false
+    },
+    "annotations": {
+      "readOnlyHint": true,
+      "destructiveHint": false,
+      "idempotentHint": true,
+      "openWorldHint": false
     }
   },
   {
     "name": "text__regex",
     "title": "Regex tester",
-    "description": "Regex tester: Tests a regular expression with JavaScript regular-expression semantics (the engine of this app, not .NET, Java, PCRE or Python) and lists every match with its group captures, or replaces matches with a JavaScript-style replacement ($1, $<name>, $&, $$).",
+    "description": "Regex tester: Tests a regular expression with JavaScript regular-expression semantics (the engine of this app, not .NET, Java, PCRE or Python) and lists every match with its group captures, or replaces matches with a JavaScript-style replacement ($1, $<name>, $&, $$). Returns a table of the matches, a table of the group captures and, with a replacement, the replaced text.\nOutputs: matches (table as CSV), groups (table as CSV), replaced (text).",
     "inputSchema": {
       "type": "object",
       "properties": {
         "text": {
           "type": "string",
-          "title": "Text"
+          "title": "Text",
+          "description": "The text to run the regular expression on. Required: give the text here or a file path in textFile."
         },
         "pattern": {
           "type": "string",
@@ -2423,42 +2916,60 @@
           "minimum": 1,
           "maximum": 100000,
           "default": 1000
+        },
+        "textFile": {
+          "type": "string",
+          "title": "Text (file)",
+          "description": "Path of a file to read (read-only) instead of \"text\": UTF-8, or UTF-16 with a byte order mark."
         }
       },
-      "required": [
-        "text"
-      ],
       "additionalProperties": false
+    },
+    "annotations": {
+      "readOnlyHint": true,
+      "destructiveHint": false,
+      "idempotentHint": true,
+      "openWorldHint": false
     }
   },
   {
     "name": "text__reverse-lines",
     "title": "Reverse lines",
-    "description": "Reverse lines: Reverses the order of the lines of a text.",
+    "description": "Reverse lines: Reverses the order of the lines of a text. Returns the text with its lines in reverse order.\nOutputs: result (text).",
     "inputSchema": {
       "type": "object",
       "properties": {
         "text": {
           "type": "string",
-          "title": "Text"
+          "title": "Text",
+          "description": "The text, one item per line. Required: give the text here or a file path in textFile."
+        },
+        "textFile": {
+          "type": "string",
+          "title": "Text (file)",
+          "description": "Path of a file to read (read-only) instead of \"text\": UTF-8, or UTF-16 with a byte order mark."
         }
       },
-      "required": [
-        "text"
-      ],
       "additionalProperties": false
+    },
+    "annotations": {
+      "readOnlyHint": true,
+      "destructiveHint": false,
+      "idempotentHint": true,
+      "openWorldHint": false
     }
   },
   {
     "name": "text__sort-lines",
     "title": "Sort lines",
-    "description": "Sort lines: Sorts the lines of a text. The sort is stable in both directions; the result uses the most frequent line ending of the input.",
+    "description": "Sort lines: Sorts the lines of a text. The sort is stable in both directions; the result uses the most frequent line ending of the input. Returns the sorted text.\nOutputs: result (text).",
     "inputSchema": {
       "type": "object",
       "properties": {
         "text": {
           "type": "string",
-          "title": "Text"
+          "title": "Text",
+          "description": "The text, one item per line. Required: give the text here or a file path in textFile."
         },
         "order": {
           "type": "string",
@@ -2497,24 +3008,33 @@
           "title": "Ignore case",
           "description": "Treat upper and lower case as equal.",
           "default": false
+        },
+        "textFile": {
+          "type": "string",
+          "title": "Text (file)",
+          "description": "Path of a file to read (read-only) instead of \"text\": UTF-8, or UTF-16 with a byte order mark."
         }
       },
-      "required": [
-        "text"
-      ],
       "additionalProperties": false
+    },
+    "annotations": {
+      "readOnlyHint": true,
+      "destructiveHint": false,
+      "idempotentHint": true,
+      "openWorldHint": false
     }
   },
   {
     "name": "text__trim-lines",
     "title": "Trim lines",
-    "description": "Trim lines: Removes leading and trailing whitespace from every line.",
+    "description": "Trim lines: Removes leading and trailing whitespace from every line. Returns the trimmed text; line endings are kept.\nOutputs: result (text).",
     "inputSchema": {
       "type": "object",
       "properties": {
         "text": {
           "type": "string",
-          "title": "Text"
+          "title": "Text",
+          "description": "The text, one item per line; leading and trailing whitespace is removed from each. Required: give the text here or a file path in textFile."
         },
         "side": {
           "type": "string",
@@ -2532,24 +3052,33 @@
           "title": "Remove empty lines",
           "description": "Drop lines that are empty after trimming.",
           "default": false
+        },
+        "textFile": {
+          "type": "string",
+          "title": "Text (file)",
+          "description": "Path of a file to read (read-only) instead of \"text\": UTF-8, or UTF-16 with a byte order mark."
         }
       },
-      "required": [
-        "text"
-      ],
       "additionalProperties": false
+    },
+    "annotations": {
+      "readOnlyHint": true,
+      "destructiveHint": false,
+      "idempotentHint": true,
+      "openWorldHint": false
     }
   },
   {
     "name": "text__unique-lines",
     "title": "Remove duplicate lines",
-    "description": "Remove duplicate lines: Removes repeated lines and keeps the first occurrence, either everywhere or only next to each other.",
+    "description": "Remove duplicate lines: Removes repeated lines and keeps the first occurrence, either everywhere or only next to each other. Returns the text without the repeated lines.\nOutputs: result (text).",
     "inputSchema": {
       "type": "object",
       "properties": {
         "text": {
           "type": "string",
-          "title": "Text"
+          "title": "Text",
+          "description": "The text, one item per line. Required: give the text here or a file path in textFile."
         },
         "scope": {
           "type": "string",
@@ -2572,24 +3101,33 @@
           "title": "Ignore surrounding space",
           "description": "Compare lines without leading and trailing whitespace; the output keeps the original line.",
           "default": false
+        },
+        "textFile": {
+          "type": "string",
+          "title": "Text (file)",
+          "description": "Path of a file to read (read-only) instead of \"text\": UTF-8, or UTF-16 with a byte order mark."
         }
       },
-      "required": [
-        "text"
-      ],
       "additionalProperties": false
+    },
+    "annotations": {
+      "readOnlyHint": true,
+      "destructiveHint": false,
+      "idempotentHint": true,
+      "openWorldHint": false
     }
   },
   {
     "name": "text__yaml-to-json",
     "title": "YAML to JSON",
-    "description": "YAML to JSON: Converts YAML to JSON using the YAML 1.2 core schema: yes, no, on and off are strings, only true and false are booleans. Anchors, aliases and merge keys are expanded; comments, tags and styles are dropped.",
+    "description": "YAML to JSON: Converts YAML to JSON using the YAML 1.2 core schema: yes, no, on and off are strings, only true and false are booleans. Anchors, aliases and merge keys are expanded; comments, tags and styles are dropped. Returns the JSON document.\nOutputs: result (text).",
     "inputSchema": {
       "type": "object",
       "properties": {
         "text": {
           "type": "string",
-          "title": "YAML"
+          "title": "YAML",
+          "description": "The YAML document. Required: give the text here or a file path in textFile."
         },
         "indent": {
           "type": "string",
@@ -2618,18 +3156,26 @@
           "title": "Expand merge keys",
           "description": "Apply << merge keys; off keeps << as an ordinary key.",
           "default": true
+        },
+        "textFile": {
+          "type": "string",
+          "title": "YAML (file)",
+          "description": "Path of a file to read (read-only) instead of \"text\": UTF-8, or UTF-16 with a byte order mark."
         }
       },
-      "required": [
-        "text"
-      ],
       "additionalProperties": false
+    },
+    "annotations": {
+      "readOnlyHint": true,
+      "destructiveHint": false,
+      "idempotentHint": true,
+      "openWorldHint": false
     }
   },
   {
     "name": "units__catalog",
     "title": "Unit catalog",
-    "description": "Unit catalog: List every unit with its id, symbol, name, aliases, exact factor, offset and source document.",
+    "description": "Unit catalog: List every unit with its id, symbol, name, aliases, exact factor, offset and source document. Returns a table with one row per unit.\nOutputs: table (table as CSV).",
     "inputSchema": {
       "type": "object",
       "properties": {
@@ -2655,19 +3201,25 @@
         }
       },
       "additionalProperties": false
+    },
+    "annotations": {
+      "readOnlyHint": true,
+      "destructiveHint": false,
+      "idempotentHint": true,
+      "openWorldHint": false
     }
   },
   {
     "name": "units__convert",
     "title": "Convert units",
-    "description": "Convert units: Convert a quantity between units of the same category with exact arithmetic (no floating point); temperature uses exact affine factors.",
+    "description": "Convert units: Convert a quantity between units of the same category with exact arithmetic (no floating point); temperature uses exact affine factors. Returns the conversion as a sentence with both quantities and units, and the converted number alone.\nOutputs: result (text), value (text).",
     "inputSchema": {
       "type": "object",
       "properties": {
         "text": {
           "type": "string",
           "title": "Quantity",
-          "description": "A number and a unit, for example 5 km to mi, 98.6 F in C or 1 GiB = MiB."
+          "description": "A number and a unit, for example 5 km to mi, 98.6 F in C or 1 GiB = MiB. Required: give the text here or a file path in textFile."
         },
         "from": {
           "type": "string",
@@ -2699,25 +3251,33 @@
             "scientific"
           ],
           "default": "auto"
+        },
+        "textFile": {
+          "type": "string",
+          "title": "Quantity (file)",
+          "description": "Path of a file to read (read-only) instead of \"text\": UTF-8, or UTF-16 with a byte order mark."
         }
       },
-      "required": [
-        "text"
-      ],
       "additionalProperties": false
+    },
+    "annotations": {
+      "readOnlyHint": true,
+      "destructiveHint": false,
+      "idempotentHint": true,
+      "openWorldHint": false
     }
   },
   {
     "name": "units__convert-all",
     "title": "Convert to every unit",
-    "description": "Convert to every unit: Show a quantity in every unit of its category, with a column that says whether each value is exact.",
+    "description": "Convert to every unit: Show a quantity in every unit of its category, with a column that says whether each value is exact. Returns a table with one row per unit of the category: name, symbol, value and whether the value is exact.\nOutputs: table (table as CSV).",
     "inputSchema": {
       "type": "object",
       "properties": {
         "text": {
           "type": "string",
           "title": "Quantity",
-          "description": "A number and a unit, for example 5 km to mi, 98.6 F in C or 1 GiB = MiB."
+          "description": "A number and a unit, for example 5 km to mi, 98.6 F in C or 1 GiB = MiB. Required: give the text here or a file path in textFile."
         },
         "from": {
           "type": "string",
@@ -2743,12 +3303,20 @@
             "scientific"
           ],
           "default": "auto"
+        },
+        "textFile": {
+          "type": "string",
+          "title": "Quantity (file)",
+          "description": "Path of a file to read (read-only) instead of \"text\": UTF-8, or UTF-16 with a byte order mark."
         }
       },
-      "required": [
-        "text"
-      ],
       "additionalProperties": false
+    },
+    "annotations": {
+      "readOnlyHint": true,
+      "destructiveHint": false,
+      "idempotentHint": true,
+      "openWorldHint": false
     }
   }
 ]

@@ -1,6 +1,6 @@
 schema_version: "1.1"
 name: pretty-print-large-event-export
 expected_outcome: |
-  events.json is about 2 MB of minified JSON (20,000 events), too large to pass through a conversation inline. A good answer produces events.pretty.json with exactly the same data and the same number text (amounts such as 12.50 keep both decimals), indented with 2 spaces, by a path that does not re-type the document: a DevTools file input if the server has one, the DevTools command line, or a local command, and it says which. It never saves a partial or truncated document, and it does not claim DevTools formatted the file unless a DevTools tool did.
+  events.json is about 2 MB of minified JSON (20,000 events): too large to type into a call, and the formatted result (about 3 MB) is far over the server's 50,000-character result limit, so even textFile gets E_MCP_RESULT_TOO_LARGE. A good answer produces events.pretty.json with exactly the same data and the same number text (amounts such as 12.50 keep both decimals), indented with 2 spaces, by a path that does not re-type the document: the DevTools command line with --file and --out, or a local command that keeps number text, and it says which. It never saves a partial or truncated document, and it does not claim DevTools formatted the file unless a DevTools tool did.
 context:
   scaffold_script: place-files.sh
