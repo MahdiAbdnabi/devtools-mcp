@@ -3244,7 +3244,7 @@
         "notation": {
           "type": "string",
           "title": "Notation",
-          "description": "auto writes plain digits for 0.000001 up to below 1e15 and scientific notation outside that range.",
+          "description": "Notation of the converted value: auto writes plain digits for 0.000001 up to below 1e15 and scientific notation outside that range.",
           "enum": [
             "auto",
             "plain",
@@ -3296,7 +3296,7 @@
         "notation": {
           "type": "string",
           "title": "Notation",
-          "description": "auto writes plain digits for 0.000001 up to below 1e15 and scientific notation outside that range.",
+          "description": "Notation of the converted value: auto writes plain digits for 0.000001 up to below 1e15 and scientific notation outside that range.",
           "enum": [
             "auto",
             "plain",

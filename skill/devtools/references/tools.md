@@ -706,7 +706,7 @@ Convert units: Convert a quantity between units of the same category with exact 
 | `from` | string | `""` | Unit of the number when the text has none, for example km. The text wins when both are given. |
 | `to` | string | `""` | Unit to convert to when the text has none. The text wins when both are given. |
 | `significantDigits` | integer | `15` | min 1, max 40; Digits shown in the result (1 to 40), rounded half away from zero; trailing zeros are dropped. |
-| `notation` | `auto` \| `plain` \| `scientific` | `"auto"` | auto writes plain digits for 0.000001 up to below 1e15 and scientific notation outside that range. |
+| `notation` | `auto` \| `plain` \| `scientific` | `"auto"` | Notation of the converted value: auto writes plain digits for 0.000001 up to below 1e15 and scientific notation outside that range. |
 | `textFile` | string |  | Path of a file to read (read-only) instead of "text": UTF-8, or UTF-16 with a byte order mark. |
 
 ### `units__convert-all`
@@ -718,5 +718,5 @@ Convert to every unit: Show a quantity in every unit of its category, with a col
 | `text` | string |  | A number and a unit, for example 5 km to mi, 98.6 F in C or 1 GiB = MiB. Required: give the text here or a file path in textFile. |
 | `from` | string | `""` | Unit of the number when the text has none, for example km. The text wins when both are given. |
 | `significantDigits` | integer | `15` | min 1, max 40; Digits shown in the result (1 to 40), rounded half away from zero; trailing zeros are dropped. |
-| `notation` | `auto` \| `plain` \| `scientific` | `"auto"` | auto writes plain digits for 0.000001 up to below 1e15 and scientific notation outside that range. |
+| `notation` | `auto` \| `plain` \| `scientific` | `"auto"` | Notation of the converted value: auto writes plain digits for 0.000001 up to below 1e15 and scientific notation outside that range. |
 | `textFile` | string |  | Path of a file to read (read-only) instead of "text": UTF-8, or UTF-16 with a byte order mark. |

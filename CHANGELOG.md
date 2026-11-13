@@ -14,11 +14,17 @@ Changes to what this repository publishes: the website, the skill and the two do
 - The compare tools have `numbers: text | value`. In text mode, a number written differently with the same value (`9.90` and `9.9`) is reported as "changed (same value)".
 - Every tool says what it returns, every input has a description, and every tool is marked read-only and closed-world. The server reports its version and gives short instructions to clients without the skill.
 - Options that would write a file are no longer offered over MCP.
+- An error for a relative file path no longer names the folder the server was started in; the server writes that folder to its own log at start.
+- `json-to-csv` and `xml-to-csv`: an empty array or object no longer adds a column of its own next to the columns of the items it would hold.
+- `anonymize.xml`: removing the root element gives only `E_ANON_XML_ROOT_REMOVED`, and an element whose content is removed prints as `<x></x>`.
+- Units: the plural of an ambiguous name (gallons, quarts, pints, fluid ounces, tons, years) is ambiguous too; `convert` echoes the quantity in auto notation; a "did you mean" hint allows two edits only in words of seven letters or more.
+- Regular expression errors read `Invalid regular expression: <reason> (pattern column N)` without repeating the pattern; JSONPath, XPath and the regex mode of the search tools end with `(query column N)`. A message that names its own position shows it once.
 
 ### Skill: devtools 1.1.0
 
 - A sharper description of when to use DevTools and when not to.
 - The setup command and the tool-naming notes match the site.
+- An error for a relative file path doesn't name the server's folder: give the absolute path.
 - Ten evaluation cases (seven new), among them invalid input, a request outside DevTools, a server that is not connected, a seed the user did not give, a lossy date pattern and a large input.
 
 ### Website
